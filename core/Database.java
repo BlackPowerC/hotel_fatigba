@@ -2,6 +2,7 @@ package core;
 
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.Statement;
+import core.Encryption.AdvancedEncryption;
 
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -15,65 +16,39 @@ public class Database
 
     /* Les infos pour la connexion */
     private Configuration config = Configuration.getInstance() ;
-    private Strategy st ;
 
     private static Database singleton = null;
 
     /* Récupération du singleton de connexion */
-    public static Database getHinstance() throws SQLException
+    public static Database getHinstance(Configuration cf) throws SQLException
     {
         if (singleton == null)
         {
-            singleton = new Database();
+           if(cf.getSgbd().compareToIgnoreCase("sqlite") == 0)
+           {
+                singleton = new Database();
+           }
+           else
+           {
+                singleton = new Database(cf.getDatabaseUser(), AdvancedEncryption.getInstance().decrypt(cf.getDatabasePasswd(), "hotel_fatigba")) ;
+           }
         }
         return singleton;
-    }
-
-    public static Database getHinstance(String dataBaseName,
-            String databaseUser,
-            String userPassword) throws SQLException
-    {
-        if (singleton == null)
-        {
-            singleton = new Database(dataBaseName, databaseUser, userPassword);
-        }
-        return singleton;
-    }
-
-    /* Fermeture de la connexion */
-    public void close()
-    {
-        try
-        {
-            statement.close();
-            connection.close();
-        } catch (SQLException ex)
-        {
-            ex.printStackTrace(System.err);
-        }
     }
 
     /* Constructeur privé s */
     private Database() throws SQLException
     {
-        this.url = "jdbc:mysql://localhost:/hotel_new";
-        this.user = "root";
-        this.passwd = "c0l0rado";
+        String url = "jdbc:sqlite:"+Database.class.getResource("").toString() ;
 
-        connection = (Connection) DriverManager.getConnection(url, user, passwd);
+        connection = (Connection) DriverManager.getConnection(url);
         statement = (Statement) connection.createStatement();
 
     }
 
-    private Database(String dataBaseName,
-            String databaseUser,
-            String userPassword) throws SQLException
+    private Database(String user, String passwd) throws SQLException
     {
-        this.url = "jdbc:mysql://localhost/" + dataBaseName;
-        this.user = databaseUser;
-        this.passwd = userPassword;
-
-        connection = (Connection) DriverManager.getConnection(url, user, passwd);
+        connection = (Connection) DriverManager.getConnection(config.getURL(), user, passwd);
         statement = (Statement) connection.createStatement();
     }
 
@@ -120,5 +95,18 @@ public class Database
             ex.printStackTrace(System.err);
         }
         return rs;
+    }
+    
+    /* Fermeture de la connexion */
+    public void close()
+    {
+        try
+        {
+            statement.close();
+            connection.close();
+        } catch (SQLException ex)
+        {
+            ex.printStackTrace(System.err);
+        }
     }
 }

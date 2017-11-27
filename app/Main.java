@@ -2,18 +2,14 @@ package app;
 
 import Auth.Configure.ConnectionView;
 import Auth.userconnection.AuthView;
-import bo.Chambre ;
 import core.Database;
 import java.io.File ;
-import java.util.List ;
-import manager.ChambreManager ;
 
 public class Main
 {
-    
     public static void main(String[] args)
     {
-        File database_configuration = new File(Database.class.getResource("config.json").toString()) ;
+        File database_configuration = new File("/home/jordy/workspace/hotel_fatigba/config.json") ;
         if(!database_configuration.exists())
         {
             ConnectionView cv = new ConnectionView() ;

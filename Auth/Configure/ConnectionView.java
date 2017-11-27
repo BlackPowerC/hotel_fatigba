@@ -17,10 +17,10 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import app.Background;
+import core.Configuration;
 import core.Database;
 import core.Encryption.AdvancedEncryption;
 import java.io.File;
@@ -76,7 +76,7 @@ public class ConnectionView extends JFrame implements ActionListener, KeyListene
         setLocation((dm.width - 600) / 2, (dm.height - 480) / 2);
         setTitle("Connection à la BD");
 
-        setSize(600, 480);
+        setSize(600, 700);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
@@ -85,12 +85,12 @@ public class ConnectionView extends JFrame implements ActionListener, KeyListene
         ok = new JButton("OK");
         ok.setSize(200, 50);
         ok.addActionListener(this);
-        ok.setIcon(new ImageIcon("/home/jordy/workspace/Hotel/src/icons/check/checkmark_32.png"));
+        ok.setIcon(new ImageIcon("/home/jordy/workspace/hotel_fatigba/src/ressource/icons/PNG-48/Add.png"));
 
         annuler = new JButton("Annuler");
         annuler.setSize(200, 50);
         annuler.addActionListener(this);
-        annuler.setIcon(new ImageIcon("/home/jordy/workspace/Hotel/src/icons/check/error_32.png"));
+        annuler.setIcon(new ImageIcon("/home/jordy/workspace/hotel_fatigba/src/ressource/icons/PNG-48/Delete.png"));
     }
 
     public void Build_Input()
@@ -143,10 +143,12 @@ public class ConnectionView extends JFrame implements ActionListener, KeyListene
 
         txtDatabaseHost = new JLabel("<html><font color=#FEFDF0>Hôte de la base de données</font></html>");
         txtDatabaseHost.setFont(police);
+        
         txtDatabasePort = new JLabel("<html><font color=#FEFDF0>Port d'écoute du SGBD</font></html>");
-
-        txtDatabaseHost.setFont(police);
+        txtDatabasePort.setFont(police);
+        
         txtDatabaseSGBD = new JLabel("<html><font color=#FEFDF0>SGBD</font></html>");
+        txtDatabaseSGBD.setFont(police);
     }
 
     private void setPosition()
@@ -156,30 +158,28 @@ public class ConnectionView extends JFrame implements ActionListener, KeyListene
         txtDatabaseUser.setBounds(x, 60, w, h);
         user.setBounds(x, 90, w, h);
         // Nom de la base de données
-        txtDataBaseName.setBounds(x, 140, w, h);
-        DataBaseName.setBounds(x, 170, w, h);
+        txtPass.setBounds(x, 140, w, h);
+        pass.setBounds(x, 170, w, h);
         // Mote de passe de la base de données
-        txtPass.setBounds(x, 205, w, 60);
-        pass.setBounds(x, 250, w, h);
+        txtDatabaseName.setBounds(x, 200, w, 60);
+        databaseName.setBounds(x, 230, w, h);
         // Hote de la base de sonnées
-        txtDatabaseHost;
-        databaseHost;
-        // Port d'écoute du SGBD
-        txtDatabasePort;
-        databasePort;
-        // Mot de passe de la base de donnée
-        txtPass;
-        pass;
+        txtDatabaseHost.setBounds(x, 260, w, h);
+        databaseHost.setBounds(x, 290, w, h);
         // Type de SGBD
-        txtDatabaseSGBD;
-        databaseSGBD;
-        ok.setBounds(x - 50, 350, 150, 50);
-        annuler.setBounds(x + 150, 350, 150, 50);
+        txtDatabaseSGBD.setBounds(x, 320, w, h);
+        databaseSGBD.setBounds(x, 350, w, h);
+        // Port d'écoute du SGBD
+        txtDatabasePort.setBounds(x, 380, w, h);
+        databasePort.setBounds(x, 420, w, h);
+        
+        ok.setBounds(x - 50, 500, 150, 50);
+        annuler.setBounds(x + 150, 500, 150, 50);
     }
 
     private void Build_Panel()
     {
-        fond = new Background("/home/jordy/workspace/Hotel/src/backgrounds/1165013_fusions-acquisitions-la-securite-informatique-au-coeur-des-preoccupations-141438-1.jpg");
+        fond = new Background("/home/jordy/workspace/hotel_fatigba/src/ressource/backgrounds/1165013_fusions-acquisitions-la-securite-informatique-au-coeur-des-preoccupations-141438-1.jpg");
         setPosition();
         addContent();
     }
@@ -187,12 +187,24 @@ public class ConnectionView extends JFrame implements ActionListener, KeyListene
     private void addContent()
     {
         fond.setLayout(null);
-        fond.add(user);
-        fond.add(DataBaseName);
-        fond.add(pass);
-        fond.add(txtDatabaseUser);
-        fond.add(txtDataBaseName);
+        fond.add(txtDatabaseUser) ;
+        fond.add(user) ;
+        
         fond.add(txtPass);
+        fond.add(pass);
+        
+        fond.add(txtDatabaseName);
+        fond.add(databaseName);
+        
+        fond.add(txtDatabaseHost);
+        fond.add(databaseHost);
+        
+        fond.add(txtDatabaseSGBD);
+        fond.add(databaseSGBD);
+        
+        fond.add(txtDatabasePort);
+        fond.add(databasePort);
+        
         fond.add(ok);
         fond.add(annuler);
 
@@ -201,6 +213,7 @@ public class ConnectionView extends JFrame implements ActionListener, KeyListene
 
     private void createConfiguration()
     {
+        /* Céation du fichier JSon de configuration */
         JSONObject json = new JSONObject();
         json.put("Host", databaseHost.getText());
         json.put("Pass", AdvancedEncryption.getInstance().encrypt(pass.getText(), "hotel_fatigba"));
@@ -208,23 +221,28 @@ public class ConnectionView extends JFrame implements ActionListener, KeyListene
         json.put("User", user.getText());
         json.put("Port", databasePort.getValue().toString());
         json.put("SGBD", databaseSGBD.getSelectedItem().toString());
-        File configuration = new File(Database.class.getResource("config.json").toString());
+        File configuration = new File("/home/jordy/workspace/hotel_fatigba/config.json");
 
         try
         {
+            configuration.createNewFile();
             FileOutputStream fos = new FileOutputStream(configuration);
             fos.write(Byte.decode(json.toString()));
             fos.close();
 
+            Configuration cf = Configuration.getInstance();
+            cf.setDatabaseName(databaseName.getText());
+            cf.setDatabasePasswd(pass.getText());
+            cf.setDatabaseUser(user.getText());
+            cf.setSgbd((String) databaseSGBD.getSelectedItem());
+            cf.setSgbdPort((String) databasePort.getValue());
         } catch (FileNotFoundException ex)
         {
-            Logger.getLogger(ConnectionView.class
-                    .getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ConnectionView.class.getName()).log(Level.SEVERE, null, ex);
 
         } catch (IOException ex)
         {
-            Logger.getLogger(ConnectionView.class
-                    .getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ConnectionView.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -238,9 +256,16 @@ public class ConnectionView extends JFrame implements ActionListener, KeyListene
         }
         if (ob.equals(ok))
         {
-            Database.getHinstance(DataBaseName.getText(), user.getText(), pass.getText());
-            AuthView c = new AuthView();
-            this.dispose();
+            try
+            {
+                Database.getHinstance(Configuration.getInstance());
+                AuthView c = new AuthView();
+                this.dispose();
+            } catch (SQLException ex)
+            {
+                /* Impossible de se connecter à la base de données */
+                Logger.getLogger(ConnectionView.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
@@ -250,10 +275,18 @@ public class ConnectionView extends JFrame implements ActionListener, KeyListene
         int code = ev.getKeyCode();
         if (code == KeyEvent.VK_ENTER)
         {
-            Database.getHinstance(DataBaseName.getText(), user.getText(), pass.getText());
-            AuthView c = new AuthView();
-            this.dispose();
-        } else if (code == KeyEvent.VK_ESCAPE)
+            try
+            {
+                Database.getHinstance(Configuration.getInstance());
+                AuthView c = new AuthView();
+                this.dispose();
+            } catch (SQLException ex)
+            {
+                /* Impossible de se connecter à la base de données */
+                Logger.getLogger(ConnectionView.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } 
+        else if (code == KeyEvent.VK_ESCAPE)
         {
             System.exit(DISPOSE_ON_CLOSE);
         }

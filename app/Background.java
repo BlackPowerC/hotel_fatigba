@@ -22,7 +22,7 @@ public class Background extends JPanel
     public Background()
     {
         super(null);
-        url = "/home/jordy/workspace/Hotel/src/backgrounds/Aqua Blue.jpg";
+        url = "/home/jordy/workspace/hotel_fatigba/src/ressource/backgrounds/Aqua Blue.jpg";
     }
 
     public void paintComponent(Graphics g)
