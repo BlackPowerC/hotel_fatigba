@@ -1,4 +1,4 @@
-package manageReservation;
+package userInterface.reservation;
 
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -20,17 +20,16 @@ import com.toedter.calendar.JDateChooser;
 
 import app.Background;
 import app.Buttons;
-import app.DataBaseCon;
-import dataFromDatabase.ListChambre;
-import dataFromDatabase.ListClient;
-import dataFromDatabase.ListReservation;
-import manageChambre.Chambre;
-import manageChambre.JTableChambreDispo;
+import core.Database;
+import manager.data.ListChambre;
+import manager.data.ListClient;
+import manager.data.ListReservation;
+import bo.Chambre;
+import userInterface.chambre.JTableChambreDispo;
 import manageChambre.JTableChambreDispoModel;
-import manageChambre.JTableChambreTotal;
-import manageChambre.PanelChambre;
-import manageClient.Client;
-import manageClient.JTableClient;
+import userInterface.chambre.JTableChambreTotal;
+import bo.Client;
+import userInterface.client.JTableClient;
 
 public class PanelReservation
 {

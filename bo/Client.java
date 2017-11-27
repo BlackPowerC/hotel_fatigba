@@ -1,144 +1,96 @@
-package manageClient;
+package bo;
+
+import java.sql.Date;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 /**
- * 
+ *
  * @author jordy
  */
 public class Client extends Personne
 {
-	private int m_membre;
-	private String m_type;
-	
-	private Boolean m_is_no_local;
-	private int m_id_client;
-	private Boolean m_has_fidelity_card = false;
+    protected TypeClient type ;
+    protected Nationalite nation ;
+    protected boolean etranger ;
+    protected boolean fidelite ;
+    protected GregorianCalendar dateNaissance ;
 
-	public Client(int age, String nom, String prenom, String sexe,
-			String nation, boolean a, String type, int n)
-	{
-		super(age, nom, prenom, sexe, nation);
-		m_type = type;
-		m_has_fidelity_card = a;
-		m_membre = n;
-	}
+    public Client(ResultSet rs, Sexe sexe, TypeClient type, Nationalite nation, boolean etranger, boolean fidelite) throws SQLException
+    {
+        super(rs, sexe);
+        Date n = rs.getDate("age") ;
+        /*2010-10-05*/
+        String[] newDate = n.toString().split("-") ;
+        this.dateNaissance =  new GregorianCalendar(
+                                    Integer.parseInt(newDate[0]), 
+                                    Integer.parseInt(newDate[1]), 
+                                    Integer.parseInt(newDate[2])) ;
+        this.type = type;
+        this.nation = nation;
+        this.etranger = rs.getBoolean("etranger") ;
+        this.fidelite = rs.getBoolean("fidelite") ;
+    }
 
-	public Client(Client client)
-	{
-		super(client.m_age, client.m_nom, client.m_prenom, client.m_sexe,client.m_nation);
-		m_type = client.m_type;
-		m_has_fidelity_card = client.m_has_fidelity_card;
-		m_membre = client.m_membre;
-		m_id_client = client.m_id_client;
-	}
+    public Client()
+    {
+        super() ;
+    }
 
-	public Client()
-	{
-		super();
-	}
+    public TypeClient getType()
+    {
+        return type;
+    }
 
-	public String getM_type()
-	{
-		return m_type;
-	}
+    public void setType(TypeClient type)
+    {
+        this.type = type;
+    }
 
-	public int getM_id_client()
-	{
-		return m_id_client;
-	}
+    public Nationalite getNation()
+    {
+        return nation;
+    }
 
-	public int getM_membre()
-	{
-		return m_membre;
-	}
+    public void setNation(Nationalite nation)
+    {
+        this.nation = nation;
+    }
 
-	public Boolean isM_has_fidelity_card() {
-		return m_has_fidelity_card;
-	}
+    public boolean isEtranger()
+    {
+        return etranger;
+    }
 
-	public Boolean isM_is_no_local() {
-		return m_is_no_local;
-	}
+    public void setEtranger(boolean etranger)
+    {
+        this.etranger = etranger;
+    }
 
-	public void setM_type(String m_type) {
-		this.m_type = m_type;
-	}
+    public boolean isFidelite()
+    {
+        return fidelite;
+    }
 
-	public void setM_id_client(int m_id_client) {
-		this.m_id_client = m_id_client;
-	}
-
-	public void setM_membre(int m_membre) {
-		this.m_membre = m_membre;
-	}
-
-	public void setM_has_fidelity_card(Boolean m_has_fidelity_card) {
-		this.m_has_fidelity_card = m_has_fidelity_card;
-	}
-
-	public void setM_is_no_local(Boolean m_is_no_local) {
-		this.m_is_no_local = m_is_no_local;
-	}
-
-	public int getM_age() {
-		return m_age;
-	}
-
-	public String getM_nom() {
-		return m_nom;
-	}
-
-	public String getM_prenom() {
-		return m_prenom;
-	}
-
-	public String getM_sexe() {
-		return m_sexe;
-	}
-
-	public String getM_nation() {
-		return m_nation;
-	}
-
-	public void setM_age(int m_age) {
-		this.m_age = m_age;
-	}
-
-	public void setM_nom(String m_nom) {
-		this.m_nom = m_nom;
-	}
-
-	public void setM_prenom(String m_prenom) {
-		this.m_prenom = m_prenom;
-	}
-
-	public void setM_sexe(String m_sexe) {
-		this.m_sexe = m_sexe;
-	}
-
-	public void setM_nation(String m_nation) {
-		this.m_nation = m_nation;
-	}
-
-	
-	
-	@Override
-	public String toString() {
-		return "Client [m_membre=" + m_membre + ", m_type=" + m_type + ", m_is_no_local=" + m_is_no_local
-				+ ", m_id_client=" + m_id_client + ", m_has_fidelity_card=" + m_has_fidelity_card + ", m_age=" + m_age
-				+ ", m_nom=" + m_nom + ", m_sexe=" + m_sexe + ", m_prenom=" + m_prenom + ", m_nation=" + m_nation + "]";
-	}
-
-	public void setClient(Client client)
-	{
-		m_sexe = client.m_sexe;
-		m_nation = client.m_nation;
-		m_age = client.m_age;
-		m_nom = client.m_nom;
-		m_prenom = client.m_prenom;
-		m_type = client.m_type;
-		m_has_fidelity_card = client.m_has_fidelity_card;
-		m_membre = client.m_membre;
-		m_id_client = client.m_id_client;
-	}
-	
+    public void setFidelite(boolean fidelite)
+    {
+        this.fidelite = fidelite;
+    }
+    
+    @Override
+    public boolean isValid()
+    {
+        return super.isValid() &&
+               nation.isValid() &&
+               type.isValid() ;
+    }
+    
+    public int getAge()
+    {
+        Calendar c = Calendar.getInstance() ;
+        int age = ((c.get(Calendar.YEAR)+1900)-(dateNaissance.get(GregorianCalendar.YEAR)+1900)) ;
+        return (c.get(Calendar.DAY_OF_YEAR) < dateNaissance.get(GregorianCalendar.DAY_OF_YEAR)) ? age-1: age;
+    }
 }

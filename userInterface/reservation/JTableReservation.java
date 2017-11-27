@@ -1,4 +1,4 @@
-package manageReservation;
+package userInterface.reservation;
 
 import javax.swing.*;
 

@@ -1,4 +1,4 @@
-package dataFromDatabase;
+package manager.data;
 
 import manageReservation.Reservation;
 

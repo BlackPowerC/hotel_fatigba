@@ -1,4 +1,4 @@
-package dataFromDatabase;
+package manager.data;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

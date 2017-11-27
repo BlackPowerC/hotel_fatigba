@@ -1,11 +1,12 @@
 package bo ;
 
-public class Typologie extends Entity
+public abstract class Typologie extends Entity
 {
     protected String description ;
 
     public Typologie()
     {
+        super() ;
     }
     
     public String getDescription()
@@ -21,6 +22,6 @@ public class Typologie extends Entity
     @Override
     public boolean isValid()
     {
-        return description.isEmpty() ;
+        return this.description.isEmpty() ;
     }
 }

@@ -1,4 +1,4 @@
-package app;
+package core;
 
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.Statement;
@@ -7,37 +7,35 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class DataBaseCon
+public class Database
 {
-
     private Connection connection;
     private Statement statement;
     private ResultSet resultset;
 
     /* Les infos pour la connexion */
-    private String url = "";
-    private String user = "";
-    private String passwd = "";
+    private Configuration config = Configuration.getInstance() ;
+    private Strategy st ;
 
-    private static DataBaseCon singleton = null;
+    private static Database singleton = null;
 
     /* Récupération du singleton de connexion */
-    public static DataBaseCon getHinstance() throws SQLException
+    public static Database getHinstance() throws SQLException
     {
         if (singleton == null)
         {
-            singleton = new DataBaseCon();
+            singleton = new Database();
         }
         return singleton;
     }
 
-    public static DataBaseCon getHinstance(String dataBaseName,
+    public static Database getHinstance(String dataBaseName,
             String databaseUser,
             String userPassword) throws SQLException
     {
         if (singleton == null)
         {
-            singleton = new DataBaseCon(dataBaseName, databaseUser, userPassword);
+            singleton = new Database(dataBaseName, databaseUser, userPassword);
         }
         return singleton;
     }
@@ -56,18 +54,18 @@ public class DataBaseCon
     }
 
     /* Constructeur privé s */
-    private DataBaseCon() throws SQLException
+    private Database() throws SQLException
     {
-        this.url = "jdbc:mysql://localhost/hotel";
-        this.user = "jordy";
-        this.passwd = "jordy";
+        this.url = "jdbc:mysql://localhost:/hotel_new";
+        this.user = "root";
+        this.passwd = "c0l0rado";
 
         connection = (Connection) DriverManager.getConnection(url, user, passwd);
         statement = (Statement) connection.createStatement();
 
     }
 
-    private DataBaseCon(String dataBaseName,
+    private Database(String dataBaseName,
             String databaseUser,
             String userPassword) throws SQLException
     {

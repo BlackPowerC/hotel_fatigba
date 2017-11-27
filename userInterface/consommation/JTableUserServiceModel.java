@@ -1,8 +1,8 @@
-package manageService;
+package userInterface.consommation;
 
 import javax.swing.table.AbstractTableModel;
 
-import dataFromDatabase.ListUseService;
+import manager.data.ListUseService;
 
 import java.util.List;
 

@@ -14,10 +14,12 @@ public class Personne extends Entity
     protected String prenom;
     protected String email ;
     protected String tel ;
+    protected Sexe sexe ;
     
-    public Personne(ResultSet rs) throws SQLException
+    public Personne(ResultSet rs, Sexe sexe) throws SQLException
     {
         super() ;
+        this.sexe = sexe ;
         this.nom = rs.getString("nom");
         this.prenom = rs.getString("prenom");
         this.email = rs.getString("email");
@@ -70,10 +72,20 @@ public class Personne extends Entity
         this.tel = tel;
     }
 
+    public Sexe getSexe()
+    {
+        return sexe;
+    }
+
+    public void setSexe(Sexe sexe)
+    {
+        this.sexe = sexe;
+    }
+    
     @Override
     public boolean isValid()
     {
-        boolean validity = false ;
+        boolean validity ;
         String nom_prenom_pattern = "^[a-zA-Z]" ;
         String email_pattern = "^[a-zA-Z0-9]@[a-zA-Z0-9].[a-z]{2,4}" ;
         String tel_pattern = "^00[0-9]{1,3}-[0-9]{2}-[0-9]{2}-[0-9]{2}-[0-9]{2}" ;
@@ -83,6 +95,6 @@ public class Personne extends Entity
                 Pattern.compile(email_pattern).matcher(email).matches() &&
                 Pattern.compile(tel_pattern).matcher(tel).matches();
         
-        return validity ;
+        return validity && sexe.isValid() ;
     }
 }

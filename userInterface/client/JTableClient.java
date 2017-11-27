@@ -1,4 +1,4 @@
-package manageClient;
+package userInterface.client;
 
 
 import javax.swing.JCheckBox;

@@ -1,4 +1,4 @@
-package Auth;
+package Auth.userconnection;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -20,19 +20,27 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import app.Background;
-import app.DataBaseCon;
+import core.Database;
 import app.MainView;
+import bo.Sexe;
+import bo.TypeUtilisateur;
+import bo.Utilisateur;
+import com.mysql.jdbc.PreparedStatement;
+import core.Encryption.Encryption;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @SuppressWarnings("serial")
 public class AuthView extends JFrame implements ActionListener, KeyListener
 {
-
     private Toolkit tk = Toolkit.getDefaultToolkit();
+    /* Boutons de contrôle */
     private JButton ok;
     private JButton annuler;
     private JLabel label;
     private Background fond;
 
+    /* Champs et label du formulaire de connexion */
     private JLabel txtPrenom;
     private JTextField prenom;
     private JLabel txtPass;
@@ -40,26 +48,14 @@ public class AuthView extends JFrame implements ActionListener, KeyListener
     private JLabel txtNom;
     private JTextField nom;
 
-    private User user;
-    private User tmp;
+    /* Objet temporaire */
+    private Utilisateur user;
+    private Utilisateur tmp;
 
     public AuthView()
     {
-        user = new User();
-        tmp = new User();
-        try
-        {
-            ResultSet rs = DataBaseCon.getHinstance().executeQuery("select nom, prenom, pass from User where id = 1");
-            if (rs.next())
-            {
-                user.nom = rs.getString("nom");
-                user.prenom = rs.getString("prenom");
-                user.pass = rs.getString("pass");
-            }
-        } catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
+        user = new Utilisateur();
+        tmp = new Utilisateur();
 
         Build_Button();
         Build_Label();
@@ -93,6 +89,7 @@ public class AuthView extends JFrame implements ActionListener, KeyListener
     public void Build_TextField()
     {
         pass = new JPasswordField("jordy");
+        pass.setEchoChar(' ');
         pass.addKeyListener(this);
         prenom = new JTextField("fatigba");
         prenom.addKeyListener(this);
@@ -152,70 +149,106 @@ public class AuthView extends JFrame implements ActionListener, KeyListener
         getContentPane().add(fond);
     }
 
+    private void authentification()
+    {
+        tmp.setNom(nom.getText());
+        tmp.setPrenom(prenom.getText());
+        tmp.setPassword(Encryption.getInstance().encrypt(new String(pass.getPassword())));
+        if (tmp.getNom().compareTo(user.getNom()) == 0
+                && tmp.getPrenom().compareTo(user.getPrenom()) == 0
+                && tmp.getPassword().compareTo(user.getPassword()) == 0)
+        {
+            this.dispose();
+            MainView main = new MainView("HOTEL");
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(null, "Données erronées", "Erreur", JOptionPane.WARNING_MESSAGE);
+        }
+    }
+
+    @Override
     public void actionPerformed(ActionEvent ev)
     {
         Object o = ev.getSource();
         if (o.equals(ok))
         {
-            tmp.nom = nom.getText();
-            tmp.prenom = prenom.getText();
-            tmp.pass = pass.getText();
-            if (tmp.nom.compareTo(user.nom) == 0 && tmp.prenom.compareTo(user.prenom) == 0 && tmp.pass.compareTo(user.pass) == 0)
+            try
             {
-                this.dispose();
-                MainView main = new MainView("HOTEL");
-            } else
-            {
-                JOptionPane.showMessageDialog(null, "Données erronées", "Erreur", JOptionPane.WARNING_MESSAGE);
+                String sql = "SELECT nom, prenom, password FROM Utilisateur WHERE nom=?, prenom=? password=?" ;
+                PreparedStatement ps = (PreparedStatement) Database.getHinstance().getConnection().prepareStatement(sql) ;
+                ps.setString(1, nom.getText());
+                ps.setString(3, Encryption.getInstance().encrypt(pass.getText()));
+                ps.setString(2, prenom.getText());
+                
+                ResultSet rs = ps.executeQuery() ;
+                if(rs.next())
+                {
+                    user.setNom(rs.getString("nom"));
+                    user.setPassword(rs.getString("password"));
+                    user.setPrenom(rs.getString("prenom"));
+                }
+                else
+                {
+                    JOptionPane.showMessageDialog(null, "Données erronées", "Erreur", JOptionPane.WARNING_MESSAGE);
+                    return ;
+                }
             }
-        } else if (o.equals(annuler))
+            catch(SQLException sqlex)
+            {
+                
+            }
+            authentification();
+        }
+        else if(o.equals(annuler))
         {
             System.exit(DISPOSE_ON_CLOSE);
         }
     }
 
+    @Override
     public void keyPressed(KeyEvent ev)
     {
         int code = ev.getKeyCode();
         if (code == KeyEvent.VK_ENTER)
         {
-            tmp.nom = nom.getText();
-            tmp.prenom = prenom.getText();
-            tmp.pass = pass.getText();
-            if (tmp.nom.compareTo(user.nom) == 0 && tmp.prenom.compareTo(user.prenom) == 0 && tmp.pass.compareTo(user.pass) == 0)
-            {
-                this.dispose();
-                @SuppressWarnings("unused")
-                MainView main = new MainView("HOTEL");
-            } else
-            {
-                JOptionPane.showMessageDialog(null, "Données erronées", "Erreur", JOptionPane.WARNING_MESSAGE);
-            }
-        } else if (code == KeyEvent.VK_ESCAPE)
+            authentification();
+        }
+        else if(code == KeyEvent.VK_ESCAPE)
         {
-            System.exit(DISPOSE_ON_CLOSE);
+            try
+            {
+                Database.getHinstance().close();
+                System.exit(DISPOSE_ON_CLOSE);
+            }
+            catch(SQLException ex)
+            {
+                Logger.getLogger(AuthView.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
+    @Override
     public void keyReleased(KeyEvent ev)
     {
         Object ob = ev.getSource();
         if (ob.equals(nom))
         {
-            tmp.nom = nom.getText();
+            tmp.setNom(nom.getText());
         }
 
         if (ob.equals(prenom))
         {
-            tmp.prenom = prenom.getText();
+            tmp.setPrenom(prenom.getText());
         }
 
         if (ob.equals(pass))
         {
-            tmp.pass = pass.getText();
+            tmp.setPassword(pass.getText());
         }
     }
 
+    @Override
     public void keyTyped(KeyEvent ev)
     {
 

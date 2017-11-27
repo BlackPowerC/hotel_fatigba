@@ -1,4 +1,4 @@
-package manageService;
+package userInterface.consommation;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTable;

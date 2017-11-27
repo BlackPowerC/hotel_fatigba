@@ -1,20 +1,26 @@
 package app;
 
-import javax.swing.SwingUtilities;
-import Auth.ConnectionView;
+import Auth.Configure.ConnectionView;
+import Auth.userconnection.AuthView;
+import bo.Chambre ;
+import core.Database;
+import java.io.File ;
+import java.util.List ;
+import manager.ChambreManager ;
 
 public class Main
 {
-    public static void main(String args[])
+    
+    public static void main(String[] args)
     {
-        Class s ;
-        SwingUtilities.invokeLater(new Runnable()
+        File database_configuration = new File(Database.class.getResource("config.json").toString()) ;
+        if(!database_configuration.exists())
         {
-            @SuppressWarnings("unused")
-            public void run()
-            {
-                ConnectionView auth = new ConnectionView();
-            }
-        });
+            ConnectionView cv = new ConnectionView() ;
+        }
+        else
+        {
+            AuthView av = new AuthView() ;
+        }
     }
 }

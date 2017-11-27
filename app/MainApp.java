@@ -3,10 +3,10 @@ package app;
 import javax.swing.JTabbedPane;
 
 import manageChambre.PanelChambre;
-import manageClient.PanelClient;
+import userInterface.client.PanelClient;
 import manageFacturation.PanelFacturation;
-import manageReservation.PanelReservation;
-import manageService.PanelService;
+import userInterface.reservation.PanelReservation;
+import userInterface.consommation.PanelConsommation;
 
 public class MainApp
 {
@@ -39,7 +39,7 @@ public class MainApp
 
         container.add("Client", PanelClient.getHinstance().getPanel());
         container.add("Réservation", PanelReservation.getHinstance().getPanel());
-        container.add("Service", PanelService.getHinstance().getPanel());
+        container.add("Service", PanelConsommation.getHinstance().getPanel());
         container.add("Chambre", PanelChambre.getHinstance().getPanel());
         container.add("Facturation", PanelFacturation.getHinstance().getPanel());
     }

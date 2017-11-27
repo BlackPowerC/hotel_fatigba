@@ -1,4 +1,4 @@
-package manageFacturation;
+package userInterface.facturation;
 
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -16,20 +16,22 @@ import javax.swing.JTextField;
 
 import app.Background;
 import app.Buttons;
-import app.DataBaseCon;
+import core.Database;
 import app.Report;
-import dataFromDatabase.ListChambre;
-import dataFromDatabase.ListClient;
-import dataFromDatabase.ListFacturation;
-import dataFromDatabase.ListReservation;
-import dataFromDatabase.ListService;
-import dataFromDatabase.ListUseService;
-import manageClient.Client;
-import manageClient.JTableClient;
-import manageReservation.Reservation;
-import manageService.UseService;
+import manager.data.ListChambre;
+import manager.data.ListClient;
+import manager.data.ListFacturation;
+import manager.data.ListReservation;
+import manager.data.ListService;
+import manager.data.ListUseService;
+import bo.Client;
+import userInterface.client.JTableClient;
+import bo.Reservation;
+import bo.Consommation;
+import userInterface.JTableFacturation;
+import userInterface.Observateur;
 
-public class PanelFacturation
+public class PanelFacturation implements Observateur
 {
 
     public class Reset_Action implements ActionListener

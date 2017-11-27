@@ -1,11 +1,11 @@
-package manageFacturation;
+package userInterface.facturation;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
-import dataFromDatabase.ListFacturation;
+import manager.data.ListFacturation;
 
 public class JTableFacturationModel extends AbstractTableModel
 {

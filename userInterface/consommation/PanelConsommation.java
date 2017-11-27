@@ -1,4 +1,4 @@
-package manageService;
+package userInterface.consommation;
 
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -18,12 +18,12 @@ import app.Background;
 import app.Buttons;
 import app.DataBaseCon;
 import app.Report;
-import dataFromDatabase.ListClient;
-import dataFromDatabase.ListUseService;
+import manager.data.ListClient;
+import manager.data.ListUseService;
 import manageClient.Client;
-import manageClient.JTableClient;
+import userInterface.client.JTableClient;
 
-public class PanelService
+public class PanelConsommation
 {
 
     /* Trois JTable
@@ -276,7 +276,7 @@ public class PanelService
 
     private boolean updating = false;
 
-    private static PanelService singleton = null;
+    private static PanelConsommation singleton = null;
 
     private void Flush()
     {
@@ -360,16 +360,16 @@ public class PanelService
         txt_prix.setFont(font);
     }
 
-    public static PanelService getHinstance()
+    public static PanelConsommation getHinstance()
     {
         if (singleton == null)
         {
-            singleton = new PanelService();
+            singleton = new PanelConsommation();
         }
         return singleton;
     }
 
-    private PanelService()
+    private PanelConsommation()
     {
         us = new UseService();
         ser = new Service();

@@ -1,4 +1,4 @@
-package manageFacturation;
+package userInterface.facturation;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTable;

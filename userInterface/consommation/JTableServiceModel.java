@@ -1,9 +1,9 @@
-package manageService;
+package userInterface.consommation;
 
 import java.util.List;
 import javax.swing.table.AbstractTableModel;
 
-import dataFromDatabase.ListService;
+import manager.data.ListService;
 
 public class JTableServiceModel extends AbstractTableModel 
 {

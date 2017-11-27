@@ -1,13 +1,10 @@
-package manageChambre;
+package userInterface.chambre;
 
-import dataFromDatabase.ListChambre;
+import bo.Chambre;
+import manager.data.ListChambre;
 
 public class JTableChambreTotalModel extends JTableChambreModel
 {
-
-    /**
-     *
-     */
     private static final long serialVersionUID = 2638029768967334873L;
 
     public JTableChambreTotalModel()
@@ -25,6 +22,7 @@ public class JTableChambreTotalModel extends JTableChambreModel
         setData(ListChambre.getHinstance().getListChambreTotal());
     }
 
+    @Override
     public Class<?> getColumnClass(int col)
     {
         if (col == 4)
@@ -35,21 +33,22 @@ public class JTableChambreTotalModel extends JTableChambreModel
         return Object.class;
     }
 
+    @Override
     public Object getValueAt(int row, int col)
     {
         Chambre tmp = this.data.get(row);
         switch (col)
         {
             case 0:
-                return tmp.getId_chambre();
+                return tmp.getId();
             case 1:
-                return tmp.getType_chambre();
+                return tmp.getType().getDescription();
             case 2:
-                return tmp.getSituation();
+                return tmp.getSituation().getDescription();
             case 3:
                 return tmp.getPrix() + " €";
             case 4:
-                return tmp.getState();
+                return tmp.isEtat() ;
         }
         return null;
     }

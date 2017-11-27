@@ -100,7 +100,6 @@ public class MainView extends JFrame
 
     public class Action implements ActionListener
     {
-
         public void actionPerformed(ActionEvent ev)
         {
             Object o = ev.getSource();

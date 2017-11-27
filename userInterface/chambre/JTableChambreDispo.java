@@ -1,4 +1,4 @@
-package manageChambre;
+package userInterface.chambre;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTable;

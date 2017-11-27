@@ -1,167 +1,109 @@
-package manageReservation;
+package bo;
 
-public class Reservation 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.GregorianCalendar;
+
+public class Reservation extends Entity
 {
-	private int id_res;
-	private int id_cl;
-	private String nom_prenom_client ;
-	private int id_ch;
+    protected Client client ;
+    protected ArrayList<Chambre> chambres ;
+    protected GregorianCalendar date ;
+    protected GregorianCalendar date_arrivee ;
+    protected GregorianCalendar date_fin ;
+    protected boolean etat ;
 
-	String debut_res;
-	String fin_res;
-	String date_res;
+    public Reservation(ResultSet rs, Client client, ArrayList<Chambre> chambres) throws SQLException
+    {
+        super();
+        super.id = rs.getInt("id") ;
+        this.client = client;
+        this.chambres = chambres;
+        this.etat = rs.getBoolean("etat") ;
+    }
 
-	String state;
-	
-	boolean solved ;
+    public Reservation()
+    {
+        super();
+    }
 
-	public Reservation()
-	{
-		id_res = id_cl = id_ch = 0;
-		debut_res = "" ;
-		date_res = "" ;
-		fin_res = "" ;
-		solved = false ;
-	}
-	
-	public Reservation(Reservation reservation)
-	{
-		id_res = reservation.id_res ;
-		id_cl = reservation.id_cl ;
-		id_ch = reservation.id_ch ;
-		debut_res = reservation. debut_res;
-		date_res = reservation.date_res ;
-		fin_res = reservation.fin_res ;
-		state = reservation.state ;
-		nom_prenom_client = reservation.nom_prenom_client ;
-		solved = reservation.solved ;
-	}
-	
-	public void setReservation(Reservation reservation)
-	{
-		id_res = reservation.id_res ;
-		id_cl = reservation.id_cl ;
-		id_ch = reservation.id_ch ;
-		debut_res = reservation. debut_res;
-		date_res = reservation.date_res ;
-		fin_res = reservation.fin_res ;
-		state = reservation.state ;
-		nom_prenom_client = reservation.nom_prenom_client ;
-		solved = reservation.solved;
-	}
-	
-	public String getNom_prenom_client()
-	{
-		return nom_prenom_client;
-	}
+    public Client getClient()
+    {
+        return client;
+    }
 
-	public void setNom_prenom_client(String nom_prenom_client)
-	{
-		this.nom_prenom_client = nom_prenom_client;
-	}
+    public void setClient(Client client)
+    {
+        this.client = client;
+    }
 
-	public int getId_res() 
-	{
-		return id_res;
-	}
+    public ArrayList<Chambre> getChambres()
+    {
+        return chambres;
+    }
 
-	public void setId_res(int id_res)
-	{
-		this.id_res = id_res;
-	}
+    public void setChambres(ArrayList<Chambre> chambres)
+    {
+        this.chambres = chambres;
+    }
 
-	public int getId_cl()
-	{
-		return id_cl;
-	}
+    public GregorianCalendar getDate()
+    {
+        return date;
+    }
 
-	public void setId_cl(int id_cl)
-	{
-		this.id_cl = id_cl;
-	}
+    public void setDate(GregorianCalendar date)
+    {
+        this.date = date;
+    }
 
-	public int getId_ch()
-	{
-		return id_ch;
-	}
+    public GregorianCalendar getDate_arrivee()
+    {
+        return date_arrivee;
+    }
 
-	public void setId_ch(int id_ch)
-	{
-		this.id_ch = id_ch;
-	}
+    public void setDate_arrivee(GregorianCalendar date_arrivee)
+    {
+        this.date_arrivee = date_arrivee;
+    }
 
-	public String getDebut_res()
-	{
-		return debut_res;
-	}
+    public GregorianCalendar getDate_fin()
+    {
+        return date_fin;
+    }
 
-	public void setDebut_res(String debut_res)
-	{
-		this.debut_res = debut_res;
-	}
+    public void setDate_fin(GregorianCalendar date_fin)
+    {
+        this.date_fin = date_fin;
+    }
 
-	public String getFin_res()
-	{
-		return fin_res;
-	}
+    public boolean isEtat()
+    {
+        return etat;
+    }
 
-	public void setFin_res(String fin_res)
-	{
-		this.fin_res = fin_res;
-	}
-
-	public String getDate_res()
-	{
-		return date_res;
-	}
-
-	public void setDate_res(String date_res) 
-	{
-		this.date_res = date_res;
-	}
-
-	public String getEtat_res()
-	{
-		return state;
-	}
-
-	public void setEtat_res(String etat_res)
-	{
-		this.state = etat_res;
-	}
-	
-	public boolean isSolved() {
-		return solved;
-	}
-
-	public void setSolved(boolean solved) {
-		this.solved = solved;
-	}
-
-	public String updateSQL() 
-	{
-		return "update Reservation set id_cl=" + this.id_cl
-				+ ", id_ch=" + this.id_ch +", debut_res='" + this.debut_res.toString()
-				+ "' , fin_res='" + this.fin_res.toString() + "' , date_res='" + this.date_res.toString()
-				+ "' , state='" + this.state + "' where id_res=" + this.id_res;
-	}
-
-	public String deleteSQL()
-	{
-		return "delete from Reservation where id_res="+this.id_res ;
-	}
-	
-	public String insertSQL()
-	{
-		return "insert into Reservation values ("
-				+this.id_res+","+this.id_cl+","+this.id_ch+",'"+this.debut_res.toString()+"','"+this.fin_res.toString()
-				+"','"+this.date_res.toString()+"','"+this.state+"', 0, 0)" ;
-	}
-
-	@Override
-	public String toString() {
-		return "Reservation [id_res=" + id_res + ", id_cl=" + id_cl + ", nom_prenom_client=" + nom_prenom_client
-				+ ", id_ch=" + id_ch + ", debut_res=" + debut_res + ", fin_res=" + fin_res + ", date_res=" + date_res
-				+ ", state=" + state + ", solved=" + solved + "]";
-	}
+    public void setEtat(boolean etat)
+    {
+        this.etat = etat;
+    }
+    
+    @Override
+    public boolean isValid()
+    {
+        /* Une réservation est valide si le client et les chambres sont valides et si date précède date_arrivee qui lui meme précède date_fin */
+        for (Chambre chambre : chambres)
+        {
+            if(chambre.isValid()==false)
+            {
+                return false ;
+            }
+        }
+        if(date.getTimeInMillis() > date_arrivee.getTimeInMillis() || date_fin.getTimeInMillis() < date_arrivee.getTimeInMillis())
+        {
+            return false ;
+        }
+        return client.isValid() ;
+    }
+    
 }
