@@ -1,5 +1,6 @@
 package core;
 
+import Auth.Configure.Configuration;
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.Statement;
 import core.Encryption.AdvancedEncryption;
@@ -10,12 +11,13 @@ import java.sql.SQLException;
 
 public class Database
 {
+
     private Connection connection;
     private Statement statement;
     private ResultSet resultset;
 
     /* Les infos pour la connexion */
-    private Configuration config = Configuration.getInstance() ;
+    private Configuration config = Configuration.getInstance();
 
     private static Database singleton = null;
 
@@ -24,29 +26,28 @@ public class Database
     {
         if (singleton == null)
         {
-           if(cf.getSgbd().compareToIgnoreCase("sqlite") == 0)
-           {
-                singleton = new Database();
-           }
-           else
-           {
-                singleton = new Database(cf.getDatabaseUser(), AdvancedEncryption.getInstance().decrypt(cf.getDatabasePasswd(), "hotel_fatigba")) ;
-           }
+            singleton = new Database();
+
         }
         return singleton;
     }
 
     /* Constructeur privé s */
-    private Database() throws SQLException
+    public Database()
     {
-        String url = "jdbc:sqlite:"+Database.class.getResource("").toString() ;
+        
+    }
+    
+    public void Connect() throws SQLException
+    {
+        String url = "jdbc:sqlite:" + Database.class.getResource("").toString();
 
         connection = (Connection) DriverManager.getConnection(url);
         statement = (Statement) connection.createStatement();
 
     }
 
-    private Database(String user, String passwd) throws SQLException
+    public void Connect(String user, String passwd) throws SQLException
     {
         connection = (Connection) DriverManager.getConnection(config.getURL(), user, passwd);
         statement = (Statement) connection.createStatement();
@@ -96,7 +97,7 @@ public class Database
         }
         return rs;
     }
-    
+
     /* Fermeture de la connexion */
     public void close()
     {

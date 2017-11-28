@@ -20,12 +20,10 @@ import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import app.Background;
-import core.Configuration;
 import core.Database;
 import core.Encryption.AdvancedEncryption;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -126,7 +124,7 @@ public class ConnectionView extends JFrame implements ActionListener, KeyListene
 
     private void Build_Label()
     {
-        Font police = new Font("Purisa", Font.BOLD, 18);
+        Font police = new Font("Purisa", Font.BOLD, 15);
         String str = "<html><font color=#FEFDF0>Connection à la base de données</font></html>";
 
         label = new JLabel(str);
@@ -144,36 +142,36 @@ public class ConnectionView extends JFrame implements ActionListener, KeyListene
 
         txtDatabaseHost = new JLabel("<html><font color=#FEFDF0>Hôte de la base de données</font></html>");
         txtDatabaseHost.setFont(police);
-        
+
         txtDatabasePort = new JLabel("<html><font color=#FEFDF0>Port d'écoute du SGBD</font></html>");
         txtDatabasePort.setFont(police);
-        
+
         txtDatabaseSGBD = new JLabel("<html><font color=#FEFDF0>SGBD</font></html>");
         txtDatabaseSGBD.setFont(police);
     }
 
     private void setPosition()
     {
-        int w = 220, h = 30, x = (600 - w) / 2;
+        int w = 280, h = 30, x = (600 - w) / 2;
         // Utilisateur de la base de données
-        txtDatabaseUser.setBounds(x, 60, w, h);
-        user.setBounds(x, 90, w, h);
+        txtDatabaseUser.setBounds(x-120, 60, w, h);
+        user.setBounds(x+100, 60, w, h);
         // Nom de la base de données
-        txtPass.setBounds(x, 140, w, h);
-        pass.setBounds(x, 170, w, h);
+        txtPass.setBounds(x-120, 90+30, w, h);
+        pass.setBounds(x+100, 90+30, w, h);
         // Mote de passe de la base de données
-        txtDatabaseName.setBounds(x, 200, w, 60);
-        databaseName.setBounds(x, 230, w, h);
+        txtDatabaseName.setBounds(x-120, 120+50, w, h);
+        databaseName.setBounds(x+100, 120+50, w, h);
         // Hote de la base de sonnées
-        txtDatabaseHost.setBounds(x, 260, w, h);
-        databaseHost.setBounds(x, 290, w, h);
+        txtDatabaseHost.setBounds(x-120, 150+70, w, h);
+        databaseHost.setBounds(x+100, 150+70, w, h);
         // Type de SGBD
-        txtDatabaseSGBD.setBounds(x, 320, w, h);
-        databaseSGBD.setBounds(x, 350, w, h);
+        txtDatabaseSGBD.setBounds(x-120, 180+90, w, h);
+        databaseSGBD.setBounds(x+100, 180+90, w, h);
         // Port d'écoute du SGBD
-        txtDatabasePort.setBounds(x, 380, w, h);
-        databasePort.setBounds(x, 420, w, h);
-        
+        txtDatabasePort.setBounds(x-120, 210+110, w, h);
+        databasePort.setBounds(x+100, 210+110, w, h);
+
         ok.setBounds(x - 50, 500, 150, 50);
         annuler.setBounds(x + 150, 500, 150, 50);
     }
@@ -188,35 +186,35 @@ public class ConnectionView extends JFrame implements ActionListener, KeyListene
     private void addContent()
     {
         fond.setLayout(null);
-        fond.add(txtDatabaseUser) ;
-        fond.add(user) ;
-        
+        fond.add(txtDatabaseUser);
+        fond.add(user);
+
         fond.add(txtPass);
         fond.add(pass);
-        
+
         fond.add(txtDatabaseName);
         fond.add(databaseName);
-        
+
         fond.add(txtDatabaseHost);
         fond.add(databaseHost);
-        
+
         fond.add(txtDatabaseSGBD);
         fond.add(databaseSGBD);
-        
+
         fond.add(txtDatabasePort);
         fond.add(databasePort);
-        
+
         fond.add(ok);
         fond.add(annuler);
 
         getContentPane().add(fond);
     }
-    
+
     private boolean validation()
     {
-        return true ;
+        return true;
     }
-    
+
     private void createConfiguration()
     {
         /* Céation du fichier JSon de configuration */
@@ -231,6 +229,7 @@ public class ConnectionView extends JFrame implements ActionListener, KeyListene
 
         try
         {
+            /* On écrit dans le fichier de configuration */
             configuration.createNewFile();
             FileWriter fos = new FileWriter(configuration);
             fos.write(json.toString());
@@ -241,13 +240,15 @@ public class ConnectionView extends JFrame implements ActionListener, KeyListene
             cf.setDatabasePasswd(pass.getText());
             cf.setDatabaseUser(user.getText());
             cf.setSgbd((String) databaseSGBD.getSelectedItem());
-            cf.setSgbdPort((String) databasePort.getValue());
+            cf.setSgbdPort(databasePort.getValue().toString());
             cf.setSgbdHost(databaseHost.getText());
-        } catch (FileNotFoundException ex)
+        }
+        catch (FileNotFoundException ex)
         {
             Logger.getLogger(ConnectionView.class.getName()).log(Level.SEVERE, null, ex);
 
-        } catch (IOException ex)
+        }
+        catch (IOException ex)
         {
             Logger.getLogger(ConnectionView.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -265,6 +266,12 @@ public class ConnectionView extends JFrame implements ActionListener, KeyListene
         {
             try
             {
+                if (databaseSGBD.getSelectedItem().toString().equalsIgnoreCase("") || databaseSGBD.getSelectedItem().toString() == null)
+                {
+                    /* afficher un message d'erreur */
+                    return;
+                }
+                createConfiguration();
                 Database.getHinstance(Configuration.getInstance());
                 AuthView c = new AuthView();
                 this.dispose();
@@ -284,6 +291,12 @@ public class ConnectionView extends JFrame implements ActionListener, KeyListene
         {
             try
             {
+                if (databaseSGBD.getSelectedItem().toString().equalsIgnoreCase("") || databaseSGBD.getSelectedItem().toString() == null)
+                {
+                    /* afficher un message d'erreur */
+                    return;
+                }
+                createConfiguration();
                 Database.getHinstance(Configuration.getInstance());
                 AuthView c = new AuthView();
                 this.dispose();
@@ -292,7 +305,7 @@ public class ConnectionView extends JFrame implements ActionListener, KeyListene
                 /* Impossible de se connecter à la base de données */
                 Logger.getLogger(ConnectionView.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } 
+        }
         else if (code == KeyEvent.VK_ESCAPE)
         {
             System.exit(DISPOSE_ON_CLOSE);
@@ -300,14 +313,8 @@ public class ConnectionView extends JFrame implements ActionListener, KeyListene
     }
 
     @Override
-    public void keyReleased(KeyEvent ev)
-    {
-
-    }
+    public void keyReleased(KeyEvent ev){}
 
     @Override
-    public void keyTyped(KeyEvent ev)
-    {
-
-    }
+    public void keyTyped(KeyEvent ev){}
 }

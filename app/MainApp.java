@@ -1,12 +1,12 @@
 package app;
 
 import javax.swing.JTabbedPane;
+import userInterface.chambre.PanelChambre;
 
-import manageChambre.PanelChambre;
 import userInterface.client.PanelClient;
-import manageFacturation.PanelFacturation;
 import userInterface.reservation.PanelReservation;
 import userInterface.consommation.PanelConsommation;
+import userInterface.facturation.PanelFacturation;
 
 public class MainApp
 {

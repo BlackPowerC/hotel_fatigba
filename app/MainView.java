@@ -1,88 +1,3 @@
-/*package app;
-
-import manageClient.PanelClient;
-import manageReservation.PanelReservation;
-
-import javax.swing.*;
-
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-
-public class MainView extends JFrame implements ActionListener
-{
-	private static final long serialVersionUID = 1L;
-
-	private JPanel container ;
-	private CardLayout card ;
-	private JButton clientPanel ;
-	private JButton reservationPanel ;
-	private JPanel buttonPanel ;
-	private JPanel contentPanel ;
-	private Toolkit tk ;
-	
-	private void Build_Button()
-	{
-		clientPanel = new JButton("Client") ;
-//		clientPanel.setSize(22, 100);
-		clientPanel.addActionListener(this) ;
-		reservationPanel = new JButton("Reservation") ;
-//		reservationPanel.setBounds(0, 0, 22, 100);
-		reservationPanel.addActionListener(this) ;
-	}
-	
-	private void addContent()
-	{
-		buttonPanel.add(clientPanel, BorderLayout.WEST) ;
-		buttonPanel.add(reservationPanel, BorderLayout.EAST) ;
-	}
-	
-	private void Build_ButtonPanel()
-	{
-		buttonPanel = new JPanel(new BorderLayout()) ;
-		Build_Button() ;
-		addContent() ;
-	}
-	
-	public MainView(String title)
-	{
-		super(title);
-		setVisible(true);
-		setResizable(false);
-		tk = Toolkit.getDefaultToolkit() ;
-		
-		Build_ButtonPanel() ;
-		
-		setSize((int)tk.getScreenSize().getWidth()-20, (int) tk.getScreenSize().getHeight()-40);
-		
-		card = new CardLayout() ;
-		container = new JPanel(new BorderLayout()) ;
-		contentPanel = new JPanel(card) ;
-		contentPanel.add(PanelClient.getHinstance().getPanel(), "client");
-		contentPanel.add(PanelReservation.getHinstance().getPanel(), "reservation");
-		container.add(buttonPanel, BorderLayout.NORTH);
-		container.add(contentPanel, BorderLayout.CENTER) ;
-
-		setContentPane(container);
-
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	}
-	
-	public void actionPerformed(ActionEvent ev)
-	{
-		Object ob = ev.getSource() ;
-		if(ob.equals(clientPanel))
-		{
-			card.show(contentPanel, "client");
-		}
-		if(ob.equals(reservationPanel))
-		{
-			card.show(contentPanel, "reservation");
-		}
-	}
-}
- */
 package app;
 
 import java.awt.BorderLayout;
@@ -97,9 +12,9 @@ import javax.swing.JPanel;
 
 public class MainView extends JFrame
 {
-
     public class Action implements ActionListener
     {
+        @Override
         public void actionPerformed(ActionEvent ev)
         {
             Object o = ev.getSource();
