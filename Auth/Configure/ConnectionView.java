@@ -26,6 +26,7 @@ import core.Encryption.AdvancedEncryption;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -210,7 +211,12 @@ public class ConnectionView extends JFrame implements ActionListener, KeyListene
 
         getContentPane().add(fond);
     }
-
+    
+    private boolean validation()
+    {
+        return true ;
+    }
+    
     private void createConfiguration()
     {
         /* Céation du fichier JSon de configuration */
@@ -226,8 +232,8 @@ public class ConnectionView extends JFrame implements ActionListener, KeyListene
         try
         {
             configuration.createNewFile();
-            FileOutputStream fos = new FileOutputStream(configuration);
-            fos.write(Byte.decode(json.toString()));
+            FileWriter fos = new FileWriter(configuration);
+            fos.write(json.toString());
             fos.close();
 
             Configuration cf = Configuration.getInstance();
@@ -236,6 +242,7 @@ public class ConnectionView extends JFrame implements ActionListener, KeyListene
             cf.setDatabaseUser(user.getText());
             cf.setSgbd((String) databaseSGBD.getSelectedItem());
             cf.setSgbdPort((String) databasePort.getValue());
+            cf.setSgbdHost(databaseHost.getText());
         } catch (FileNotFoundException ex)
         {
             Logger.getLogger(ConnectionView.class.getName()).log(Level.SEVERE, null, ex);
