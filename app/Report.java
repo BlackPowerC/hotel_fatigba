@@ -1,5 +1,6 @@
 package app;
 
+import core.Database;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
@@ -27,7 +28,7 @@ public class Report
             JasperPrint jasperPrint = null;
             try
             {
-                jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, DataBaseCon.getHinstance().getConnection());
+                jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, Database.getHinstance().getConnection());
                 System.out.println("Rapport Généré !");
             } catch (SQLException e)
             {

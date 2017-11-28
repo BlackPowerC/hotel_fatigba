@@ -22,12 +22,11 @@ public class Database
     private static Database singleton = null;
 
     /* Récupération du singleton de connexion */
-    public static Database getHinstance(Configuration cf) throws SQLException
+    public static Database getHinstance() throws SQLException
     {
         if (singleton == null)
         {
             singleton = new Database();
-
         }
         return singleton;
     }

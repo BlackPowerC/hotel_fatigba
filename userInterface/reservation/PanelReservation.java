@@ -26,9 +26,10 @@ import manager.data.ListClient;
 import manager.data.ListReservation;
 import bo.Chambre;
 import userInterface.chambre.JTableChambreDispo;
-import manageChambre.JTableChambreDispoModel;
+//import manageChambre.JTableChambreDispoModel;
 import userInterface.chambre.JTableChambreTotal;
 import bo.Client;
+import bo.Reservation;
 import userInterface.client.JTableClient;
 
 public class PanelReservation

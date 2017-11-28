@@ -225,7 +225,7 @@ public class ConnectionView extends JFrame implements ActionListener, KeyListene
         json.put("User", user.getText());
         json.put("Port", databasePort.getValue().toString());
         json.put("SGBD", databaseSGBD.getSelectedItem().toString());
-        File configuration = new File("/home/jordy/workspace/hotel_fatigba/config.json");
+        File configuration = new File("config.json");
 
         try
         {
@@ -272,7 +272,10 @@ public class ConnectionView extends JFrame implements ActionListener, KeyListene
                     return;
                 }
                 createConfiguration();
-                Database.getHinstance(Configuration.getInstance());
+                Database.getHinstance().Connect(
+                            Configuration.getInstance().getDatabaseUser(), 
+                            AdvancedEncryption.getInstance().decrypt(
+                                    Configuration.getInstance().getDatabasePasswd(), "hotel_new"));
                 AuthView c = new AuthView();
                 this.dispose();
             } catch (SQLException ex)
@@ -297,7 +300,10 @@ public class ConnectionView extends JFrame implements ActionListener, KeyListene
                     return;
                 }
                 createConfiguration();
-                Database.getHinstance(Configuration.getInstance());
+                Database.getHinstance().Connect(
+                            Configuration.getInstance().getDatabaseUser(), 
+                            AdvancedEncryption.getInstance().decrypt(
+                                    Configuration.getInstance().getDatabasePasswd(), "hotel_new"));
                 AuthView c = new AuthView();
                 this.dispose();
             } catch (SQLException ex)
