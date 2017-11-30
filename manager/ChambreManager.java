@@ -6,7 +6,6 @@ import bo.Chambre;
 import bo.SituationChambre;
 import bo.TypeChambre;
 import com.mysql.jdbc.PreparedStatement;
-import java.io.PrintStream;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -149,7 +148,8 @@ public class ChambreManager extends Manager<Chambre>
         }
         catch(SQLException sqlex)
         {
-            sqlex.printStackTrace() ;
+            /* Affichafe d'un message d'erreur */
+            Logger.getLogger(ClientManager.class.getName()).log(Level.SEVERE, null, sqlex);
         }
         return -1 ;
     }

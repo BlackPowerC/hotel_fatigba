@@ -11,7 +11,7 @@ public abstract class Manager<E> extends Observable
     /* selection suivant un id */
     public abstract E findById(int id) ;
     /* selection suivant un critère */
-    public abstract List<E> findByCriteria(String criteria) ;
+    public abstract List<E> findByCriteria(String criteria, boolean strict) ;
     /* selection de toute les données */
     public abstract List<E> findAll() ;
     /* mise à jour */
