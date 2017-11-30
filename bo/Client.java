@@ -93,4 +93,16 @@ public class Client extends Personne
         int age = ((c.get(Calendar.YEAR)+1900)-(dateNaissance.get(GregorianCalendar.YEAR)+1900)) ;
         return (c.get(Calendar.DAY_OF_YEAR) < dateNaissance.get(GregorianCalendar.DAY_OF_YEAR)) ? age-1: age;
     }
+
+    public GregorianCalendar getDateNaissance()
+    {
+        return dateNaissance;
+    }
+
+    public void setDateNaissance(GregorianCalendar dateNaissance)
+    {
+        this.dateNaissance = dateNaissance;
+    }
+    
+    
 }

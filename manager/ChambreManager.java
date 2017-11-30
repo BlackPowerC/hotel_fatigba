@@ -6,10 +6,13 @@ import bo.Chambre;
 import bo.SituationChambre;
 import bo.TypeChambre;
 import com.mysql.jdbc.PreparedStatement;
+import java.io.PrintStream;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /* Classe Valide */
 
@@ -23,8 +26,20 @@ public class ChambreManager extends Manager<Chambre>
     }
 
     @Override
-    public void delete(Chambre entity)
+    public void delete(int id)
     {
+        String sql = "DELETE FROM Chambre WHERE id=?" ;
+        try
+        {
+            PreparedStatement ps = (PreparedStatement) Database.getHinstance().getConnection().prepareStatement(sql) ;
+            ps.setInt(1, id);
+            ps.execute() ;
+        }
+        catch (SQLException ex)
+        {
+            /* Affichafe d'un message d'erreur */
+            Logger.getLogger(ClientManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Override
@@ -63,15 +78,18 @@ public class ChambreManager extends Manager<Chambre>
                 sc.setDescription(rs.getString("scDescription"));
                 c = new Chambre(rs,tc, cc, sc) ;
             }
-        } catch (SQLException sqlex)
-        {
-            sqlex.printStackTrace();
+            return c ;
         }
-        return c ;
+        catch(SQLException sqlex)
+        {
+            /* Affichafe d'un message d'erreur */
+            Logger.getLogger(ClientManager.class.getName()).log(Level.SEVERE, null, sqlex);
+        }
+        return null ;
     }
 
     @Override
-    public List<Chambre> selectAll()
+    public List<Chambre> findAll()
     {
         List<Chambre> lc = new ArrayList<Chambre>();
         TypeChambre tc;
@@ -104,11 +122,14 @@ public class ChambreManager extends Manager<Chambre>
                 sc.setDescription(rs.getString("scDescription"));
                 lc.add(new Chambre(rs,tc, cc, sc)) ;
             }
-        } catch (SQLException sqlex)
-        {
-            sqlex.printStackTrace();
+            return lc ;
         }
-        return lc ;
+        catch(SQLException sqlex)
+        {
+            /* Affichafe d'un message d'erreur */
+            Logger.getLogger(ClientManager.class.getName()).log(Level.SEVERE, null, sqlex);
+        }
+        return null ;
     }
 
     @Override
@@ -125,10 +146,17 @@ public class ChambreManager extends Manager<Chambre>
             ps.setBoolean(4, chambre.isEtat()) ;
             ps.setInt(5, chambre.getId()) ;
             return ps.executeUpdate() ; 
-        }catch(SQLException sqlex)
+        }
+        catch(SQLException sqlex)
         {
             sqlex.printStackTrace() ;
         }
         return -1 ;
+    }
+
+    @Override
+    public List<Chambre> findByCriteria(String criteria, boolean st)
+    {
+        
     }
 }
