@@ -6,6 +6,7 @@ import bo.Chambre;
 import bo.SituationChambre;
 import bo.TypeChambre;
 import com.mysql.jdbc.PreparedStatement;
+import java.io.PrintStream;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -157,6 +158,52 @@ public class ChambreManager extends Manager<Chambre>
     @Override
     public List<Chambre> findByCriteria(String criteria, boolean st)
     {
+        /* Recherche selon le type et la caractéristique et la situation */
+        List<Chambre> lc = new ArrayList<Chambre>() ;
+        TypeChambre tc ;
+        CaracteristiqueChambre cc ;
+        SituationChambre sc ;
+        String strict = (st)? "AND":"OR" ;
         
+        String sql="SELECT c.id, c.id_type, c.id_situation, c.id_caracteristique, c.prix, c.etat, "
+                + "SC.description AS scDescription, "
+                + "CC.description AS ccDescription, "
+                + "TC.description AS tcDescription "
+                + "FROM Chambre c, CaracteristiqueChambre CC, SituationChambre SC, TypeChambre TC "
+                + "WHERE c.id_type = TC.id "
+                + "AND c.id_situation = SC.id "
+                + "AND c.id_caracteristique = CC.id "
+                + "AND (scDescription = ? "+strict+" ccDescription = ? "+strict+" tcDescription=?)" ;
+        try
+        {
+            PreparedStatement stmt = (PreparedStatement) Database.getHinstance().getConnection().prepareStatement(sql) ;
+            stmt.setString(1, criteria);
+            stmt.setString(2, criteria);
+            stmt.setString(3, criteria);
+            ResultSet rs = stmt.executeQuery() ;
+            while(rs.next())
+            {
+                /* Type Chambre*/
+                tc = new TypeChambre();
+                tc.setId(rs.getInt("id_type"));
+                tc.setDescription(rs.getString("tcDescription"));
+                /* Caractéristique Chambre */
+                cc = new CaracteristiqueChambre();
+                cc.setId(rs.getInt("id_caracteristique"));
+                cc.setDescription(rs.getString("ccDescription"));
+                /*Situation chambre*/
+                sc = new SituationChambre();
+                sc.setId(rs.getInt("id_caracteristique"));
+                sc.setDescription(rs.getString("scDescription"));
+                lc.add(new Chambre(rs,tc, cc, sc)) ;
+            }
+            return lc ;
+        }
+        catch(SQLException sqlex)
+        {
+            /* Affichage d'un message d'erreur */
+            sqlex.printStackTrace(new PrintStream(System.err)) ;
+        }
+        return null ;
     }
 }
