@@ -18,7 +18,22 @@ import java.util.logging.Logger;
 
 public class ChambreManager extends Manager<Chambre>
 {
-
+    private static ChambreManager p_singleton = null ;
+    
+    private ChambreManager()
+    {
+        
+    }
+    
+    public static ChambreManager getInstance()
+    {
+        if(p_singleton == null)
+        {
+            p_singleton = new ChambreManager() ;
+        }
+        return p_singleton ;
+    }
+    
     @Override
     public boolean insert(Chambre entity)
     {

@@ -17,7 +17,22 @@ import java.util.logging.Logger;
 
 public class ClientManager extends Manager<Client>
 {
-
+    private static ClientManager p_singleton = null ;
+    
+    private ClientManager()
+    {
+        
+    }
+    
+    public static ClientManager getInstance()
+    {
+        if(p_singleton == null)
+        {
+            p_singleton = new ClientManager() ;
+        }
+        return p_singleton ;
+    }
+    
     @Override
     public boolean insert(Client entity)
     {
