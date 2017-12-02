@@ -23,7 +23,6 @@ public class Personne extends Entity
         this.nom = rs.getString("nom");
         this.prenom = rs.getString("prenom");
         this.email = rs.getString("email");
-        this.tel = rs.getString("tel");
         this.id = rs.getInt("id") ;
     }
     
@@ -62,16 +61,6 @@ public class Personne extends Entity
         this.email = email;
     }
 
-    public String getTel()
-    {
-        return tel;
-    }
-
-    public void setTel(String tel)
-    {
-        this.tel = tel;
-    }
-
     public Sexe getSexe()
     {
         return sexe;
@@ -88,12 +77,10 @@ public class Personne extends Entity
         boolean validity ;
         String nom_prenom_pattern = "^[a-zA-Z]" ;
         String email_pattern = "^[a-zA-Z0-9]@[a-zA-Z0-9].[a-z]{2,4}" ;
-        String tel_pattern = "^00[0-9]{1,3}-[0-9]{2}-[0-9]{2}-[0-9]{2}-[0-9]{2}" ;
         
         validity = Pattern.compile(nom_prenom_pattern).matcher(nom).matches() && 
                 Pattern.compile(nom_prenom_pattern).matcher(prenom).matches() &&
-                Pattern.compile(email_pattern).matcher(email).matches() &&
-                Pattern.compile(tel_pattern).matcher(tel).matches();
+                Pattern.compile(email_pattern).matcher(email).matches() ;
         
         return validity && sexe.isValid() ;
     }

@@ -18,7 +18,7 @@ public class FactoryManager
         return p_singleton ;
     }
     
-    public Manager<?> getObject(String classname)
+    public Manager<?> getManager(String classname)
     {
         if(classname.compareToIgnoreCase(ClientManager.class.getName()) == 0)
         {

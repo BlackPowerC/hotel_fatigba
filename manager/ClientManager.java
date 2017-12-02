@@ -36,9 +36,9 @@ public class ClientManager extends Manager<Client>
     @Override
     public boolean insert(Client entity)
     {
-        if(entity == null) 
+        if(entity == null || !entity.isValid())
         {
-            return false;
+            return false ;
         }
         
         String sql = "INSERT INTO CLIENT VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?)" ;
@@ -118,7 +118,6 @@ public class ClientManager extends Manager<Client>
     public List<Client> findAll()
     {
         List<Client> all = new ArrayList<Client>() ;
-        Client cl ;
         Sexe s ;
         Nationalite n ;
         TypeClient tc  ;
@@ -136,11 +135,11 @@ public class ClientManager extends Manager<Client>
                 s = new Sexe() ; s.setId(rs.getInt("id_sexe")); s.setDescription("sDescription") ;
                 n = new Nationalite(); s.setId(rs.getInt("id_nation")); s.setDescription("nom_fr_fr") ;
                 tc = new TypeClient(); s.setId(rs.getInt("id_type")); s.setDescription("tcDescription");
-                cl = new Client(rs, s, tc, n, rs.getBoolean("fidele"), rs.getBoolean("etranger")) ;
-                all.add(cl) ;
+                all.add(new Client(rs, s, tc, n, rs.getBoolean("fidele"), rs.getBoolean("etranger"))) ;
             }
             return all;
-        } catch (SQLException ex)
+        }
+        catch(SQLException ex)
         {
             /* Affichafe d'un message d'erreur */
             Logger.getLogger(ClientManager.class.getName()).log(Level.SEVERE, null, ex);
@@ -151,7 +150,7 @@ public class ClientManager extends Manager<Client>
     @Override
     public int update(Client entity)
     {
-        if(entity == null)
+        if(entity == null || !entity.isValid())
         {
             return -1 ;
         }
@@ -184,7 +183,6 @@ public class ClientManager extends Manager<Client>
     public List<Client> findByCriteria(String criteria, boolean st)
     {
         List<Client> all = new ArrayList<Client>() ;
-        Client cl ;
         Sexe s ;
         Nationalite n ;
         TypeClient tc  ;
@@ -208,8 +206,7 @@ public class ClientManager extends Manager<Client>
                 s = new Sexe() ; s.setId(rs.getInt("id_sexe")); s.setDescription("sDescription") ;
                 n = new Nationalite(); s.setId(rs.getInt("id_nation")); s.setDescription("nom_fr_fr") ;
                 tc = new TypeClient(); s.setId(rs.getInt("id_type")); s.setDescription("tcDescription");
-                cl = new Client(rs, s, tc, n, rs.getBoolean("fidele"), rs.getBoolean("etranger")) ;
-                all.add(cl) ;
+                all.add(new Client(rs, s, tc, n, rs.getBoolean("fidele"), rs.getBoolean("etranger"))) ;
             }
             return all;
         } catch (SQLException ex)
