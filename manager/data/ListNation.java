@@ -27,12 +27,12 @@ public class ListNation
         Nationalite nation ;
         try
         {
-            ResultSet rs = Database.getHinstance().executeQuery("SELECT * FROM Nationalite") ;
+            ResultSet rs = Database.getHinstance().executeQuery("SELECT id, nom_fr_fr FROM Nation") ;
             while(rs.next())
             {
                 nation = new Nationalite() ;
                 nation.setId(rs.getInt("id"));
-                nation.setDescription(rs.getString("description"));
+                nation.setDescription(rs.getString("nom_fr_fr"));
                 list.add(nation) ;
             }
         }catch(SQLException sqlex)

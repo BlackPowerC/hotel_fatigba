@@ -3,6 +3,7 @@ package manager.data;
 import bo.Chambre;
 import java.util.ArrayList;
 import java.util.List;
+import manager.FactoryManager;
 
 public class ListChambre
 {
@@ -12,7 +13,7 @@ public class ListChambre
 
     public static ListChambre getHinstance()
     {
-        if (singleton == null)
+        if(singleton == null)
         {
             singleton = new ListChambre();
         }
@@ -22,7 +23,14 @@ public class ListChambre
     /* Le constructeur */
     private ListChambre()
     {
-
+        chambreTotal = (List<Chambre>) FactoryManager.getInstance().getManager(Chambre.class.getName()).findAll() ;
+        for (Chambre chambre : chambreTotal)
+        {
+            if(chambre.isEtat())
+            {
+                chambreDispo.add(chambre);
+            }
+        }
     }
 
     public List<Chambre> getListChambreTotal()
