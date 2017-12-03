@@ -22,6 +22,7 @@ import javax.swing.JTextField;
 import app.Background;
 import core.Database;
 import core.Encryption.AdvancedEncryption;
+import core.Message;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -281,6 +282,7 @@ public class ConnectionView extends JFrame implements ActionListener, KeyListene
             } catch (SQLException ex)
             {
                 /* Impossible de se connecter à la base de données */
+                Message.error("Impossible de se connecter à la base de données !");
                 Logger.getLogger(ConnectionView.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
@@ -309,6 +311,7 @@ public class ConnectionView extends JFrame implements ActionListener, KeyListene
             } catch (SQLException ex)
             {
                 /* Impossible de se connecter à la base de données */
+                Message.error("Impossible de se connecter à la base de données !");
                 Logger.getLogger(ConnectionView.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
