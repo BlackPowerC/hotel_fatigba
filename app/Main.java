@@ -5,6 +5,7 @@ import Auth.userconnection.AuthView;
 import Auth.Configure.Configuration;
 import core.Database;
 import core.Encryption.AdvancedEncryption;
+import core.Message;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -50,12 +51,18 @@ public class Main
             }
         } catch (SQLException ex)
         {
+            Message.error("Impossible de se connecter à la base de données !");
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (FileNotFoundException ex)
+            File to_delete = new File("config.json");
+            to_delete.delete();
+            Main.main(args);
+        }catch (FileNotFoundException ex)
         {
+            Message.error("Fichier de configuration non trouvé !");
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex)
         {
+            Message.error("Erreur inconnue !");
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
 
