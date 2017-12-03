@@ -4,12 +4,12 @@ public class FactoryManager
 {
     private static FactoryManager p_singleton = null ;
     
-    public static int CHAMBRE_MANAGER =1;
-    public static int CLIENT_MANAGER =2;
-    public static int CONSOMMATION_MANAGER =3;
-    public static int FACTURATION_MANAGER =4;
-    public static int RESERVARION_MANAGER =5;
-    public static int USER_MANAGER =6 ;
+    public static final int CHAMBRE_MANAGER =1;
+    public static final int CLIENT_MANAGER =2;
+    public static final int CONSOMMATION_MANAGER =3;
+    public static final int FACTURATION_MANAGER =4;
+    public static final int RESERVATION_MANAGER =5;
+    public static final int USER_MANAGER =6 ;
     
     private FactoryManager()
     {
@@ -46,6 +46,24 @@ public class FactoryManager
         if(classname.compareToIgnoreCase(UserManager.class.getName()) == 0)
         {
             return UserManager.getInstance() ;
+        }
+        return null ;
+    }
+    
+    public Manager<?> getManager(int classeId)
+    {
+        switch(classeId)
+        {
+            case CLIENT_MANAGER:
+                return ClientManager.getInstance() ;
+            case CHAMBRE_MANAGER:
+                return ChambreManager.getInstance() ;
+            case FACTURATION_MANAGER:
+                return FacturationManager.getInstance() ;
+            case RESERVATION_MANAGER:
+                return ReservationManager.getInstance() ;
+            case USER_MANAGER:
+                return UserManager.getInstance() ;
         }
         return null ;
     }
