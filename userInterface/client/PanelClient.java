@@ -34,7 +34,6 @@ import bo.Client;
 import manager.data.ListClient;
 import manager.data.ListNation;
 import userInterface.Observateur;
-import userInterface.Observateur;
 
 public class PanelClient implements Observateur
 {

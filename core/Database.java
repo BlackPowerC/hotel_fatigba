@@ -3,7 +3,6 @@ package core;
 import Auth.Configure.Configuration;
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.Statement;
-import core.Encryption.AdvancedEncryption;
 
 import java.sql.DriverManager;
 import java.sql.ResultSet;

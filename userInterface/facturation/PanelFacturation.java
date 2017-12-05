@@ -16,7 +16,6 @@ import javax.swing.JTextField;
 
 import app.Background;
 import app.Buttons;
-import core.Database;
 import app.Report;
 import manager.data.ListChambre;
 import manager.data.ListClient;
@@ -27,7 +26,6 @@ import manager.data.ListUseService;
 import bo.Client;
 import userInterface.client.JTableClient;
 import bo.Reservation;
-import bo.Consommation;
 import userInterface.JTableFacturation;
 import userInterface.Observateur;
 

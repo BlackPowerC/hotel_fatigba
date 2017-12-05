@@ -1,9 +1,6 @@
 package manager;
 
-import bo.Client;
-import bo.Nationalite;
 import bo.Sexe;
-import bo.TypeClient;
 import bo.TypeUtilisateur;
 import bo.Utilisateur;
 import com.mysql.jdbc.PreparedStatement;

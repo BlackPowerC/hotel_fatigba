@@ -8,7 +8,6 @@ import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.util.Iterator;
 
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -17,7 +16,6 @@ import javax.swing.JTextField;
 import app.Background;
 import app.Buttons;
 import app.DataBaseCon;
-import app.Report;
 import manager.data.ListClient;
 import manager.data.ListUseService;
 import manageClient.Client;

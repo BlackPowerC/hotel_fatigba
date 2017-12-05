@@ -20,7 +20,6 @@ import com.toedter.calendar.JDateChooser;
 
 import app.Background;
 import app.Buttons;
-import core.Database;
 import manager.data.ListChambre;
 import manager.data.ListClient;
 import manager.data.ListReservation;
