@@ -5,7 +5,14 @@
  */
 package manager;
 
+import bo.Client;
 import bo.Consommation;
+import bo.Service;
+import com.mysql.jdbc.PreparedStatement;
+import core.Database;
+import core.Message;
+import java.io.PrintStream;
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -23,13 +30,37 @@ public class ConsommationManager extends Manager<Consommation>
     @Override
     public void delete(int id)
     {
-        
+        String sql="DELETE FROM Consommation WHERE id=?";
+        try
+        {
+            PreparedStatement ps =  (PreparedStatement) Database.getHinstance().getConnection().prepareStatement(sql) ;
+            ps.setInt(1, id) ;
+            ps.execute() ;
+        }
+        catch(SQLException sqlex)
+        {
+            Message.error("Impossible de supprimer la données dont l'id vaut: "+id);
+            sqlex.printStackTrace(new PrintStream(System.err));
+        }
     }
 
     @Override
     public Consommation findById(int id)
     {
-    
+        Consommation c ;
+        Service s ;
+        Client cl ;
+        String sql = "";
+        try
+        {
+            PreparedStatement ps = (PreparedStatement) Database.getHinstance().getConnection().prepareStatement(sql) ;
+        }
+        catch(SQLException sqlex)
+        {
+            Message.error("Impossible de supprimer la données dont l'id vaut: "+id);
+            sqlex.printStackTrace(new PrintStream(System.err));
+        }
+        return null;
     }
 
     @Override
