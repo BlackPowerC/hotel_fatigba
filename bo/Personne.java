@@ -25,6 +25,26 @@ public class Personne extends Entity
         this.email = rs.getString("email");
         this.id = rs.getInt("id") ;
     }
+
+    public Personne(int id, String nom, String prenom, String email, String tel, Sexe sexe)
+    {
+        this.id = id ;
+        this.nom = nom;
+        this.prenom = prenom;
+        this.email = email;
+        this.tel = tel;
+        this.sexe = sexe;
+    }
+    
+    public Personne(Personne another)
+    {
+        this.id = another.id ;
+        this.nom = another.nom;
+        this.prenom = another.prenom;
+        this.email = another.email;
+        this.tel = another.tel;
+        this.sexe = another.sexe;
+    }
     
     public Personne()
     {
@@ -69,6 +89,16 @@ public class Personne extends Entity
     public void setSexe(Sexe sexe)
     {
         this.sexe = sexe;
+    }
+    
+    public void setPersonne(Personne another)
+    {
+        this.id = another.id ;
+        this.nom = another.nom;
+        this.prenom = another.prenom;
+        this.email = another.email;
+        this.tel = another.tel;
+        this.sexe = another.sexe;
     }
     
     @Override
