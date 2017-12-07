@@ -23,6 +23,28 @@ public class Reservation extends Entity
         this.etat = rs.getBoolean("etat") ;
     }
 
+    public Reservation(int id, Client client, ArrayList<Chambre> chambres, GregorianCalendar date, GregorianCalendar date_arrivee, GregorianCalendar date_fin, boolean etat)
+    {
+        this.id = id ;
+        this.client = client;
+        this.chambres = chambres;
+        this.date = date;
+        this.date_arrivee = date_arrivee;
+        this.date_fin = date_fin;
+        this.etat = etat;
+    }
+    
+    public Reservation(Reservation another)
+    {
+        this.id = another.id ;
+        this.client = another.client;
+        this.chambres = another.chambres;
+        this.date = another.date;
+        this.date_arrivee = another.date_arrivee;
+        this.date_fin = another.date_fin;
+        this.etat = another.etat;
+    }
+    
     public Reservation()
     {
         super();
@@ -86,6 +108,17 @@ public class Reservation extends Entity
     public void setEtat(boolean etat)
     {
         this.etat = etat;
+    }
+    
+    public void setReservation(Reservation another)
+    {
+        this.id = another.id ;
+        this.client = another.client;
+        this.chambres = another.chambres;
+        this.date = another.date;
+        this.date_arrivee = another.date_arrivee;
+        this.date_fin = another.date_fin;
+        this.etat = another.etat;
     }
     
     @Override
