@@ -29,6 +29,20 @@ public class Utilisateur extends Personne
         this.type = type ;
     }
 
+    public Utilisateur(int id, String nom, String prenom, String email, String tel, Sexe sexe, String password, TypeUtilisateur type)
+    {
+        super(id, nom, prenom, email, tel, sexe);
+        this.password = password;
+        this.type = type;
+    }
+
+    public Utilisateur(Utilisateur another)
+    {
+        super(another);
+        this.password = another.password;
+        this.type = another.type;
+    }
+    
     public String getPassword()
     {
         return password;
@@ -48,7 +62,14 @@ public class Utilisateur extends Personne
     {
         this.type = type;
     }
-
+    
+    public void setUtilisateur(Utilisateur another)
+    {
+        super.setPersonne(another);
+        this.password = another.password;
+        this.type = another.type;
+    }
+    
     @Override
     public boolean isValid()
     {
