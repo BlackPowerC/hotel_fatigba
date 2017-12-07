@@ -21,6 +21,26 @@ public class Chambre extends Entity
         this.prix = rs.getFloat("prix") ;
         this.etat = rs.getBoolean("etat") ;
     }
+
+    public Chambre(int id, TypeChambre type, CaracteristiqueChambre caracteristique, SituationChambre situation, float prix, boolean etat)
+    {
+        this.id = id ;
+        this.type = type;
+        this.caracteristique = caracteristique;
+        this.situation = situation;
+        this.prix = prix;
+        this.etat = etat;
+    }
+    
+    public Chambre(Chambre another)
+    {
+        this.id = another.id ;
+        this.type = another.type;
+        this.caracteristique = another.caracteristique;
+        this.situation = another.situation;
+        this.prix = another.prix;
+        this.etat = another.etat;
+    }
     
     public Chambre()
     {
@@ -76,6 +96,16 @@ public class Chambre extends Entity
         this.etat = etat;
     }
     
+    public void setChambre(Chambre another)
+    {
+        this.id = another.id ;
+        this.type = another.type;
+        this.caracteristique = another.caracteristique;
+        this.situation = another.situation;
+        this.prix = another.prix;
+        this.etat = another.etat;
+    }
+    
     @Override
     public boolean isValid()
     {
@@ -83,10 +113,5 @@ public class Chambre extends Entity
                type.isValid() &&
                caracteristique.isValid() &&
                (prix != 0.0f) ;
-    }
-
-    public void setChambre(Chambre ch)
-    {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
