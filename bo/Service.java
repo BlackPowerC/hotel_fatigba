@@ -17,6 +17,20 @@ public class Service extends Entity
         this.prix = rs.getFloat("prix") ;
                 
     }
+
+    public Service(int id, String description, float prix)
+    {
+        this.id = id;
+        this.description = description;
+        this.prix = prix;
+    }
+    
+    public Service(Service another)
+    {
+        this.id = another.id;
+        this.description = another.description;
+        this.prix = another.prix;
+    }
     
     public Service()
     {
@@ -41,6 +55,13 @@ public class Service extends Entity
     public void setPrix(float prix)
     {
         this.prix = prix;
+    }
+    
+    public void setService(Service another)
+    {
+        this.id = another.id;
+        this.description = another.description;
+        this.prix = another.prix;
     }
     
     @Override
