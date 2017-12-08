@@ -2,6 +2,7 @@ package core;
 
 import Auth.Configure.Configuration;
 import com.mysql.jdbc.Connection;
+import com.mysql.jdbc.PreparedStatement;
 import com.mysql.jdbc.Statement;
 
 import java.sql.DriverManager;
@@ -63,7 +64,12 @@ public class Database
         }
         return resultset;
     }
-
+    
+    public PreparedStatement prepare(String prepare) throws SQLException
+    {
+        return (PreparedStatement) this.connection.prepareStatement(prepare) ;
+    }
+    
     /* Récupérer l'objet statement */
     public Statement getStatement()
     {

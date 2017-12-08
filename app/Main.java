@@ -49,6 +49,7 @@ public class Main
     {
         try
         {
+            lookAndFell();
             /* Something */
             Database.getHinstance();
             /* Vérification de la présence du fichier de configuration de la base de données */
