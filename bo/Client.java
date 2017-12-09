@@ -107,4 +107,14 @@ public class Client extends Personne
     {
         this.dateNaissance = dateNaissance;
     }
+    
+    public void setClient(Client another)
+    {
+        this.setPersonne(another);
+        this.type = another.type;
+        this.nation = another.nation;
+        this.etranger = another.etranger;
+        this.fidelite = another.fidelite;
+        this.dateNaissance = another.dateNaissance;
+    }
 }
