@@ -24,7 +24,25 @@ public class ConsommationManager extends Manager<Consommation>
     @Override
     public boolean insert(Consommation entity)
     {
+        if(entity == null || !entity.isValid())
+        {
+            return false ;
+        }
         
+        String sql = "INSERT INTO Consommation VALUES(NULL, ? , ?)" ;
+        try
+        {
+            PreparedStatement ps = (PreparedStatement) Database.getHinstance().prepare(sql) ;
+            ps.setInt(1, entity.getClient().getId()) ;
+            ps.setInt(2, entity.getService().getId());
+            return ps.execute() ;
+        }
+        catch(SQLException sqlex)
+        {
+            Message.error("") ;
+            sqlex.printStackTrace();
+        }
+        return false ;
     }
 
     @Override
@@ -66,7 +84,14 @@ public class ConsommationManager extends Manager<Consommation>
     @Override
     public List<Consommation> findByCriteria(String criteria, boolean strict)
     {
-    
+        try
+        {
+            String sql="" ;
+        }
+        catch(SQLException sqlex)
+        {
+            
+        }
     }
 
     @Override
@@ -78,7 +103,25 @@ public class ConsommationManager extends Manager<Consommation>
     @Override
     public int update(Consommation entity)
     {
-    
+        if(entity == null || !entity.isValid())
+        {
+            return -1 ;
+        }
+        String sql="UPDATE Consommation SET id_client=?, id_service=? WHERE id=?";
+        try
+        {
+            PreparedStatement ps =  (PreparedStatement) Database.getHinstance().getConnection().prepareStatement(sql) ;
+            ps.setInt(1, entity.getClient().getId()) ;
+            ps.setInt(1, entity.getService().getId()) ;
+            ps.setInt(1, entity.getId()) ;
+            return ps.executeUpdate();
+        }
+        catch(SQLException sqlex)
+        {
+            //Message.error("Impossible de mettre à jour la données dont l'id vaut: "+id);
+            sqlex.printStackTrace(new PrintStream(System.err));
+        }
+        return -1 ;
     }
     
 }
