@@ -18,20 +18,24 @@ public class Client extends Personne
     protected boolean fidelite ;
     protected GregorianCalendar dateNaissance ;
 
-    public Client(ResultSet rs, Sexe sexe, TypeClient type, Nationalite nation, boolean etranger, boolean fidelite) throws SQLException
+    public Client(int id, String nom, String prenom, String email, String tel, Sexe sexe, TypeClient type, Nationalite nation, boolean etranger, boolean fidelite, GregorianCalendar dateNaissance)
     {
-        super(rs, sexe);
-        Date n = rs.getDate("age") ;
-        /*2010-10-05*/
-        String[] newDate = n.toString().split("-") ;
-        this.dateNaissance =  new GregorianCalendar(
-                                    Integer.parseInt(newDate[0]), 
-                                    Integer.parseInt(newDate[1]), 
-                                    Integer.parseInt(newDate[2])) ;
+        super(id, nom, prenom, email, tel, sexe);
         this.type = type;
         this.nation = nation;
-        this.etranger = rs.getBoolean("etranger") ;
-        this.fidelite = rs.getBoolean("fidelite") ;
+        this.etranger = etranger;
+        this.fidelite = fidelite;
+        this.dateNaissance = dateNaissance;
+    }
+
+    public Client(Client another)
+    {
+        super(another);
+        this.type = another.type;
+        this.nation = another.nation;
+        this.etranger = another.etranger;
+        this.fidelite = another.fidelite;
+        this.dateNaissance = another.dateNaissance;
     }
 
     public Client()
@@ -103,6 +107,4 @@ public class Client extends Personne
     {
         this.dateNaissance = dateNaissance;
     }
-    
-    
 }
