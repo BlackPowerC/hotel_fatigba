@@ -11,6 +11,7 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -103,7 +104,8 @@ public class ClientManager extends Manager<Client>
                 s = new Sexe() ; s.setId(rs.getInt("id_sexe")); s.setDescription("sDescription") ;
                 n = new Nationalite(); s.setId(rs.getInt("id_nation")); s.setDescription("nom_fr_fr") ;
                 tc = new TypeClient(); s.setId(rs.getInt("id_type")); s.setDescription("tcDescription");
-                cl = new Client(rs, s, tc, n, rs.getBoolean("fidele"), rs.getBoolean("etranger")) ;
+                cl = new Client(rs.getInt("id"), rs.getString("nom"), rs.getString("prenom"), rs.getString("email"), 
+                        "" , s, tc, n, rs.getBoolean("fidele"), rs.getBoolean("etranger"), new GregorianCalendar(0, 0, 0)) ;
                 return cl ;
             }
         } catch (SQLException ex)
@@ -135,7 +137,10 @@ public class ClientManager extends Manager<Client>
                 s = new Sexe() ; s.setId(rs.getInt("id_sexe")); s.setDescription("sDescription") ;
                 n = new Nationalite(); s.setId(rs.getInt("id_nation")); s.setDescription("nom_fr_fr") ;
                 tc = new TypeClient(); s.setId(rs.getInt("id_type")); s.setDescription("tcDescription");
-                all.add(new Client(rs, s, tc, n, rs.getBoolean("fidele"), rs.getBoolean("etranger"))) ;
+                    all.add(
+                            new Client(rs.getInt("id"), rs.getString("nom"), rs.getString("prenom"), rs.getString("email"), 
+                            "" , s, tc, n, rs.getBoolean("fidele"), rs.getBoolean("etranger"), new GregorianCalendar(0, 0, 0))
+                           ) ;
             }
             return all;
         }
