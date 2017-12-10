@@ -101,33 +101,24 @@ public class PanelClient implements Observateur
             Object ob = ev.getSource();
             if (ob.equals(typeClient_list))
             {
-                client.setM_type(typeClient_list.getSelectedItem().toString());
-                System.out.println("PanelClient: Combo_Action: " + client.getM_type());
-                if (client.getM_type().compareTo("Groupe") == 0)
-                {
-                    nombre_list.enable(true);
-                } else
-                {
-                    nombre_list.enable(false);
-                }
+                client.getType().setDescription(typeClient_list.getSelectedItem().toString());
+                client.getType().setId(typeClient_list.getSelectedIndex());
+                System.out.println("PanelClient: Combo_Action: " + client.getType().toString());
             }
 
-            if (ob.equals(nombre_list))
-            {
-                client.setM_membre((Integer) nombre_list.getSelectedItem());
-            }
-
-            if (ob.equals(age_list))
-            {
-                client.setM_age((Integer) age_list.getSelectedItem());
-            }
+            //if (ob.equals(age_list))
+            //{
+            //    client.setM_age((Integer) age_list.getSelectedItem());
+            //}
             if (ob.equals(sex_list))
             {
-                client.setM_sexe(sex_list.getSelectedItem().toString());
+                client.getSexe().setDescription(sex_list.getSelectedItem().toString());
+                client.getSexe().setId(sex_list.getSelectedIndex());
             }
             if (ob.equals(nation_list))
             {
-                client.setM_nation(nation_list.getSelectedItem().toString());
+                client.getNation().setDescription(nation_list.getSelectedItem().toString());
+                client.getNation().setId(nation_list.getSelectedIndex());
             }
         }
     }
@@ -183,8 +174,8 @@ public class PanelClient implements Observateur
                 mdl.addRow();
 
                 /*
-				 * Récupération de l'id du dernier client de la liste pour créer
-				 * l'id du nouveau client dans la liste
+                 * Récupération de l'id du dernier client de la liste pour créer
+                 * l'id du nouveau client dans la liste
                  */
                 if (ListClient.getHinstance().getListClient().size() == 0)
                 {
@@ -195,7 +186,7 @@ public class PanelClient implements Observateur
                 }
                 /*
                  * Le dernier client doit devenir le nouveau et on l'envoie dans
-		 * la classe Reservation view
+		 	     * la classe Reservation view
                  */
                 /* On a le dernier client */
                 ListClient.getHinstance().getLastClient().setClient(client);
@@ -211,7 +202,7 @@ public class PanelClient implements Observateur
                 System.out.println("PanelClient: client.toString()" + client.toString());
 
                 /* Mise à jour de l'affichage */
-                addContent();
+                update();
                 /*Flushing des JtextField et JComboBox*/
                 Flush();
                 updating = false;
