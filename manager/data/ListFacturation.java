@@ -22,17 +22,17 @@ public class ListFacturation
 
     public List<Facturation> getList()
     {
-        return data;
+        return list;
     }
 
     public Facturation getLast()
     {
-        return last;
+        return list.get(list.size()-1);
     }
 
     public void setLast(Facturation f)
     {
-        last.setFacturation(f);
+       // list.get(list.size()-1).setFacturation(f);
     }
 
     private ListFacturation()
