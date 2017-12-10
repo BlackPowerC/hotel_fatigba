@@ -30,6 +30,9 @@ import app.Report;
 import com.mysql.jdbc.PreparedStatement;
 import java.io.PrintStream;
 import bo.Client;
+import core.Message;
+import manager.ClientManager;
+import manager.FactoryManager;
 //import app.Report;
 import manager.data.ListClient;
 import manager.data.ListNation;
@@ -37,26 +40,26 @@ import userInterface.Observateur;
 
 public class PanelClient implements Observateur
 {
-
     @Override
     public void update()
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        panel.remove(scroll);
+        panel.add(scroll);
+        panel.revalidate();
     }
 
     public class Radio_Action implements ActionListener
     {
-
         public void actionPerformed(ActionEvent ev)
         {
             Object ob = ev.getSource();
             if (ob.equals(fidNo))
             {
-                client.setM_has_fidelity_card(false);
+                client.setFidelite(false);
             }
             if (ob.equals(fidYes))
             {
-                client.setM_has_fidelity_card(true);
+                client.setFidelite(true);
             }
         }
     }
@@ -64,7 +67,6 @@ public class PanelClient implements Observateur
     /* OK */
     public class Search_Action implements KeyListener
     {
-
         public void keyPressed(KeyEvent arg0)
         {
 
@@ -85,25 +87,17 @@ public class PanelClient implements Observateur
 
     public class Print_Action implements ActionListener
     {
-
         public void actionPerformed(ActionEvent ev)
         {
-
             Report.Generer("/home/jordy/workspace/Hotel/src/manageClient/Clients.jrxml");
-//			Report rep = new Report() ;
-//			rep.setReportName((String)print_list.getSelectedItem()) ;
-//			rep.setJrxml((String)print_list.getSelectedItem()) ;
-//			rep.Build_Report() ;
         }
     }
 
     /* OK */
     public class Combo_Action implements ActionListener
     {
-
         public void actionPerformed(ActionEvent ev)
         {
-
             Object ob = ev.getSource();
             if (ob.equals(typeClient_list))
             {
@@ -147,11 +141,11 @@ public class PanelClient implements Observateur
             Object ob = ev.getSource();
             if (ob.equals(nom_field))
             {
-                client.setM_nom(nom_field.getText());
+                client.setNom(nom_field.getText());
             }
             if (ob.equals(prenom_field))
             {
-                client.setM_prenom(prenom_field.getText());
+                client.setPrenom(prenom_field.getText());
             }
         }
 
@@ -176,35 +170,13 @@ public class PanelClient implements Observateur
                 //JOptionPane.showMessageDialog(null, "Ces données sont pour une mise à jour !", "Erreur", JOptionPane.WARNING_MESSAGE) ;
                 return;
             }
-            all_fields_is_ok = true;
-            /* Check nom */
-            if (client.getM_nom().equals("") || client.getM_nom().equals(null))
+            
+            if (!client.isValid())
             {
-                all_fields_is_ok = false;
-            }
-            /* Check prenom */
-            if (client.getM_prenom().equals("") || client.getM_prenom().equals(null))
-            {
-                all_fields_is_ok = false;
-            }
-            /* Check nation */
-            if (client.getM_nation().equals("") || client.getM_nation().equals(null))
-            {
-                all_fields_is_ok = false;
-            }
-            /* Check sexe */
-            if (client.getM_sexe().equals("") || client.getM_sexe().equals(null))
-            {
-                all_fields_is_ok = false;
-            }
-            if (all_fields_is_ok == false)
-            {
-                JOptionPane.showMessageDialog(null,
-                        "Tout les champs sont requis", "Erreur",
-                        JOptionPane.WARNING_MESSAGE);
+                Message.warning("Tout les champs sont requis");
                 return;
             }
-            if (all_fields_is_ok)
+            else
             {
                 /* Récupération du model de donnée */
                 JTableClientModel mdl = JTableClient.getHinstance().getModel();
@@ -216,54 +188,34 @@ public class PanelClient implements Observateur
                  */
                 if (ListClient.getHinstance().getListClient().size() == 0)
                 {
-                    client.setM_id_client(1);
+                    client.setId(1);
                 } else
                 {
-                    client.setM_id_client(ListClient.getHinstance().getLastClient().getM_id_client() + 1);
+                    client.setId(ListClient.getHinstance().getLastClient().getId() + 1);
                 }
                 /*
-				 * Le dernier client doit devenir le nouveau et on l'envoie dans
-				 * la classe Reservation view
+                 * Le dernier client doit devenir le nouveau et on l'envoie dans
+		 * la classe Reservation view
                  */
- /* On a le dernier client */
-                ListClient.getHinstance().setLastClient(client);
+                /* On a le dernier client */
+                ListClient.getHinstance().getLastClient().setClient(client);
                 /* On récupère la liste des id de clients */
                 ListClient.getHinstance().getListClient().add(new Client(client));
-                //PanelReservation.getHinstance().getID_ClientList().addItem(client.getM_id_client());
-                panel.remove(scroll);
-                panel.add(scroll);
-                panel.revalidate();
+                //PanelReservation.getHinstance().getID_ClientList().addItem(client.getId());
+                update() ;
 
                 /* On ajoute l'id du dernier client ajouter dans la liste */
-                //PanelReservation.getHinstance().getID_ClientList().addItem(client.getM_id_client());
+                //PanelReservation.getHinstance().getID_ClientList().addItem(client.getId());
                 /* Connection à la base de données pour y mettre des données */
-                String sql = "insert into Client (id_client, nom, prenom, type_client, card, local, "
-                        + "sexe, nationalite, age, membre) values "
-                        + "(" + client.getM_id_client() + ", " + "'" + client.getM_nom() + "'" + ", " + "'"
-                        + client.getM_prenom() + "'" + ", " + "'"
-                        + client.getM_type() + "', " + client.isM_has_fidelity_card() + ", 0" + ", '"
-                        + client.getM_sexe() + "', " + "'"
-                        + client.getM_nation() + "', " + client.getM_age()
-                        + ", " + client.getM_membre() + " )";
-
-                try
-                {
-                    DataBaseCon.getHinstance().updateQuery(sql);
-                } catch (SQLException e)
-                {
-                    e.printStackTrace();
-                }
+                ((ClientManager) FactoryManager.getInstance().getManager(FactoryManager.CLIENT_MANAGER)).insert(client) ;
                 System.out.println("PanelClient: client.toString()" + client.toString());
-                System.out.println("PanelClient: insert req: " + sql);
 
                 /* Mise à jour de l'affichage */
                 addContent();
                 /*Flushing des JtextField et JComboBox*/
                 Flush();
                 updating = false;
-                JOptionPane.showMessageDialog(null,
-                        "Tous les Champs sont bien remplis", "OK",
-                        JOptionPane.INFORMATION_MESSAGE);
+                Message.information("Tous les Champs sont bien remplis");
             }
         }
     }
@@ -275,7 +227,7 @@ public class PanelClient implements Observateur
         public void actionPerformed(ActionEvent action)
         {
             Flush();
-            JOptionPane.showMessageDialog(null, "Champ réinitialisés", "OK", JOptionPane.WARNING_MESSAGE);
+            Message.warning("Champ réinitialisés !");
             updating = false;
         }
     }
@@ -290,17 +242,7 @@ public class PanelClient implements Observateur
             {
                 controls.getButtons(0).disable();
                 /* Mise à jour de la base de données*/
-                String sql = "DELETE FROM Client WHERE id_client=?";
-                try
-                {
-                    PreparedStatement ps = (PreparedStatement) Database.getHinstance().getConnection().prepareStatement(sql) ;
-                    ps.setInt(1, client.getId());
-                    ps.execute() ;
-                } catch (SQLException e)
-                {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace(new PrintStream(System.err));
-                }
+                ((ClientManager) FactoryManager.getInstance().getManager(FactoryManager.CLIENT_MANAGER)).delete(client.getId());
                 /* Mise à jour de la table */
                 JTableClientModel mdl = (JTableClientModel) ClientTable.getModel();
                 mdl.remove(selectedRow);
@@ -309,20 +251,17 @@ public class PanelClient implements Observateur
                 /* Le dernier client */
                 if (ListClient.getHinstance().getListClient().size() > 1)
                 {
-                    ListClient.getHinstance().setLastClient(ListClient.getHinstance().getListClient().get(mdl.getRowCount() - 1));
+                    ListClient.getHinstance().getLastClient().setClient(ListClient.getHinstance().getListClient().get(mdl.getRowCount() - 1));
                 }
 
                 /* le client supprimé est retirer de la liste de reservation */
-                //PanelReservation.getHinstance().getID_ClientList().removeItem(client.getM_id_client());
-                System.out.println(sql);
+                //PanelReservation.getHinstance().getID_ClientList().removeItem(client.getId());
 
                 Flush();
 
                 updating = false;
                 controls.getButtons(0).enable();
-                JOptionPane.showMessageDialog(null,
-                        "Données supprimées !", "OK",
-                        JOptionPane.INFORMATION_MESSAGE);
+                Message.information("Données supprimées !");
             }
         }
     }
@@ -338,23 +277,10 @@ public class PanelClient implements Observateur
                 /* bouton ok desactivé */
                 controls.getButtons(0).disable();
                 /* Mise à jour dans la base */
-                String sql = "update Client set nom='"
-                        + client.getM_nom() + "', prenom='" + client.getM_prenom()
-                        + "', type_client='" + client.getM_type()
-                        + "', sexe='" + client.getM_sexe() + "', age="
-                        + client.getM_age() + ", nationalite='" + client.getM_nation()
-                        + "', card=" + client.isM_has_fidelity_card() + " where id_client=" + client.getM_id_client();
-
-                System.out.println(sql);
-                try
+                if(client.isFidelite())
                 {
-                    DataBaseCon.getHinstance().updateQuery(sql);
-                } catch (SQLException e)
-                {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
+                    ((ClientManager) FactoryManager.getInstance().getManager(FactoryManager.CLIENT_MANAGER)).update(client) ;
                 }
-
                 /* Mise à jour dans la Table */
                 int x = selectedRow;
                 /* Mise à jour de La liste */
@@ -363,17 +289,13 @@ public class PanelClient implements Observateur
                 Flush();
 
                 /* mise à jour de l'affichage */
-                panel.remove(scroll);
-                panel.add(scroll);
-                panel.revalidate();
+                update() ;
 
                 updating = false;
 
                 /* réactiver */
                 controls.getButtons(0).enable();
-                JOptionPane.showMessageDialog(null,
-                        "MAJ des données effectué !", "OK",
-                        JOptionPane.INFORMATION_MESSAGE);
+                Message.information("MAJ des données effectué !");
             }
         }
     }
@@ -456,36 +378,11 @@ public class PanelClient implements Observateur
             System.out.println("PanelClient: ListClient.getHinstance().getListClient()");
         } else
         {
-            String req = "select * from Client where nom LIKE '" + key + "%' or " + "prenom LIKE '" + key + "%' or " + "sexe LIKE '" + key + "%' or " + "nationalite LIKE '" + key + "%' or " + "type_client LIKE '" + key + "%'";
-            System.out.println(req);
-
-            Client tmp = new Client();
-            List<Client> new_ListClient = new ArrayList<Client>();
-            try
-            {
-                ResultSet rs = DataBaseCon.getHinstance().executeQuery(req);
-                System.out.println("PanelClient: new_ListClient");
-                while (rs.next())
-                {
-                    tmp.setM_id_client(rs.getInt("id_client"));
-                    tmp.setM_nom(rs.getString("nom"));
-                    tmp.setM_prenom(rs.getString("prenom"));
-                    tmp.setM_type(rs.getString("type_client"));
-                    tmp.setM_sexe(rs.getString("sexe"));
-                    tmp.setM_nation(rs.getString("nationalite"));
-                    tmp.setM_age(rs.getInt("age"));
-                    tmp.setM_membre(rs.getInt("membre"));
-                    new_ListClient.add(new Client(tmp));
-                }
-                mdl.setData(new_ListClient);
-            } catch (SQLException e)
-            {
-                e.printStackTrace();
-            }
+            List<Client> new_ListClient;
+            new_ListClient = ((ClientManager) FactoryManager.getInstance().getManager(FactoryManager.CLIENT_MANAGER)).findByCriteria(key, false) ;
+            mdl.setData(new_ListClient);
         }
-        panel.remove(scroll);
-        panel.add(scroll);
-        panel.revalidate();
+        update() ;
     }
 
     private void Flush()
