@@ -7,16 +7,12 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -24,11 +20,8 @@ import javax.swing.JTextField;
 
 import app.Background;
 import app.Buttons;
-import core.Database;
 import app.JSearch;
 import app.Report;
-import com.mysql.jdbc.PreparedStatement;
-import java.io.PrintStream;
 import bo.Client;
 import core.Message;
 import manager.ClientManager;
@@ -126,7 +119,6 @@ public class PanelClient implements Observateur
     /* OK */
     public class TextFieldAction implements KeyListener
     {
-
         public void keyReleased(KeyEvent ev)
         {
             Object ob = ev.getSource();
@@ -151,7 +143,6 @@ public class PanelClient implements Observateur
 
     public class Ok_Action implements ActionListener
     {
-
         public void actionPerformed(ActionEvent action)
         {
             /* On vérifie la validité de tout les champs */
