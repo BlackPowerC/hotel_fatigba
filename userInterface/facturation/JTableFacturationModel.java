@@ -1,5 +1,6 @@
 package userInterface.facturation;
 
+import bo.Facturation;
 import java.util.ArrayList;
 import java.util.List;
 

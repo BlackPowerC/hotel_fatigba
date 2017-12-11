@@ -13,6 +13,20 @@ public class Consommation extends Entity
         super();
     }
 
+    public Consommation(int id, Service service, Client client)
+    {
+        this.id = id;
+        this.service = service;
+        this.client = client;
+    }
+    
+    public Consommation(Consommation c)
+    {
+        this.id = c.id;
+        this.service=c.service;
+        this.client = c.client;
+    }
+    
     public Consommation(ResultSet rs, Service service, Client client) throws SQLException
     {
         super();
@@ -45,5 +59,12 @@ public class Consommation extends Entity
     public void setClient(Client client)
     {
         this.client = client;
+    }
+    
+    public void setConsommation(Consommation c)
+    {
+        this.id = c.id;
+        this.service=c.service;
+        this.client = c.client;
     }
 }
