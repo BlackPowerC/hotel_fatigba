@@ -5,25 +5,27 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.sql.SQLException;
 import java.util.Iterator;
 
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 import app.Background;
 import app.Buttons;
-import app.DataBaseCon;
+import bo.Consommation;
+import bo.Service;
+import core.Message;
 import manager.data.ListClient;
 import manager.data.ListUseService;
-import manageClient.Client;
+import bo.Client;
+import manager.ConsommationManager;
+import manager.FactoryManager;
+import userInterface.Observateur;
 import userInterface.client.JTableClient;
 
-public class PanelConsommation
+public class PanelConsommation implements Observateur
 {
-
     /* Trois JTable
 	 * 1-	Clients
 	 * 2-	Service disponible
@@ -42,8 +44,8 @@ public class PanelConsommation
             {
                 row = clientTable.getTable().getSelectedRow();
                 Client tmp = ListClient.getHinstance().getListClient().get(row);
-                id_cl_field.setText("" + tmp.getM_id_client());
-                us.setNom_prenom(tmp.getM_nom() + " " + tmp.getM_prenom());
+                id_cl_field.setText("" + tmp.getId());
+                us.setClient(tmp);
             }
 
             /* Le JTable des Services Disponibles */
@@ -51,7 +53,7 @@ public class PanelConsommation
             {
                 row = JTableService.getHinstance().getTable().getSelectedRow();
                 ser = JTableService.getHinstance().getModel().getValueAt(row);
-                id_ser_field.setText("" + ser.getId_ser());
+                id_ser_field.setText("" + ser.getId());
                 desc_field.setText(ser.getDescription());
                 prix_field.setText("" + ser.getPrix());
             }
@@ -63,10 +65,10 @@ public class PanelConsommation
                 row = JTableUseService.getHinstance().getTable().getSelectedRow();
                 us = JTableUseService.getHinstance().getModel().getValueAt(row);
                 /* on remplit touts les champs */
-                id_ser_field.setText("" + us.getId_ser());
-                desc_field.setText(us.getDesc_service());
-                prix_field.setText("" + us.getPrix());
-                id_cl_field.setText("" + us.getId_cl());
+                id_ser_field.setText("" + us.getService().getId());
+                desc_field.setText(us.getService().getDescription());
+                prix_field.setText("" + us.getService().getPrix());
+                id_cl_field.setText("" + us.getClient().getId());
             }
         }
     }
@@ -77,7 +79,7 @@ public class PanelConsommation
         public void actionPerformed(ActionEvent ev)
         {
             Flush();
-            JOptionPane.showMessageDialog(null, "Champ réinitialisés", "OK", JOptionPane.WARNING_MESSAGE);
+            Message.information("Champ réinitialisés !");
             updating = false;
         }
     }
@@ -87,16 +89,12 @@ public class PanelConsommation
 
         public void fatalError()
         {
-            JOptionPane.showMessageDialog(null,
-                    "Tout les champs sont requis", "Erreur",
-                    JOptionPane.WARNING_MESSAGE);
+            Message.warning("Tout les champs sont requis !");
         }
 
         public void noError()
         {
-            JOptionPane.showMessageDialog(null,
-                    "Tous les Champs sont bien remplis", "OK",
-                    JOptionPane.INFORMATION_MESSAGE);
+            Message.information("Tous les Champs sont bien remplis !");
         }
 
         public void actionPerformed(ActionEvent ev)
@@ -117,37 +115,34 @@ public class PanelConsommation
             }
 
             /* id du service */
-            us.setId_ser(Integer.parseInt(id_ser_field.getText()));
+            us.getService().setId(Integer.parseInt(id_ser_field.getText()));
             /* id du client */
-            us.setId_cl(Integer.parseInt(id_cl_field.getText()));
+            us.getClient().setId(Integer.parseInt(id_cl_field.getText()));
             /* description */
-            us.setDesc_service(desc_field.getText());
+            us.getService().setDescription(desc_field.getText());
             /* prix */
-            us.setPrix(java.lang.Float.parseFloat(prix_field.getText()));
+            us.getService().setPrix(Float.parseFloat(prix_field.getText()));
             /* nom et prénom */
 
             if (ListUseService.getHinstance().getList().size() == 0)
             {
-                us.setId_us(1);
+                us.getClient().setId(1);
             } else
             {
 
-                us.setId_us(ListUseService.getHinstance().getLast().getId_us() + 1);
-                System.out.println("Last UseService id: " + ListUseService.getHinstance().getLast().getId_us());
-                System.out.println("Current UseService id: " + us.getId_us());
+                us.getClient().setId(ListUseService.getHinstance()
+                        .getLast().getClient().getId() + 1);
+                System.out
+                        .println("Last UseService id: " + ListUseService.getHinstance()
+                                .getLast().getClient().getId());
+                System.out.println("Current UseService id: " + us.getClient().getId());
             }
             ListUseService.getHinstance().setLast(us);
-            ListUseService.getHinstance().getList().add(new UseService(us));
+            ListUseService.getHinstance().getList().add(new Consommation(us));
 
-            String req = us.insertSQL();
-            System.out.println("PanelService: " + req);
-            try
-            {
-                DataBaseCon.getHinstance().updateQuery(req);
-            } catch (SQLException e)
-            {
-                e.printStackTrace();
-            }
+            ((ConsommationManager) FactoryManager.getInstance()
+                    .getManager(FactoryManager.CONSOMMATION_MANAGER))
+                        .insert(us) ;
 
             JTableUserServiceModel mdl = JTableUseService.getHinstance().getModel();
             mdl.addRow();
@@ -166,17 +161,12 @@ public class PanelConsommation
             if (updating)
             {
                 int row = JTableUseService.getHinstance().getTable().getSelectedRow();
-                us = ListUseService.getHinstance().getList().get(row);
-                String req = us.deleteSQL();
+//                us = ListUseService.getHinstance().getList().get(row);
 
                 /* On supprimme dans la BD */
-                try
-                {
-                    DataBaseCon.getHinstance().updateQuery(req);
-                } catch (SQLException ex)
-                {
-                    ex.printStackTrace();
-                }
+                ((ConsommationManager) FactoryManager.getInstance()
+                        .getManager(FactoryManager.CONSOMMATION_MANAGER))
+                            .delete(row) ;
 
                 /* Dans l'application */
                 JTableUserServiceModel mdl = JTableUseService.getHinstance().getModel();
@@ -185,15 +175,15 @@ public class PanelConsommation
                 /* Le Dernier Service consommé */
                 if (ListUseService.getHinstance().getList().size() > 1)
                 {
-                    ListUseService.getHinstance().setLast(ListUseService.getHinstance().getList().get(mdl.getRowCount() - 1));
+                    ListUseService.getHinstance()
+                            .setLast(ListUseService.getHinstance()
+                                    .getList().get(mdl.getRowCount() - 1));
                 }
                 Flush();
 
                 updating = false;
 //				bt.getButtons(0).enable();
-                JOptionPane.showMessageDialog(null,
-                        "Données supprimées !", "OK",
-                        JOptionPane.INFORMATION_MESSAGE);
+                Message.information("Données supprimées !");
             }
         }
     }
@@ -206,40 +196,29 @@ public class PanelConsommation
             if (updating)
             {
                 int row = JTableUseService.getHinstance().getTable().getSelectedRow();
-                us.setId_cl(Integer.parseInt(id_cl_field.getText()));
-                us.setDesc_service(desc_field.getText());
-                us.setPrix(Float.parseFloat(prix_field.getText()));
-                us.setId_cl(Integer.parseInt(id_cl_field.getText()));
+                us.getClient().setId(Integer.parseInt(id_cl_field.getText()));
+                us.getService().setDescription(desc_field.getText());
+                us.getService().setPrix(Float.parseFloat(prix_field.getText()));
 
                 Client tmp = new Client();
                 Iterator<Client> it = ListClient.getHinstance().getListClient().iterator();
-                while (it.hasNext() && tmp.getM_id_client() != us.getId_cl())
+                while (it.hasNext() && tmp.getId() != us.getClient().getId())
                 {
                     tmp = it.next();
                 }
-                us.setNom_prenom(tmp.getM_nom() + " " + tmp.getM_prenom());
+                us.setClient(tmp);
 
-                ListUseService.getHinstance().getList().get(row).setUseService(us);
+                ListUseService.getHinstance().getList().get(row).setConsommation(us);
 
-                String req = us.updateSQL();
-                try
-                {
-                    System.out.println(req);
-                    DataBaseCon.getHinstance().updateQuery(req);
-                } catch (SQLException e)
-                {
-                    e.printStackTrace();
-                }
+                ((ConsommationManager) FactoryManager.getInstance()
+                        .getManager(FactoryManager.CONSOMMATION_MANAGER))
+                            .update(us) ;
 
-                panel.remove(JTableUseService.getHinstance().getScroll());
-                panel.add(JTableUseService.getHinstance().getScroll());
-                panel.revalidate();
+                update() ;
 
                 Flush();
 
-                JOptionPane.showMessageDialog(null,
-                        "MAJ des données effectué !", "OK",
-                        JOptionPane.INFORMATION_MESSAGE);
+                Message.information("MAJ des données effectué !");
 
                 updating = false;
             }
@@ -267,7 +246,7 @@ public class PanelConsommation
     private JLabel txt_prix;
 
     private Buttons bt;
-    private UseService us;
+    private Consommation us;
 
     private JLabel txtListService;
     private Service ser;
@@ -369,7 +348,7 @@ public class PanelConsommation
 
     private PanelConsommation()
     {
-        us = new UseService();
+        us = new Consommation();
         ser = new Service();
         Build_Panel();
         Build_Button();
@@ -443,5 +422,13 @@ public class PanelConsommation
     public Background getPanel()
     {
         return panel;
+    }
+    
+    @Override
+    public void update()
+    {
+        panel.remove(JTableUseService.getHinstance().getScroll());
+        panel.add(JTableUseService.getHinstance().getScroll());
+        panel.revalidate();
     }
 }
