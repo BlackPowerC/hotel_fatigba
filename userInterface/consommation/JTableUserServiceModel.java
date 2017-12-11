@@ -1,5 +1,6 @@
 package userInterface.consommation;
 
+import bo.Consommation;
 import javax.swing.table.AbstractTableModel;
 
 import manager.data.ListUseService;
@@ -8,8 +9,7 @@ import java.util.List;
 
 public class JTableUserServiceModel extends AbstractTableModel
 {
-
-    private List<UseService> data = ListUseService.getHinstance().getList();
+    private List<Consommation> data = ListUseService.getHinstance().getList();
     private String label[];
 
     public JTableUserServiceModel()
@@ -35,32 +35,31 @@ public class JTableUserServiceModel extends AbstractTableModel
         return label[col];
     }
 
-    public UseService getValueAt(int row)
+    public Consommation getValueAt(int row)
     {
-        UseService tmp = new UseService(data.get(row));
-        return tmp;
+        return data.get(row) ;
     }
 
     public Object getValueAt(int row, int col)
     {
-        UseService tmp = data.get(row);
+        Consommation tmp = data.get(row);
         switch (col)
         {
             case 0:
-                return tmp.getNom_prenom();
+                return tmp.getClient().getNom();
             case 1:
-                return tmp.getDesc_service();
+                return tmp.getService().getDescription();
             case 2:
-                return tmp.getPrix() + " €";
+                return tmp.getService().getPrix()+ " €";
         }
         return null;
     }
 
-    public void setValueAt(UseService ser, int index)
+    public void setValueAt(Consommation ser, int index)
     {
         try
         {
-            ListUseService.getHinstance().getList().get(index).setUseService(ser);
+            ListUseService.getHinstance().getList().get(index) ;
         } catch (ArrayIndexOutOfBoundsException ex)
         {
             ex.printStackTrace();
