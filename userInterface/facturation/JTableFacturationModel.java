@@ -19,8 +19,10 @@ public class JTableFacturationModel extends AbstractTableModel
         title = new String[]
         {
             "Client",
-            "Total à payer", "Total avec remise",
-            "Mode de paiment"
+            "Date",
+            "Mode de paiement",
+            "Total",
+            "Réglé"
         };
     }
 
@@ -60,13 +62,15 @@ public class JTableFacturationModel extends AbstractTableModel
         switch (col)
         {
             case 0:
-                return tmp.getNom_prenom() + " €";
+                return tmp.getClient().getNom()+" "+tmp.getClient().getPrenom();
             case 1:
-                return tmp.getTotal() + " €";
+                return tmp.getDate();
             case 2:
-                return tmp.getTotalRem() + " €";
+                return tmp.getPaiement().getDescription();
             case 3:
-                return tmp.getMode();
+                return tmp.getTotal()+ " €";
+            case 4:
+                return tmp.isEtat() ;
         }
         return null;
     }
