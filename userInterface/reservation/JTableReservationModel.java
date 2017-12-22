@@ -1,5 +1,6 @@
 package userInterface.reservation;
 
+import bo.Reservation;
 import manager.data.ListReservation;
 
 import javax.swing.table.AbstractTableModel;
@@ -62,18 +63,7 @@ public class JTableReservationModel extends AbstractTableModel
 //		System.out.println("JTableReservationModel: "+tmp.toString());
         switch (col)
         {
-            case 0:
-                return tmp.getId_ch();
-            case 1:
-                return tmp.getNom_prenom_client();
-            case 2:
-                return tmp.getDebut_res();
-            case 3:
-                return tmp.getFin_res();
-            case 4:
-                return tmp.getDate_res();
-            case 5:
-                return tmp.getEtat_res();
+
         }
         return null;
     }
