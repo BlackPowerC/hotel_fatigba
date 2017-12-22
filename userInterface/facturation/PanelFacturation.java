@@ -24,13 +24,18 @@ import manager.data.ListReservation;
 import manager.data.ListService;
 import manager.data.ListUseService;
 import bo.Client;
+import bo.Facturation;
 import userInterface.client.JTableClient;
 import bo.Reservation;
-import userInterface.JTableFacturation;
 import userInterface.Observateur;
 
 public class PanelFacturation implements Observateur
 {
+    @Override
+    public void update()
+    {
+    
+    }
 
     public class Reset_Action implements ActionListener
     {
@@ -48,53 +53,7 @@ public class PanelFacturation implements Observateur
         @Override
         public void actionPerformed(ActionEvent ev)
         {
-            if (!updating)
-            {
-                if (fieldTotal.getText().compareTo("0.0 €") == 0)
-                {
-                    JOptionPane.showMessageDialog(null,
-                            "Aucune facture pour ce client", "OK",
-                            JOptionPane.INFORMATION_MESSAGE);
-                    return;
-                }
-                if (facture.getMode().compareTo("") == 0 || facture.getMode() == null)
-                {
-                    facture.setMode("Espèce");
-                }
-
-                facture.setTotal(facture.getTotalRes() + facture.getTotalSer());
-                float t = facture.getTotalSer() + facture.getTotalRes() - ((Integer) comboRemise.getSelectedItem() * (facture.getTotalSer() + facture.getTotalRes()) / 100);
-                facture.setTotalRem(t);
-
-                int i = table.getTable().getSelectedRow();
-                Client tmp = ListClient.getHinstance().getListClient().get(i);
-                facture.setNom_prenom(tmp.getM_nom() + " " + tmp.getM_prenom());
-                String req1 = "insert into Facturation values (NULL, " + facture.getId_cl() + ", " + facture.getTotal() + "," + facture.getTotalRem() + "," + facture.getTotalSer() + ", " + facture.getTotalRes() + ",'" + facture.getMode() + "')";
-                String req2 = "update Reservation set solved=true where id_cl=" + facture.getId_cl();
-                String req3 = "update UseService set state=true where id_cl=" + facture.getId_cl();
-                try
-                {
-                    DataBaseCon.getHinstance().updateQuery(req1);
-                    DataBaseCon.getHinstance().updateQuery(req2);
-                    DataBaseCon.getHinstance().updateQuery(req3);
-                } catch (SQLException e)
-                {
-                    e.printStackTrace();
-                }
-
-                ListFacturation.getHinstance().getList().add(new Facturation(facture));
-                JTableFacturation.getHinstance().getModel().addRow();
-                panel.remove(JTableFacturation.getHinstance().getScroll());
-                panel.add(JTableFacturation.getHinstance().getScroll());
-                panel.revalidate();
-                fieldTotal.setText("");
-                JOptionPane.showMessageDialog(null,
-                        "Tous les Champs sont bien remplis", "OK",
-                        JOptionPane.INFORMATION_MESSAGE);
-                Flush();
-                fieldTotal.setText("");
-                updateAll();
-            }
+            
         }
     }
 
@@ -103,18 +62,7 @@ public class PanelFacturation implements Observateur
 
         public void actionPerformed(ActionEvent ev)
         {
-            Object ob = ev.getSource();
-            if (ob.equals(comboRemise))
-            {
-                fieldTotal.setText("");
-                float t = facture.getTotalSer() + facture.getTotalRes() - ((Integer) comboRemise.getSelectedItem() * (facture.getTotalSer() + facture.getTotalRes()) / 100);
-                fieldTotal.setText(t + " €");
-                facture.setTotalRem(t);
-            }
-            if (ob.equals(comboMode))
-            {
-                facture.setMode(comboMode.getSelectedItem().toString());
-            }
+            
         }
     }
 
@@ -134,68 +82,7 @@ public class PanelFacturation implements Observateur
 
         public void mouseClicked(MouseEvent e)
         {
-            Object ob = e.getSource();
-            /* JTable CLient */
-            if (ob.equals(table.getTable()))
-            {
-                if (updating)
-                {
-                    return;
-                }
-                facture.setTotalRes(0);
-                facture.setTotalSer(0);
-
-                int row = table.getTable().getSelectedRow();
-                facture.setId_cl(ListClient.getHinstance().getListClient().get(row).getM_id_client());
-                /* Calcul des frais de reservation */
-                Iterator<Reservation> it1 = ListReservation.getHinstance().getListReservation().iterator();
-                Reservation r;
-                while (it1.hasNext())
-                {
-                    r = it1.next();
-                    if (r.getId_cl() == facture.getId_cl() && r.isSolved() == false)
-                    {
-//						r.setSolved(true) ;
-                        facture.setTotalRes(
-                                facture.getTotalRes()
-                                + ListChambre.getHinstance().getListChambreTotal().get(r.getId_ch() - 1).getPrix());
-                    }
-                }
-                /* Calcule des frais de service */
-                Iterator<UseService> it2 = ListUseService.getHinstance().getList().iterator();
-                UseService us;
-                while (it2.hasNext())
-                {
-                    us = it2.next();
-                    if (us.getId_cl() == facture.getId_cl() && us.isState() == false)
-                    {
-//						us.setState(true) ;
-                        System.out.println("us.get_id_ser(): " + us.getId_ser());
-                        facture.setTotalSer(
-                                facture.getTotalSer()
-                                + ListService.getHinstance().getList().get(us.getId_ser() - 1).getPrix());
-                        System.out.println(ListService.getHinstance().getList().get(us.getId_ser() - 1).toString());
-                    }
-                }
-                field_id_cl.setText("" + facture.getId_cl());
-                fieldTotalRes.setText(facture.getTotalRes() + " €");
-                fieldTotalSer.setText(facture.getTotalSer() + " €");
-                float t = facture.getTotalSer() + facture.getTotalRes() - ((Integer) comboRemise.getSelectedItem() * (facture.getTotalSer() + facture.getTotalRes()) / 100);
-                fieldTotal.setText(t + " €");
-            }
-            if (ob.equals(JTableFacturation.getHinstance().getTable()))
-            {
-                updating = true;
-                int i = JTableFacturation.getHinstance().getTable().getSelectedRow();
-                facture = ListFacturation.getHinstance().getList().get(i);
-
-                field_id_cl.setText(facture.getId_cl() + "");
-                fieldTotal.setText(facture.getTotal() + " €");
-                fieldTotalRes.setText(facture.getTotalRes() + " €");
-                fieldTotalSer.setText(facture.getTotalSer() + " €");
-                comboRemise.setSelectedIndex(0);
-                comboMode.setSelectedItem(facture.getMode());
-            }
+            
         }
 
         public void mouseEntered(MouseEvent arg0)
@@ -222,27 +109,7 @@ public class PanelFacturation implements Observateur
 
     private void updateAll()
     {
-        Iterator<Reservation> it1 = ListReservation.getHinstance().getListReservation().iterator();
-        Reservation r;
-        while (it1.hasNext())
-        {
-            r = it1.next();
-            if (r.getId_cl() == facture.getId_cl() && r.isSolved() == false)
-            {
-                r.setSolved(true);
-            }
-        }
-        /* Calcule des frais de service */
-        Iterator<UseService> it2 = ListUseService.getHinstance().getList().iterator();
-        UseService us;
-        while (it2.hasNext())
-        {
-            us = it2.next();
-            if (us.getId_cl() == facture.getId_cl() && us.isState() == false)
-            {
-                us.setState(true);
-            }
-        }
+        
     }
 
     private Background panel;
