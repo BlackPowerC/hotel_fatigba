@@ -37,77 +37,9 @@ public class PanelReservation
     /* OK */
     public class Table_Action extends MouseAdapter
     {
-
         /* Clique dans la JTable reservation */
         public void mouseClicked(MouseEvent ev)
         {
-            Object ob = ev.getSource();
-            if (ob.equals(JTableReservation.getHinstance().getTable()))
-            {
-                updating = true;
-                EtatCombo.addItem("Annulée");
-                /* Récupération de la ligne et de la données correspondante */
-                int row = JTableReservation.getHinstance().getTable().getSelectedRow();
-                selectedRow = row;
-                JTableReservationModel mdl = (JTableReservationModel) JTableReservation.getHinstance().getTable().getModel();
-                reservation = mdl.getValueAt(row);
-                /* La chambre correspondant à l'id chambre de la classe réservation */
-                Iterator<Chambre> it = ListChambre.getHinstance().getListChambreTotal().iterator();
-                Chambre tmp = null;
-                while (it.hasNext())
-                {
-                    tmp = it.next();
-                    if (tmp.getId_chambre() == reservation.getId_ch())
-                    {
-                        break;
-                    }
-                }
-
-                /* Changement des ID dans le formulaire */
-                id_chambre.setText("" + reservation.getId_ch());
-
-                /* Changement de la description  */
-                Description = /*tmp1 + */ "Chambre avec " + tmp.getSituation() + " prix: " + Float.toString(tmp.getPrix()) + " €"/* + tmp2*/;
-                txtDescription.setText(Description);
-                System.out.println(Description);
-                /* changement des dates dasn les champs  */
-
-                date_res.setDate(Date.valueOf(reservation.getDate_res()));
-                date_fin.setDate(Date.valueOf(reservation.getFin_res()));
-                date_debut.setDate(Date.valueOf(reservation.getDebut_res()));
-                System.out.println(reservation.getDebut_res());
-                /*ID du client */
-                id_client.setText("" + reservation.getId_cl());
-                /* Etat de ma reservation */
-                EtatCombo.setSelectedItem(reservation.getEtat_res());
-                /**/
-            }
-            /* Clic dans le JTable Chambre */
-            if (ob.equals(JTableChambreDispo.getHinstance().getTable()))
-            {
-                int row = JTableChambreDispo.getHinstance().getTable().getSelectedRow();
-                id_chambre.setText("" + JTableChambreDispo.getHinstance().getTable().getValueAt(row, 0));
-                JTableChambreDispoModel mdl = (JTableChambreDispoModel) JTableChambreDispo.getHinstance().getTable().getModel();
-                Chambre tmp = mdl.getValueAt(row);
-
-                Description = "Chambre avec "
-                        + tmp.getSituation() + " prix: "
-                        + Float.toString(tmp.getPrix()) + " €";
-
-                System.out.println(Description);
-                txtDescription.setText(Description);
-                reservation.setId_ch(tmp.getId_chambre());
-            }
-
-            /* CLic dans le JTable Client */
-            if (ob.equals(clientTable.getTable()))
-            {
-                int x = clientTable.getTable().getSelectedRow();
-                Client tmp = ListClient.getHinstance().getListClient().get(x);
-                id_client.setText("" + tmp.getM_id_client());
-                reservation.setNom_prenom_client(tmp.getM_nom() + " " + tmp.getM_prenom());
-                reservation.setId_cl(tmp.getM_id_client());
-            }
         }
     }
 
@@ -128,236 +60,35 @@ public class PanelReservation
 
         public void actionPerformed(ActionEvent ev)
         {
-            Object ob = ev.getSource();
-
-            if (ob.equals(EtatCombo))
-            {
-                reservation.setEtat_res(EtatCombo.getSelectedItem().toString());
-            }
+            
         }
     }
 
     /* OK */
     public class Update_Action implements ActionListener
     {
-
         public void actionPerformed(ActionEvent ev)
         {
             if (updating)
             {
-                reservation.setId_ch(Integer.parseInt(id_chambre.getText()));
-                String req = reservation.updateSQL();
-                System.out.println(req);
-                try
-                {
-                    DataBaseCon.getHinstance().updateQuery(req);
-                } catch (SQLException e)
-                {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-                JTableReservationModel mdl = JTableReservation.getHinstance().getModel();
-                mdl.setValueAt(reservation, selectedRow);
-
-                panel.remove(scroll);
-                panel.add(scroll);
-                panel.revalidate();
-                Flush();
-
-                JOptionPane.showMessageDialog(null,
-                        "MAJ des données effectué !", "OK",
-                        JOptionPane.INFORMATION_MESSAGE);
             }
         }
     }
 
     public class OK_Action implements ActionListener
     {
-
-        public void fatalError()
+        @Override
+        public void actionPerformed(ActionEvent e) 
         {
-            JOptionPane.showMessageDialog(null,
-                    "Tout les champs sont requis", "Erreur",
-                    JOptionPane.WARNING_MESSAGE);
-        }
-
-        public void noError()
-        {
-            JOptionPane.showMessageDialog(null,
-                    "Tous les Champs sont bien remplis", "OK",
-                    JOptionPane.INFORMATION_MESSAGE);
-        }
-
-        public void actionPerformed(ActionEvent ev)
-        {
-            if (updating)
-            {
-                return;
-            }
-
-            if (date_debut.getCalendar() == null)
-            {
-                fatalError();
-                return;
-            }
-            if (date_fin.getCalendar() == null)
-            {
-                fatalError();
-                return;
-            }
-            if (date_res.getCalendar() == null)
-            {
-                fatalError();
-                return;
-            }
-
-            /* le bouton modifier et supprimer son déactivé */
-//			control.getButtons(2).disable();
-//			control.getButtons(3).disable();
-            reservation.setDebut_res(date_debut.getCalendar().get(Calendar.YEAR)
-                    + "-" + date_debut.getCalendar().get(Calendar.MONTH + 1)
-                    + "-" + date_debut.getCalendar().get(Calendar.DAY_OF_MONTH));
-
-            reservation.setDate_res(date_res.getCalendar().get(Calendar.YEAR)
-                    + "-" + date_res.getCalendar().get(Calendar.MONTH + 1)
-                    + "-" + date_res.getCalendar().get(Calendar.DAY_OF_MONTH));
-
-            reservation.setFin_res(date_fin.getCalendar().get(Calendar.YEAR)
-                    + "-" + date_fin.getCalendar().get(Calendar.MONTH + 1)
-                    + "-" + date_fin.getCalendar().get(Calendar.DAY_OF_MONTH));
-
-            System.out.println("reservation.getDebut_res(): " + reservation.getDebut_res());
-            System.out.println("reservation.getDate_res(): " + reservation.getDate_res());
-            System.out.println("reservation.getFin_res(): " + reservation.getFin_res());
-
-            if (id_chambre.getText().equals(null) || id_chambre.getText().equals(""))
-            {
-                System.out.println(148);
-                fatalError();
-                return;
-            }
-            reservation.setId_cl(Integer.parseInt(id_client.getText()));
-            reservation.setId_ch(Integer.parseInt(id_chambre.getText()));
-
-            /* Récupération du model de donnée */
-            JTableReservationModel mdl = JTableReservation.getHinstance().getModel();
-            mdl.addRow();
-
-            System.out.println("ID Reservation before: " + reservation.getId_res());
-            /* Ajout de la réservation dans la BD */
-            try
-            {
-                if (ListReservation.getHinstance().getListReservation().size() == 0)
-                {
-                    reservation.setId_res(1);
-                } else
-                {
-                    reservation.setId_res(ListReservation.getHinstance().getLastReservartion().getId_res() + 1);
-                }
-                System.out.println("ID Reservation after: " + reservation.getId_res());
-                ListReservation.getHinstance().setLastReservation(reservation);
-                ListReservation.getHinstance().getListReservation().add(new Reservation(reservation));
-
-                /*Insertion de la Reservation dans la BD*/
-                String req = reservation.insertSQL();
-                System.out.println(req);
-                System.out.println("Reservation: " + reservation.toString());
-                DataBaseCon.getHinstance().updateQuery(req);
-                /* La chambre correspondante est modifiée */
-                DataBaseCon.getHinstance().updateQuery("update Chambre set state = true where id_chambre=" + reservation.getId_ch());
-                /* La meme chambre est supprimée dans la List des chambres dispo */
-                Iterator<Chambre> it = ListChambre.getHinstance().getListChambreDispo().iterator();
-                Chambre tmp;
-                while (it.hasNext())
-                {
-                    tmp = it.next();
-                    if (tmp.getId_chambre() == reservation.getId_ch())
-                    {
-                        ListChambre.getHinstance().getListChambreDispo().remove(tmp);
-                        System.out.println("Suppression de la chambre: " + tmp.getId_chambre());
-                        break;
-                    }
-                }
-//				ListChambre.getHinstance().getListChambreDispo().remove(reservation.getId_ch()-1) ;
-
-            } catch (SQLException e)
-            {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-
-            panel.remove(JTableReservation.getHinstance().getScroll());
-            panel.add(JTableReservation.getHinstance().getScroll());
-            panel.remove(JTableChambreDispo.getHinstance().getScroll());
-            panel.add(JTableChambreDispo.getHinstance().getScroll());
-            panel.revalidate();
-
-            updateAllRoom(true);
-
-            updating = false;
-            Flush();
-            noError();
+            
         }
     }
 
     /* OK */
     public class Delete_Action implements ActionListener
     {
-
         public void actionPerformed(ActionEvent ev)
         {
-            if (updating)
-            {
-                System.out.println("PanelReservation: Delete_Action");
-                /* bouton ajouter désactivé */
-//				control.getButtons(0).disable() ;
-                /* on fait la mise à jour dans la BD*/
-                String req = reservation.deleteSQL();
-                System.out.println("PanelReservation: req: " + req);
-                try
-                {
-                    DataBaseCon.getHinstance().updateQuery(req);
-                    DataBaseCon.getHinstance().updateQuery("update Chambre set state=0 where id_chambre=" + reservation.getId_ch());
-                } catch (SQLException e)
-                {
-                    e.printStackTrace();
-                }
-
-                /* Mise à jour dans l'application */
-                JTableReservationModel mdl = JTableReservation.getHinstance().getModel();
-                mdl.remove(selectedRow);
-
-                ListReservation.getHinstance().getListReservation().remove(selectedRow);
-                /* La dernière reservation */
-                if (ListReservation.getHinstance().getListReservation().size() > 1)
-                {
-                    ListReservation.getHinstance().setLastReservation(ListReservation.getHinstance().getListReservation().get(mdl.getRowCount() - 1));
-                }
-                /* MAJ des chambres disponibles */
-                Chambre tmp = ListChambre.getHinstance().getListChambreTotal().get(reservation.getId_ch() - 1);
-                System.out.println(tmp.toString());
-
-                ListChambre.getHinstance().getListChambreDispo().add(tmp.getId_chambre() - 1, tmp);
-                JTableChambreDispo.getHinstance().getModel().addRow(tmp);
-
-                panel.remove(scroll);
-                panel.remove(JTableChambreDispo.getHinstance().getScroll());
-                panel.add(scroll);
-                panel.add(JTableChambreDispo.getHinstance().getScroll());
-                panel.revalidate();
-
-                /* MAJ de la liste de toute les chambres */
-                updateAllRoom(false);
-
-                Flush();
-
-                updating = false;
-                /* Le bouton ajouter est à nouveau opérationnel */
-                control.getButtons(0).enable();
-                JOptionPane.showMessageDialog(null,
-                        "Données supprimées !", "OK",
-                        JOptionPane.INFORMATION_MESSAGE);
-            }
         }
     }
 
@@ -403,14 +134,7 @@ public class PanelReservation
 
     private void updateAllRoom(boolean bool)
     {
-        /* La chambre réservée est modifieé dans la liste des chambres */
-        ListChambre.getHinstance().getListChambreTotal().get(reservation.getId_ch() - 1).setState(bool);
-        /* Mise à jour de l'affichage de la liste des chambres */
-        PanelChambre.getHinstance().getPanel().remove(
-                JTableChambreTotal.getHinstance().getScroll());
-        PanelChambre.getHinstance().getPanel().add(
-                JTableChambreTotal.getHinstance().getScroll());
-        PanelChambre.getHinstance().getPanel().revalidate();
+
     }
 
     private void Flush()
