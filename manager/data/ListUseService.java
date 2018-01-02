@@ -3,6 +3,7 @@ package manager.data ;
 import bo.Consommation;
 import java.util.ArrayList ;
 import java.util.List ;
+import manager.ConsommationManager;
 import manager.FactoryManager;
 
 public class ListUseService
@@ -21,7 +22,7 @@ public class ListUseService
 
     public ListUseService()
     {
-        list = (List<Consommation>) FactoryManager.getInstance().getManager(Consommation.class.getName()).findAll() ;
+        list = (List<Consommation>) FactoryManager.getInstance().getManager(ConsommationManager.class.getName()).findAll() ;
     }
 
     public List<Consommation> getList()

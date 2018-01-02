@@ -27,6 +27,7 @@ import bo.TypeUtilisateur;
 import bo.Utilisateur;
 import com.mysql.jdbc.PreparedStatement;
 import core.Encryption.Encryption;
+import core.Message;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -79,7 +80,8 @@ public class AuthView extends JFrame implements ActionListener, KeyListener
         ok.setSize(200, 50);
         ok.addActionListener(this);
         ok.setIcon(new ImageIcon("/home/jordy/workspace/Hotel/src/icons/check/checkmark_32.png"));
-
+        ok.addActionListener(this);
+        
         annuler = new JButton("Annuler");
         annuler.setSize(200, 50);
         annuler.addActionListener(this);
@@ -88,13 +90,13 @@ public class AuthView extends JFrame implements ActionListener, KeyListener
 
     public void Build_TextField()
     {
-        pass = new JPasswordField("jordy");
+        pass = new JPasswordField("dalila");
         pass.setEchoChar(' ');
         pass.addKeyListener(this);
-        prenom = new JTextField("fatigba");
-        prenom.addKeyListener(this);
-        nom = new JTextField("jordy");
+        nom = new JTextField("fatigba");
         nom.addKeyListener(this);
+        prenom = new JTextField("jordy");
+        prenom.addKeyListener(this);
     }
 
     private void Build_Label()
@@ -153,7 +155,7 @@ public class AuthView extends JFrame implements ActionListener, KeyListener
     {
         tmp.setNom(nom.getText());
         tmp.setPrenom(prenom.getText());
-        tmp.setPassword(Encryption.getInstance().encrypt(new String(pass.getPassword())));
+        tmp.setPassword(pass.getText());
         if (tmp.getNom().compareTo(user.getNom()) == 0
                 && tmp.getPrenom().compareTo(user.getPrenom()) == 0
                 && tmp.getPassword().compareTo(user.getPassword()) == 0)
@@ -163,7 +165,8 @@ public class AuthView extends JFrame implements ActionListener, KeyListener
         }
         else
         {
-            JOptionPane.showMessageDialog(null, "Données erronées", "Erreur", JOptionPane.WARNING_MESSAGE);
+            Message.error("Impossible de trouver "+nom.getText()+" "+prenom.getText()) ;
+            return ;
         }
     }
 
@@ -175,10 +178,10 @@ public class AuthView extends JFrame implements ActionListener, KeyListener
         {
             try
             {
-                String sql = "SELECT nom, prenom, password FROM Utilisateur WHERE nom=?, prenom=? password=?" ;
-                PreparedStatement ps = (PreparedStatement) Database.getHinstance().getConnection().prepareStatement(sql) ;
+                String sql = "SELECT nom, prenom, password FROM Utilisateur WHERE nom=? AND prenom=? AND password=?" ;
+                PreparedStatement ps = Database.getHinstance().prepare(sql) ;
                 ps.setString(1, nom.getText());
-                ps.setString(3, Encryption.getInstance().encrypt(pass.getText()));
+                ps.setString(3, pass.getText());
                 ps.setString(2, prenom.getText());
                 
                 ResultSet rs = ps.executeQuery() ;
@@ -190,13 +193,13 @@ public class AuthView extends JFrame implements ActionListener, KeyListener
                 }
                 else
                 {
-                    JOptionPane.showMessageDialog(null, "Données erronées", "Erreur", JOptionPane.WARNING_MESSAGE);
+                    Message.error("Impossible de trouver "+nom.getText()+" "+prenom.getText()) ;
                     return ;
                 }
             }
             catch(SQLException sqlex)
             {
-                
+                Message.warning("ERREUR DE REQÊTE SQL !");
             }
             authentification();
         }

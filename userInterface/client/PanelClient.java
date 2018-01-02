@@ -436,8 +436,8 @@ public class PanelClient implements Observateur
         });
         sex_list.addActionListener(new Combo_Action());
         
-        /* Nationalité des clients */
-        nation_list = new JComboBox<String>( (String[]) ListNation.getHinstance().getList().toArray()) ;
+        /* Nationalité des clients */      
+        nation_list = new JComboBox<String>((String[]) ListNation.getHinstance().getList().toArray()) ;
         nation_list.addActionListener(new Combo_Action());
 
         print_list = new JComboBox<String>(new String[]

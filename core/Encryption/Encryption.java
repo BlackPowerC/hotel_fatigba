@@ -13,7 +13,7 @@ public class Encryption
     private byte bytes[];
     private static Encryption p_singleton = null;
 
-    Encryption()
+    private Encryption()
     {
     }
 
