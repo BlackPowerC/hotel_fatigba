@@ -221,7 +221,7 @@ public class ConnectionView extends JFrame implements ActionListener, KeyListene
         /* Céation du fichier JSon de configuration */
         JSONObject json = new JSONObject();
         json.put("Host", databaseHost.getText());
-        json.put("Pass", AdvancedEncryption.getInstance().encrypt(pass.getText(), "hotel_fatigba"));
+        json.put("Pass", pass.getText());
         json.put("Name", databaseName.getText());
         json.put("User", user.getText());
         json.put("Port", databasePort.getValue().toString());
@@ -246,11 +246,13 @@ public class ConnectionView extends JFrame implements ActionListener, KeyListene
         }
         catch (FileNotFoundException ex)
         {
+            Message.error("Fichier de configuration non trouvé !");
             Logger.getLogger(ConnectionView.class.getName()).log(Level.SEVERE, null, ex);
 
         }
         catch (IOException ex)
         {
+            Message.error("Erreur inconnue !");
             Logger.getLogger(ConnectionView.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -272,11 +274,9 @@ public class ConnectionView extends JFrame implements ActionListener, KeyListene
                     /* afficher un message d'erreur */
                     return;
                 }
+                Configuration cf = Configuration.getInstance();
                 createConfiguration();
-                Database.getHinstance().Connect(
-                            Configuration.getInstance().getDatabaseUser(), 
-                            AdvancedEncryption.getInstance().decrypt(
-                                    Configuration.getInstance().getDatabasePasswd(), "hotel_new"));
+                Database.getHinstance().Connect(cf.getDatabaseUser(),cf.getDatabasePasswd());
                 AuthView c = new AuthView();
                 this.dispose();
             } catch (SQLException ex)
@@ -291,8 +291,7 @@ public class ConnectionView extends JFrame implements ActionListener, KeyListene
     @Override
     public void keyPressed(KeyEvent ev)
     {
-        int code = ev.getKeyCode();
-        if (code == KeyEvent.VK_ENTER)
+        if (ev.getKeyCode()== KeyEvent.VK_ENTER)
         {
             try
             {
@@ -301,11 +300,9 @@ public class ConnectionView extends JFrame implements ActionListener, KeyListene
                     /* afficher un message d'erreur */
                     return;
                 }
+                Configuration cf = Configuration.getInstance();
                 createConfiguration();
-                Database.getHinstance().Connect(
-                            Configuration.getInstance().getDatabaseUser(), 
-                            AdvancedEncryption.getInstance().decrypt(
-                                    Configuration.getInstance().getDatabasePasswd(), "hotel_new"));
+                Database.getHinstance().Connect(cf.getDatabaseUser(), cf.getDatabasePasswd());
                 AuthView c = new AuthView();
                 this.dispose();
             } catch (SQLException ex)
@@ -315,7 +312,7 @@ public class ConnectionView extends JFrame implements ActionListener, KeyListene
                 Logger.getLogger(ConnectionView.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        else if (code == KeyEvent.VK_ESCAPE)
+        else if (ev.getKeyCode() == KeyEvent.VK_ESCAPE)
         {
             System.exit(DISPOSE_ON_CLOSE);
         }

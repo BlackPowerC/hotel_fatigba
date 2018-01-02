@@ -30,16 +30,7 @@ public class Main
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex)
-        {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex)
-        {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex)
-        {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex)
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex)
         {
             java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
@@ -69,10 +60,7 @@ public class Main
                 cf.setConfiguration(json);
                 System.out.println(cf.toString());
                 System.out.println(cf.getURL());
-                Database.getHinstance().Connect(
-                        Configuration.getInstance().getDatabaseUser(),
-                        AdvancedEncryption.getInstance().decrypt(
-                                Configuration.getInstance().getDatabasePasswd(), "hotel_new"));
+                Database.getHinstance().Connect(cf.getDatabaseUser(),cf.getDatabasePasswd());
                 AuthView av = new AuthView();
 
             }
