@@ -10,6 +10,7 @@ public class FactoryManager
     public static final int FACTURATION_MANAGER =4;
     public static final int RESERVATION_MANAGER =5;
     public static final int USER_MANAGER =6 ;
+    public static final int SERVICE_MANAGER =7 ;
     
     private FactoryManager()
     {
@@ -27,6 +28,10 @@ public class FactoryManager
     
     public Manager<?> getManager(String classname)
     {
+        if(classname.compareToIgnoreCase(ServiceManager.class.getName()) == 0)
+        {
+            return ServiceManager.getInstance() ;
+        }
         if(classname.compareToIgnoreCase(ClientManager.class.getName()) == 0)
         {
             return ClientManager.getInstance() ;
@@ -47,6 +52,10 @@ public class FactoryManager
         {
             return UserManager.getInstance() ;
         }
+        if(classname.compareToIgnoreCase(ConsommationManager.class.getName()) == 0)
+        {
+            return ConsommationManager.getInstance() ;
+        }
         return null ;
     }
     
@@ -60,6 +69,10 @@ public class FactoryManager
                 return ChambreManager.getInstance() ;
             case FACTURATION_MANAGER:
                 return FacturationManager.getInstance() ;
+            case SERVICE_MANAGER:
+                return ServiceManager.getInstance() ;
+            case CONSOMMATION_MANAGER:
+                return ConsommationManager.getInstance() ;    
             case RESERVATION_MANAGER:
                 return ReservationManager.getInstance() ;
             case USER_MANAGER:
