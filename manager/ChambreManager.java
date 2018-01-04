@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -191,7 +192,7 @@ public class ChambreManager extends Manager<Chambre>
                 + "AND (scDescription = ? "+strict+" ccDescription = ? "+strict+" tcDescription=?)" ;
         try
         {
-            PreparedStatement stmt = (PreparedStatement) Database.getHinstance().getConnection().prepareStatement(sql) ;
+            PreparedStatement stmt = Database.getHinstance().prepare(sql) ;
             stmt.setString(1, criteria);
             stmt.setString(2, criteria);
             stmt.setString(3, criteria);
@@ -220,5 +221,10 @@ public class ChambreManager extends Manager<Chambre>
             sqlex.printStackTrace(new PrintStream(System.err)) ;
         }
         return null ;
+    }
+
+    public ArrayList<Chambre> findInRange(Vector<Integer> range) 
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
