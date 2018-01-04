@@ -9,13 +9,10 @@ import bo.Service;
 import com.mysql.jdbc.PreparedStatement;
 import core.Database;
 import core.Message;
-import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -23,7 +20,21 @@ import java.util.logging.Logger;
  */
 public class ServiceManager extends Manager<Service>
 {
-
+    private static ServiceManager p_singleton = null ;
+    
+    private ServiceManager()
+    {
+        
+    }
+    
+    public static ServiceManager getInstance()
+    {
+        if(p_singleton == null)
+        {
+            p_singleton = new ServiceManager() ;
+        }
+        return p_singleton ;
+    }
     @Override
     public boolean insert(Service entity)
     {
