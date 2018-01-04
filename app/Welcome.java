@@ -33,7 +33,7 @@ public class Welcome
 		Font font = new Font("Purisa", Font.BOLD, 25);
 		txtApp = new JLabel("HOTEL WEST OCEAN") ;
 		txtApp.setFont(font) ;
-		fond = new Background("/home/jordy/workspace/Hotel/src/backgrounds/bg-hotel-bay.jpg") ;
+		fond = new Background("/home/jordy/workspace/hotel_fatigba/src/ressource/backgrounds/bg-hotel-bay.jpg") ;
 		fond.setLayout(null) ;
 		
 		calendar = new JCalendar() ;
@@ -42,7 +42,7 @@ public class Welcome
 	//	setSize((int)tk.getScreenSize().getWidth()-20, (int) tk.getScreenSize().getHeight()-40);
 		
 		
-		txtApp.setBounds(((int)tk.getScreenSize().getWidth()-20)/2 - 400, 50 ,800, 100) ;
+		txtApp.setBounds(((int)tk.getScreenSize().getWidth()-200)/2 - 400, 50 ,800, 100) ;
 		addContent() ;
 	}
 	

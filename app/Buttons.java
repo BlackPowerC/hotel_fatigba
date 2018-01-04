@@ -10,11 +10,11 @@ public class Buttons
 
     private void Build_Button()
     {
-        search = new Button("/home/jordy/workspace/Hotel/src/icons/PNG-48/Search.png");
-        update = new Button("/home/jordy/workspace/Hotel/src/icons/PNG-48/Modify.png");
-        ok = new Button("/home/jordy/workspace/Hotel/src/icons/PNG-48/Add.png");
-        reset = new Button("/home/jordy/workspace/Hotel/src/icons/repeat.png");
-        delete = new Button("/home/jordy/workspace/Hotel/src/icons/PNG-48/Delete.png");
+        search = new Button("/home/jordy/workspace/hotel_fatigba/src/ressource/PNG-48/Search.png");
+        update = new Button("/home/jordy/workspace/hotel_fatigba/src/ressource/PNG-48/Modify.png");
+        ok = new Button("/home/jordy/workspace/hotel_fatigba/src/ressource/PNG-48/Add.png");
+        reset = new Button("/home/jordy/workspace/hotel_fatigba/src/ressource/PNG-48/repeat.png");
+        delete = new Button("/home/jordy/workspace/hotel_fatigba/src/ressource/PNG-48/Delete.png");
     }
 
     public void setPosition(int x2, int w2, int h)

@@ -79,13 +79,13 @@ public class AuthView extends JFrame implements ActionListener, KeyListener
         ok = new JButton("OK");
         ok.setSize(200, 50);
         ok.addActionListener(this);
-        ok.setIcon(new ImageIcon("/home/jordy/workspace/Hotel/src/icons/check/checkmark_32.png"));
+        ok.setIcon(new ImageIcon("/home/jordy/workspace/hotel_fatigba/src/ressource/icons/checkmark_32.png"));
         ok.addActionListener(this);
         
         annuler = new JButton("Annuler");
         annuler.setSize(200, 50);
         annuler.addActionListener(this);
-        annuler.setIcon(new ImageIcon("/home/jordy/workspace/Hotel/src/icons/check/error_32.png"));
+        annuler.setIcon(new ImageIcon("/home/jordy/workspace/hotel_fatigba/src/ressource/icons/error_32.png"));
     }
 
     public void Build_TextField()
@@ -131,7 +131,7 @@ public class AuthView extends JFrame implements ActionListener, KeyListener
 
     private void Build_Panel()
     {
-        fond = new Background("/home/jordy/workspace/Hotel/src/backgrounds/1165013_fusions-acquisitions-la-securite-informatique-au-coeur-des-preoccupations-141438-1.jpg");
+        fond = new Background("/home/jordy/workspace/hotel_fatigba/src/ressource/backgrounds/1165013_fusions-acquisitions-la-securite-informatique-au-coeur-des-preoccupations-141438-1.jpg");
         setPosition();
         addContent();
     }
