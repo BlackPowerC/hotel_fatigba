@@ -6,6 +6,7 @@ import bo.Sexe;
 import bo.TypeClient;
 import com.mysql.jdbc.PreparedStatement;
 import core.Database;
+import core.Message;
 import java.io.PrintStream;
 import java.sql.Date;
 import java.sql.ResultSet;
@@ -123,7 +124,7 @@ public class ClientManager extends Manager<Client>
         Sexe s ;
         Nationalite n ;
         TypeClient tc  ;
-        String sql ="SELECT c.id, c.nom, c.prenom, c.age, c.fidele, c.etranger, c.id_nation, c.id_type, c.id_sexe, n.nom_fr_fr, s.descripion as sDescription, tc.descripion as tcDescription "
+        String sql ="SELECT c.id, c.nom, c.email, c.prenom, c.age, c.fidele, c.etranger, c.id_nation, c.id_type, c.id_sexe, n.nom_fr_fr, s.description as sDescription, tc.description as tcDescription "
                         + "FROM Client c, Nation n, Sexe s, TypeClient tc "
                         + "WHERE c.id_nation = n.id "
                         + "AND c.id_type = tc.id "
@@ -147,6 +148,7 @@ public class ClientManager extends Manager<Client>
         catch(SQLException ex)
         {
             /* Affichafe d'un message d'erreur */
+            Message.error("ERREUR DE REQUÊTES SQL !");
             Logger.getLogger(ClientManager.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null ;
@@ -179,6 +181,7 @@ public class ClientManager extends Manager<Client>
         catch(SQLException sqlex)
         {
             /* Affichafe d'un message d'erreur */
+            Message.error("ERREUR DE REQUÊTES SQL !");
             Logger.getLogger(ClientManager.class.getName()).log(Level.SEVERE, null, sqlex);
         }
         return -1 ;
@@ -220,6 +223,7 @@ public class ClientManager extends Manager<Client>
         } catch (SQLException ex)
         {
             /* Affichafe d'un message d'erreur */
+            Message.error("ERREUR DE REQUÊTES SQL !");
             Logger.getLogger(ClientManager.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null ;
