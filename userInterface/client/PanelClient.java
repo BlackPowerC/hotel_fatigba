@@ -415,14 +415,14 @@ public class PanelClient implements Observateur
     private void Build_Combo()
     {
         /* Nombre de client dans un groupe */
-        nombre_list = new JComboBox<Integer>(new Integer[] {1, 2, 3});
+        nombre_list = new JComboBox<>(new Integer[] {1, 2, 3});
         nombre_list.addActionListener(new Combo_Action());
         nombre_list.enable(false);
         /* Type de client */
-        typeClient_list = new JComboBox<String>(new String[]{"", "Privé", "Groupe", "Affaire", "TOP", "V.I.P"});
+        typeClient_list = new JComboBox<>(new String[]{"", "lambda", "v.i.p", "premium", "master"});
         typeClient_list.addActionListener(new Combo_Action());
         /* Age */
-        age_list = new JComboBox<Integer>();
+        age_list = new JComboBox<>();
         age_list.addActionListener(new Combo_Action());
         for (int i = 0; i < 82; i++)
         {
@@ -430,17 +430,18 @@ public class PanelClient implements Observateur
         }
         
         /* Sexe des client */
-        sex_list = new JComboBox<String>(new String[]
-        {
-            "", "Homme", "Femme"
-        });
+        sex_list = new JComboBox<>(new String[]{ "", "homme", "femme"});
         sex_list.addActionListener(new Combo_Action());
         
         /* Nationalité des clients */      
-        nation_list = new JComboBox<String>((String[]) ListNation.getHinstance().getList().toArray()) ;
+        nation_list = new JComboBox<>() ;
+        ListNation.getHinstance().getList().forEach((n) -> {
+            nation_list.addItem(n.getDescription());
+        });
+                
         nation_list.addActionListener(new Combo_Action());
 
-        print_list = new JComboBox<String>(new String[]
+        print_list = new JComboBox<>(new String[]
         {
             "", "Clients fidèles", "Clients étrangers", "Clients arrivées par période", "Clients partis par période"
         });

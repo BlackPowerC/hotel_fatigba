@@ -9,39 +9,39 @@ import app.TableComponent;
 
 public class JTableClient
 {
-	private static JTableClient singleton = null ;
-	private JTableClientModel model ;
-	private JTable ClientList ;
-	private JScrollPane scroll ;
+    private static JTableClient singleton = null ;
+    private JTableClientModel model ;
+    private JTable ClientList ;
+    private JScrollPane scroll ;
 	
-	private JTableClient()
+    private JTableClient()
+    {
+	Build_Table();
+    }
+	
+    public static JTableClient getHinstance()
+    {
+	if(singleton == null)
 	{
-		Build_Table();
+            singleton = new JTableClient() ;
 	}
+	return singleton ;
+    }
 	
-	public static JTableClient getHinstance()
-	{
-		if(singleton == null)
-		{
-			singleton = new JTableClient() ;
-		}
-		return singleton ;
-	}
-	
-	private void Build_Table()
-	{
-		model = new JTableClientModel() ;
-		ClientList = new JTable(model) ;
-//		ClientList.setShowGrid(false);
-		ClientList.getColumn("Fidélité").setCellEditor(new CheckEditor(new JCheckBox()));
-		ClientList.setDefaultRenderer(JCheckBox.class, new TableComponent()) ;
+    private void Build_Table()
+    {
+        model = new JTableClientModel() ;
+	ClientList = new JTable(model) ;
+	ClientList.setShowGrid(false);
+	ClientList.getColumn("Fidélité").setCellEditor(new CheckEditor(new JCheckBox()));
+	ClientList.setDefaultRenderer(JCheckBox.class, new TableComponent()) ;
 		
-		for(int i = 0; i<ClientList.getRowCount(); i++)
-		{
-			ClientList.setRowHeight(25) ;
-		}
-		scroll = new JScrollPane(ClientList) ;
+	for(int i = 0; i<ClientList.getRowCount(); i++)
+	{
+            ClientList.setRowHeight(25) ;
 	}
+        scroll = new JScrollPane(ClientList) ;
+    }
 
 	public JTable getTable() {
 		return ClientList;

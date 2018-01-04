@@ -97,14 +97,14 @@ public class ClientManager extends Manager<Client>
                         + "AND c.id_sexe = s.id AND c.id = ?" ;
         try
         {
-            PreparedStatement ps = (PreparedStatement) Database.getHinstance().getConnection().prepareStatement(sql) ;
+            PreparedStatement ps =Database.getHinstance().prepare(sql) ;
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery() ;
             if(rs.next())
             {
-                s = new Sexe() ; s.setId(rs.getInt("id_sexe")); s.setDescription("sDescription") ;
-                n = new Nationalite(); n.setId(rs.getInt("id_nation")); n.setDescription("nom_fr_fr") ;
-                tc = new TypeClient(); tc.setId(rs.getInt("id_type")); tc.setDescription("tcDescription");
+                s = new Sexe() ; s.setId(rs.getInt("id_sexe")); s.setDescription(rs.getString("sDescription")) ;
+                n = new Nationalite(); n.setId(rs.getInt("id_nation")); n.setDescription(rs.getString("nom_fr_fr")) ;
+                tc = new TypeClient(); tc.setId(rs.getInt("id_type")); tc.setDescription(rs.getString("tcDescription"));
                 cl = new Client(rs.getInt("id"), rs.getString("nom"), rs.getString("prenom"), rs.getString("email"), 
                         "" , s, tc, n, rs.getBoolean("fidele"), rs.getBoolean("etranger"), new GregorianCalendar(0, 0, 0)) ;
                 return cl ;
@@ -135,9 +135,9 @@ public class ClientManager extends Manager<Client>
             ResultSet rs = ps.executeQuery() ;
             while(rs.next())
             {
-                s = new Sexe() ; s.setId(rs.getInt("id_sexe")); s.setDescription("sDescription") ;
-                n = new Nationalite(); n.setId(rs.getInt("id_nation")); n.setDescription("nom_fr_fr") ;
-                tc = new TypeClient(); tc.setId(rs.getInt("id_type")); tc.setDescription("tcDescription");
+                s = new Sexe() ; s.setId(rs.getInt("id_sexe")); s.setDescription(rs.getString("sDescription")) ;
+                n = new Nationalite(); n.setId(rs.getInt("id_nation")); n.setDescription(rs.getString("nom_fr_fr")) ;
+                tc = new TypeClient(); tc.setId(rs.getInt("id_type")); tc.setDescription(rs.getString("tcDescription"));
                     all.add(
                             new Client(rs.getInt("id"), rs.getString("nom"), rs.getString("prenom"), rs.getString("email"), 
                             "" , s, tc, n, rs.getBoolean("fidele"), rs.getBoolean("etranger"), new GregorianCalendar(0, 0, 0))
@@ -223,7 +223,7 @@ public class ClientManager extends Manager<Client>
         } catch (SQLException ex)
         {
             /* Affichafe d'un message d'erreur */
-            Message.error("ERREUR DE REQUÊTES SQL !");
+            Message.error(ex.getMessage()+" !");
             Logger.getLogger(ClientManager.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null ;
