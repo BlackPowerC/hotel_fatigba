@@ -1,13 +1,18 @@
 package manager ;
 
 import bo.Chambre;
+import bo.Client;
 import bo.Reservation;
 import com.mysql.jdbc.PreparedStatement;
 import core.Database;
 import core.Message;
 import java.sql.Date;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
+import utils.Util;
 
 public class ReservationManager extends Manager<Reservation>
 {
@@ -75,25 +80,60 @@ public class ReservationManager extends Manager<Reservation>
     @Override
     public Reservation findById(int id)
     {
-        
+        Reservation reservation ;
+        String date, date_arrive, date_fin ;
+        String sql = "SELECT * FROM Reservation "
+                        + "LEFT JOIN Reserve ON Reserve.id_reservation = Reservation.id "
+                        + "WHERE Reservation.id = ?";
+        try
+        {
+            PreparedStatement ps = Database.getHinstance().prepare(sql) ;
+            ResultSet rs = ps.executeQuery() ;
+            if(rs.next())
+            {
+                /* Récupération des chambres */
+                Vector<Integer> range = new Vector<>();
+                while(rs.next()) {range.add(rs.getInt("id_chambre")) ;}
+                ArrayList<Chambre> list_chambre = ChambreManager.getInstance().findInRange(range);
+                rs.previous();
+                /* Récupération des dates */
+                date = rs.getString("date"); date_arrive = rs.getString("date_arrivee"); date_fin = rs.getString("date_fin");
+                /* Récupération du client ayant réservé */
+                Client client = (Client) FactoryManager.getInstance()
+                        .getManager(FactoryManager.CLIENT_MANAGER)
+                        .findById(rs.getInt("id_client")) ;
+                /* Construction de l'objet réservation */
+                reservation = new Reservation(id, client, list_chambre, 
+                        Util.stringToCalendar(date), 
+                        Util.stringToCalendar(date_arrive), 
+                        Util.stringToCalendar(date_fin), 
+                        rs.getBoolean("etat"));
+                return reservation ;
+            }
+            return null ;
+        }catch(SQLException sqlex)
+        {
+            Message.error(sqlex.getMessage()+" !") ;
+            sqlex.printStackTrace();
+        }
+        return null;
     }
 
     @Override
     public List<Reservation> findByCriteria(String criteria, boolean strict)
     {
-        
+        return new ArrayList<Reservation>() ;
     }
 
     @Override
     public List<Reservation> findAll()
     {
-        
+        return new ArrayList<Reservation>();
     }
     
     @Override
     public int update(Reservation entity)
     {
-        
+        return -1;
     }
-    
 }
