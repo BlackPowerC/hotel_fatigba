@@ -3,6 +3,7 @@ package manager.data;
 import bo.Chambre;
 import java.util.ArrayList;
 import java.util.List;
+import manager.ChambreManager;
 import manager.FactoryManager;
 
 public class ListChambre
@@ -23,7 +24,7 @@ public class ListChambre
     /* Le constructeur */
     private ListChambre()
     {
-        chambreTotal = (List<Chambre>) FactoryManager.getInstance().getManager(Chambre.class.getName()).findAll() ;
+        chambreTotal = (List<Chambre>) FactoryManager.getInstance().getManager(ChambreManager.class.getName()).findAll() ;
         for (Chambre chambre : chambreTotal)
         {
             if(chambre.isEtat())

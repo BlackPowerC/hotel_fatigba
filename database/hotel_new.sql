@@ -2,10 +2,10 @@
 -- version 4.5.4.1deb2ubuntu2
 -- http://www.phpmyadmin.net
 --
--- Host: localhost
--- Generation Time: Nov 28, 2017 at 07:51 AM
--- Server version: 5.7.20-0ubuntu0.16.04.1-log
--- PHP Version: 7.0.22-0ubuntu0.16.04.1
+-- Client :  localhost
+-- Généré le :  Jeu 04 Janvier 2018 à 14:45
+-- Version du serveur :  5.7.20-0ubuntu0.16.04.1
+-- Version de PHP :  7.0.22-0ubuntu0.16.04.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -17,13 +17,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `hotel_new`
+-- Base de données :  `hotel_new`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `CaracteristiqueChambre`
+-- Structure de la table `CaracteristiqueChambre`
 --
 
 CREATE TABLE `CaracteristiqueChambre` (
@@ -32,7 +32,7 @@ CREATE TABLE `CaracteristiqueChambre` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `CaracteristiqueChambre`
+-- Contenu de la table `CaracteristiqueChambre`
 --
 
 INSERT INTO `CaracteristiqueChambre` (`id`, `description`) VALUES
@@ -42,7 +42,7 @@ INSERT INTO `CaracteristiqueChambre` (`id`, `description`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `Chambre`
+-- Structure de la table `Chambre`
 --
 
 CREATE TABLE `Chambre` (
@@ -55,7 +55,7 @@ CREATE TABLE `Chambre` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `Chambre`
+-- Contenu de la table `Chambre`
 --
 
 INSERT INTO `Chambre` (`id`, `id_type`, `id_situation`, `id_caracteristique`, `prix`, `etat`) VALUES
@@ -67,7 +67,7 @@ INSERT INTO `Chambre` (`id`, `id_type`, `id_situation`, `id_caracteristique`, `p
 -- --------------------------------------------------------
 
 --
--- Table structure for table `Client`
+-- Structure de la table `Client`
 --
 
 CREATE TABLE `Client` (
@@ -77,15 +77,23 @@ CREATE TABLE `Client` (
   `age` date NOT NULL,
   `fidele` tinyint(1) NOT NULL,
   `etranger` tinyint(1) NOT NULL,
+  `email` varchar(127) NOT NULL,
   `id_nation` int(10) UNSIGNED NOT NULL,
   `id_type` int(10) UNSIGNED NOT NULL,
   `id_sexe` int(10) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Contenu de la table `Client`
+--
+
+INSERT INTO `Client` (`id`, `nom`, `prenom`, `age`, `fidele`, `etranger`, `email`, `id_nation`, `id_type`, `id_sexe`) VALUES
+(1, 'jordy', 'fatigba', '1998-04-22', 0, 0, 'fatigba72@gmail.com', 12, 2, 1);
+
 -- --------------------------------------------------------
 
 --
--- Table structure for table `Consommation`
+-- Structure de la table `Consommation`
 --
 
 CREATE TABLE `Consommation` (
@@ -97,7 +105,7 @@ CREATE TABLE `Consommation` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `Facturation`
+-- Structure de la table `Facturation`
 --
 
 CREATE TABLE `Facturation` (
@@ -114,7 +122,7 @@ CREATE TABLE `Facturation` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ModePaiement`
+-- Structure de la table `ModePaiement`
 --
 
 CREATE TABLE `ModePaiement` (
@@ -122,10 +130,21 @@ CREATE TABLE `ModePaiement` (
   `description` varchar(128) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Contenu de la table `ModePaiement`
+--
+
+INSERT INTO `ModePaiement` (`id`, `description`) VALUES
+(1, 'espèce'),
+(2, 'virement'),
+(3, 'carte de crédit'),
+(4, 'e-banque'),
+(5, 'autre');
+
 -- --------------------------------------------------------
 
 --
--- Table structure for table `Nation`
+-- Structure de la table `Nation`
 --
 
 CREATE TABLE `Nation` (
@@ -138,7 +157,7 @@ CREATE TABLE `Nation` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `Nation`
+-- Contenu de la table `Nation`
 --
 
 INSERT INTO `Nation` (`id`, `code`, `alpha2`, `alpha3`, `nom_en_gb`, `nom_fr_fr`) VALUES
@@ -387,7 +406,7 @@ INSERT INTO `Nation` (`id`, `code`, `alpha2`, `alpha3`, `nom_en_gb`, `nom_fr_fr`
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ReglementFacture`
+-- Structure de la table `ReglementFacture`
 --
 
 CREATE TABLE `ReglementFacture` (
@@ -400,23 +419,42 @@ CREATE TABLE `ReglementFacture` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `Reservation`
+-- Structure de la table `Reservation`
 --
 
 CREATE TABLE `Reservation` (
   `id` int(10) UNSIGNED NOT NULL,
   `id_client` int(10) UNSIGNED NOT NULL,
-  `id_chambre` int(10) UNSIGNED NOT NULL,
   `date_reservation` datetime NOT NULL,
   `date_debut` datetime NOT NULL,
-  `date_arrivee` datetime NOT NULL,
+  `date_fin` datetime NOT NULL,
   `etat` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Contenu de la table `Reservation`
+--
+
+INSERT INTO `Reservation` (`id`, `id_client`, `date_reservation`, `date_debut`, `date_fin`, `etat`) VALUES
+(1, 1, '2017-12-22 06:18:00', '2017-12-25 00:00:00', '2017-12-25 00:00:00', 0),
+(2, 1, '2017-12-20 00:00:00', '2017-12-29 00:00:00', '2017-12-31 00:00:00', 0);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `Service`
+-- Structure de la table `Reserve`
+--
+
+CREATE TABLE `Reserve` (
+  `id_reservation` int(10) UNSIGNED NOT NULL,
+  `id_chambre` int(10) UNSIGNED NOT NULL,
+  `id_client` int(10) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `Service`
 --
 
 CREATE TABLE `Service` (
@@ -429,7 +467,21 @@ CREATE TABLE `Service` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `Sexe`
+-- Structure de la table `Session`
+--
+
+CREATE TABLE `Session` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `debut` datetime NOT NULL,
+  `fin` datetime NOT NULL,
+  `duree` time NOT NULL,
+  `id_user` int(10) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `Sexe`
 --
 
 CREATE TABLE `Sexe` (
@@ -437,10 +489,18 @@ CREATE TABLE `Sexe` (
   `description` varchar(128) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Contenu de la table `Sexe`
+--
+
+INSERT INTO `Sexe` (`id`, `description`) VALUES
+(1, 'homme'),
+(2, 'femme');
+
 -- --------------------------------------------------------
 
 --
--- Table structure for table `SituationChambre`
+-- Structure de la table `SituationChambre`
 --
 
 CREATE TABLE `SituationChambre` (
@@ -449,7 +509,7 @@ CREATE TABLE `SituationChambre` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `SituationChambre`
+-- Contenu de la table `SituationChambre`
 --
 
 INSERT INTO `SituationChambre` (`id`, `description`) VALUES
@@ -460,7 +520,7 @@ INSERT INTO `SituationChambre` (`id`, `description`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `TypeChambre`
+-- Structure de la table `TypeChambre`
 --
 
 CREATE TABLE `TypeChambre` (
@@ -469,7 +529,7 @@ CREATE TABLE `TypeChambre` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `TypeChambre`
+-- Contenu de la table `TypeChambre`
 --
 
 INSERT INTO `TypeChambre` (`id`, `description`) VALUES
@@ -480,7 +540,7 @@ INSERT INTO `TypeChambre` (`id`, `description`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `TypeClient`
+-- Structure de la table `TypeClient`
 --
 
 CREATE TABLE `TypeClient` (
@@ -488,10 +548,20 @@ CREATE TABLE `TypeClient` (
   `description` varchar(128) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Contenu de la table `TypeClient`
+--
+
+INSERT INTO `TypeClient` (`id`, `description`) VALUES
+(1, 'lambda'),
+(2, 'v.i.p'),
+(3, 'premium'),
+(4, 'master');
+
 -- --------------------------------------------------------
 
 --
--- Table structure for table `TypeUtilisateur`
+-- Structure de la table `TypeUtilisateur`
 --
 
 CREATE TABLE `TypeUtilisateur` (
@@ -499,15 +569,28 @@ CREATE TABLE `TypeUtilisateur` (
   `description` varchar(128) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Contenu de la table `TypeUtilisateur`
+--
+
+INSERT INTO `TypeUtilisateur` (`id`, `description`) VALUES
+(1, 'admin'),
+(2, 'clientAdmin'),
+(3, 'chambreAdmin'),
+(4, 'reservationAdmin'),
+(5, 'serviceAdmin'),
+(6, 'facturationAdmin');
+
 -- --------------------------------------------------------
 
 --
--- Table structure for table `Utilisateur`
+-- Structure de la table `Utilisateur`
 --
 
 CREATE TABLE `Utilisateur` (
   `id` int(10) UNSIGNED NOT NULL,
   `id_type` int(10) UNSIGNED NOT NULL,
+  `id_sexe` int(10) UNSIGNED NOT NULL,
   `nom` varchar(45) NOT NULL,
   `prenom` varchar(45) NOT NULL,
   `email` varchar(45) NOT NULL,
@@ -515,17 +598,24 @@ CREATE TABLE `Utilisateur` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Indexes for dumped tables
+-- Contenu de la table `Utilisateur`
+--
+
+INSERT INTO `Utilisateur` (`id`, `id_type`, `id_sexe`, `nom`, `prenom`, `email`, `password`) VALUES
+(1, 1, 0, 'fatigba', 'jordy', 'fatigba72@gmail.com', 'dalila');
+
+--
+-- Index pour les tables exportées
 --
 
 --
--- Indexes for table `CaracteristiqueChambre`
+-- Index pour la table `CaracteristiqueChambre`
 --
 ALTER TABLE `CaracteristiqueChambre`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `Chambre`
+-- Index pour la table `Chambre`
 --
 ALTER TABLE `Chambre`
   ADD PRIMARY KEY (`id`),
@@ -534,7 +624,7 @@ ALTER TABLE `Chambre`
   ADD KEY `fk_Chambre_1_idx` (`id_situation`);
 
 --
--- Indexes for table `Client`
+-- Index pour la table `Client`
 --
 ALTER TABLE `Client`
   ADD PRIMARY KEY (`id`),
@@ -543,7 +633,7 @@ ALTER TABLE `Client`
   ADD KEY `fk_Client_3_idx` (`id_sexe`);
 
 --
--- Indexes for table `Consommation`
+-- Index pour la table `Consommation`
 --
 ALTER TABLE `Consommation`
   ADD PRIMARY KEY (`id`),
@@ -551,7 +641,7 @@ ALTER TABLE `Consommation`
   ADD KEY `fk_Consommation_1_idx` (`id_client`);
 
 --
--- Indexes for table `Facturation`
+-- Index pour la table `Facturation`
 --
 ALTER TABLE `Facturation`
   ADD PRIMARY KEY (`id`),
@@ -561,165 +651,184 @@ ALTER TABLE `Facturation`
   ADD KEY `fk_Facturation_4_idx` (`id_paiement`);
 
 --
--- Indexes for table `ModePaiement`
+-- Index pour la table `ModePaiement`
 --
 ALTER TABLE `ModePaiement`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `Nation`
+-- Index pour la table `Nation`
 --
 ALTER TABLE `Nation`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `ReglementFacture`
+-- Index pour la table `ReglementFacture`
 --
 ALTER TABLE `ReglementFacture`
   ADD PRIMARY KEY (`id`),
   ADD KEY `fk_ReglementFacture_1_idx` (`id_facture`);
 
 --
--- Indexes for table `Reservation`
+-- Index pour la table `Reservation`
 --
 ALTER TABLE `Reservation`
-  ADD PRIMARY KEY (`id`,`id_client`,`id_chambre`),
-  ADD KEY `fk_Reservation_1_idx` (`id_client`),
-  ADD KEY `fk_Reservation_2_idx` (`id_chambre`);
+  ADD PRIMARY KEY (`id`,`id_client`),
+  ADD KEY `fk_Reservation_1_idx` (`id_client`);
 
 --
--- Indexes for table `Service`
+-- Index pour la table `Reserve`
+--
+ALTER TABLE `Reserve`
+  ADD PRIMARY KEY (`id_reservation`,`id_chambre`,`id_client`),
+  ADD KEY `id_chambre` (`id_chambre`),
+  ADD KEY `id_client` (`id_client`);
+
+--
+-- Index pour la table `Service`
 --
 ALTER TABLE `Service`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `Sexe`
+-- Index pour la table `Session`
+--
+ALTER TABLE `Session`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `id_user` (`id_user`);
+
+--
+-- Index pour la table `Sexe`
 --
 ALTER TABLE `Sexe`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `SituationChambre`
+-- Index pour la table `SituationChambre`
 --
 ALTER TABLE `SituationChambre`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `TypeChambre`
+-- Index pour la table `TypeChambre`
 --
 ALTER TABLE `TypeChambre`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `TypeClient`
+-- Index pour la table `TypeClient`
 --
 ALTER TABLE `TypeClient`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `TypeUtilisateur`
+-- Index pour la table `TypeUtilisateur`
 --
 ALTER TABLE `TypeUtilisateur`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `Utilisateur`
+-- Index pour la table `Utilisateur`
 --
 ALTER TABLE `Utilisateur`
   ADD PRIMARY KEY (`id`),
   ADD KEY `fk_Utilisateur_1_idx` (`id_type`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT pour les tables exportées
 --
 
 --
--- AUTO_INCREMENT for table `CaracteristiqueChambre`
+-- AUTO_INCREMENT pour la table `CaracteristiqueChambre`
 --
 ALTER TABLE `CaracteristiqueChambre`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
--- AUTO_INCREMENT for table `Chambre`
+-- AUTO_INCREMENT pour la table `Chambre`
 --
 ALTER TABLE `Chambre`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
--- AUTO_INCREMENT for table `Client`
+-- AUTO_INCREMENT pour la table `Client`
 --
 ALTER TABLE `Client`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
--- AUTO_INCREMENT for table `Consommation`
+-- AUTO_INCREMENT pour la table `Consommation`
 --
 ALTER TABLE `Consommation`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT for table `Facturation`
+-- AUTO_INCREMENT pour la table `Facturation`
 --
 ALTER TABLE `Facturation`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT for table `ModePaiement`
+-- AUTO_INCREMENT pour la table `ModePaiement`
 --
 ALTER TABLE `ModePaiement`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
--- AUTO_INCREMENT for table `Nation`
+-- AUTO_INCREMENT pour la table `Nation`
 --
 ALTER TABLE `Nation`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=242;
 --
--- AUTO_INCREMENT for table `ReglementFacture`
+-- AUTO_INCREMENT pour la table `ReglementFacture`
 --
 ALTER TABLE `ReglementFacture`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT for table `Reservation`
+-- AUTO_INCREMENT pour la table `Reservation`
 --
 ALTER TABLE `Reservation`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
--- AUTO_INCREMENT for table `Service`
+-- AUTO_INCREMENT pour la table `Service`
 --
 ALTER TABLE `Service`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT for table `Sexe`
+-- AUTO_INCREMENT pour la table `Session`
 --
-ALTER TABLE `Sexe`
+ALTER TABLE `Session`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT for table `SituationChambre`
+-- AUTO_INCREMENT pour la table `Sexe`
+--
+ALTER TABLE `Sexe`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
+-- AUTO_INCREMENT pour la table `SituationChambre`
 --
 ALTER TABLE `SituationChambre`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
--- AUTO_INCREMENT for table `TypeChambre`
+-- AUTO_INCREMENT pour la table `TypeChambre`
 --
 ALTER TABLE `TypeChambre`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
--- AUTO_INCREMENT for table `TypeClient`
+-- AUTO_INCREMENT pour la table `TypeClient`
 --
 ALTER TABLE `TypeClient`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
--- AUTO_INCREMENT for table `TypeUtilisateur`
+-- AUTO_INCREMENT pour la table `TypeUtilisateur`
 --
 ALTER TABLE `TypeUtilisateur`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
--- AUTO_INCREMENT for table `Utilisateur`
+-- AUTO_INCREMENT pour la table `Utilisateur`
 --
 ALTER TABLE `Utilisateur`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
--- Constraints for dumped tables
+-- Contraintes pour les tables exportées
 --
 
 --
--- Constraints for table `Chambre`
+-- Contraintes pour la table `Chambre`
 --
 ALTER TABLE `Chambre`
   ADD CONSTRAINT `fk_Chambre_1` FOREIGN KEY (`id_situation`) REFERENCES `SituationChambre` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
@@ -727,7 +836,7 @@ ALTER TABLE `Chambre`
   ADD CONSTRAINT `fk_Chambre_3` FOREIGN KEY (`id_caracteristique`) REFERENCES `CaracteristiqueChambre` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Constraints for table `Client`
+-- Contraintes pour la table `Client`
 --
 ALTER TABLE `Client`
   ADD CONSTRAINT `fk_Client_1` FOREIGN KEY (`id_type`) REFERENCES `TypeClient` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
@@ -735,14 +844,14 @@ ALTER TABLE `Client`
   ADD CONSTRAINT `fk_Client_3` FOREIGN KEY (`id_sexe`) REFERENCES `Sexe` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Constraints for table `Consommation`
+-- Contraintes pour la table `Consommation`
 --
 ALTER TABLE `Consommation`
   ADD CONSTRAINT `fk_Consommation_1` FOREIGN KEY (`id_client`) REFERENCES `Client` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_Consommation_2` FOREIGN KEY (`id_service`) REFERENCES `Service` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Constraints for table `Facturation`
+-- Contraintes pour la table `Facturation`
 --
 ALTER TABLE `Facturation`
   ADD CONSTRAINT `fk_Facturation_1` FOREIGN KEY (`id_client`) REFERENCES `Client` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
@@ -751,20 +860,33 @@ ALTER TABLE `Facturation`
   ADD CONSTRAINT `fk_Facturation_4` FOREIGN KEY (`id_paiement`) REFERENCES `ModePaiement` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Constraints for table `ReglementFacture`
+-- Contraintes pour la table `ReglementFacture`
 --
 ALTER TABLE `ReglementFacture`
   ADD CONSTRAINT `fk_ReglementFacture_1` FOREIGN KEY (`id_facture`) REFERENCES `Facturation` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Constraints for table `Reservation`
+-- Contraintes pour la table `Reservation`
 --
 ALTER TABLE `Reservation`
-  ADD CONSTRAINT `fk_Reservation_1` FOREIGN KEY (`id_client`) REFERENCES `Client` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_Reservation_2` FOREIGN KEY (`id_chambre`) REFERENCES `Chambre` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_Reservation_1` FOREIGN KEY (`id_client`) REFERENCES `Client` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Constraints for table `Utilisateur`
+-- Contraintes pour la table `Reserve`
+--
+ALTER TABLE `Reserve`
+  ADD CONSTRAINT `Reserve_ibfk_1` FOREIGN KEY (`id_reservation`) REFERENCES `Reservation` (`id`),
+  ADD CONSTRAINT `Reserve_ibfk_2` FOREIGN KEY (`id_chambre`) REFERENCES `Chambre` (`id`),
+  ADD CONSTRAINT `Reserve_ibfk_3` FOREIGN KEY (`id_client`) REFERENCES `Client` (`id`);
+
+--
+-- Contraintes pour la table `Session`
+--
+ALTER TABLE `Session`
+  ADD CONSTRAINT `id_user` FOREIGN KEY (`id_user`) REFERENCES `Utilisateur` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Contraintes pour la table `Utilisateur`
 --
 ALTER TABLE `Utilisateur`
   ADD CONSTRAINT `fk_Utilisateur_1` FOREIGN KEY (`id_type`) REFERENCES `TypeUtilisateur` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;

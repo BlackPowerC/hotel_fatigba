@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import bo.Service;
+import manager.FactoryManager;
 
 public class ListService
 {
@@ -26,7 +27,7 @@ public class ListService
 
     private ListService()
     {
-
+        list = (List<Service>) FactoryManager.getInstance().getManager(FactoryManager.SERVICE_MANAGER).findAll() ;
     }
 
 }

@@ -1,5 +1,6 @@
 package userInterface.reservation;
 
+import app.ComboEditor;
 import javax.swing.*;
 
 public class JTableReservation
@@ -28,7 +29,7 @@ public class JTableReservation
     {
         mdl = new JTableReservationModel();
         tableReservation = new JTable(mdl);
-//		tableReservation.setShowGrid(false);
+        tableReservation.getColumn("N° Chambre").setCellEditor(new ComboEditor(new JComboBox()));
 
         for (int i = 0; i < tableReservation.getRowCount(); i++)
         {

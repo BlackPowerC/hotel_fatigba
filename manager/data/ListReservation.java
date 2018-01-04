@@ -6,11 +6,11 @@ import java.util.List;
 
 import java.util.ArrayList;
 import manager.FactoryManager;
+import manager.ReservationManager;
 
 public class ListReservation
 {
-
-    private List<Reservation> list = new ArrayList<Reservation>();
+    private List<Reservation> list ;
     private static ListReservation singleton = null;
 
     public static ListReservation getHinstance()
@@ -24,7 +24,7 @@ public class ListReservation
 
     private ListReservation()
     {
-        list = (List<Reservation>) FactoryManager.getInstance().getManager(Reservation.class.getName()) ;
+        list = (List<Reservation>) FactoryManager.getInstance().getManager(ReservationManager.class.getName()).findAll() ;
     }
 
     public List<Reservation> getListReservation()

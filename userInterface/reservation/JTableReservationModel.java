@@ -5,6 +5,7 @@ import manager.data.ListReservation;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.List;
+import javax.swing.JComboBox;
 
 public class JTableReservationModel extends AbstractTableModel
 {
@@ -25,7 +26,17 @@ public class JTableReservationModel extends AbstractTableModel
             "N° Chambre", "Client", "Debut", "Fin", "Date", "Etat"
         };
     }
-
+    
+    @Override
+    public Class<?> getColumnClass(int col)
+    {
+        if(col==0)
+        {
+            return JComboBox.class ;
+        }
+        return Object.class;
+    }
+    
     public int getColumnCount()
     {
         return this.label.length;
@@ -63,7 +74,18 @@ public class JTableReservationModel extends AbstractTableModel
 //		System.out.println("JTableReservationModel: "+tmp.toString());
         switch (col)
         {
-
+            case 0:
+                return tmp.getChambres();
+            case 1:
+                return tmp.getClient().getNom() ;
+            case 2:
+                return tmp.getDate_arrivee().toString() ;
+            case 3:
+                return tmp.getDate_fin().toString() ;
+            case 4:
+                return tmp.getDate().toString() ;
+            case 5:
+                return tmp.isEtat();
         }
         return null;
     }
