@@ -240,6 +240,7 @@ public class ConnectionView extends JFrame implements ActionListener, KeyListene
             cf.setDatabaseName(databaseName.getText());
             cf.setDatabasePasswd(pass.getText());
             cf.setDatabaseUser(user.getText());
+            cf.setDatabaseHost(databaseHost.getText()) ;
             cf.setSgbd((String) databaseSGBD.getSelectedItem());
             cf.setSgbdPort(databasePort.getValue().toString());
             cf.setSgbdHost(databaseHost.getText());

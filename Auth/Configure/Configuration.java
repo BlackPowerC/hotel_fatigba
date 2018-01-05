@@ -68,6 +68,16 @@ public class Configuration
         this.databasePasswd = databasePasswd;
     }
 
+    public String getDatabaseHost()
+    {
+        return databaseHost;
+    }
+
+    public void setDatabaseHost(String databaseHost)
+    {
+        this.databaseHost = databaseHost;
+    }
+
     public String getDatabaseUser()
     {
         return databaseUser;
