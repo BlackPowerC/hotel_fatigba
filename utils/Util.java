@@ -5,6 +5,7 @@
  */
 package utils;
 
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.regex.Pattern;
 
@@ -49,5 +50,45 @@ public class Util
             return new GregorianCalendar(year, month, day, hour, minute, second) ;
         }
         return null ;
+    }
+    
+    /**
+     * Fonction inverse de <code>stringToCalendar</code>
+     * @param date
+     * @return une Chaine de caractère au format yyyy-mm-dd hh:mm:ss
+     */
+    public static String calendarToString(GregorianCalendar date)
+    {
+        String _date = date.get(Calendar.YEAR)+"-"+date.get(Calendar.MONTH+1)+"-"+date.get(Calendar.DAY_OF_MONTH) ;
+        String time = date.get(Calendar.HOUR_OF_DAY)+":"+date.get(Calendar.MINUTE)+":"+date.get(Calendar.SECOND) ;
+        return _date+" "+time ;
+    }
+    
+    /**
+     * 
+     * @return Une chaine de caractère représentant la date courante au format yyyy-mm-dd hh:mm:ss
+     */
+    public static String nowString()
+    {
+        Calendar c = Calendar.getInstance();
+        GregorianCalendar now = new GregorianCalendar(
+                c.get(Calendar.YEAR), c.get(Calendar.MONTH+1), c.get(Calendar.DAY_OF_MONTH),
+                c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE), c.get(Calendar.SECOND)
+        ) ;
+        return calendarToString(now) ;
+    }
+    
+    /**
+     * 
+     * @return La date courant sous la forme d'une instance de <code>GregorianCalendar</code>
+     */
+    public static GregorianCalendar nowCalendar()
+    {
+        Calendar c = Calendar.getInstance();
+        GregorianCalendar now = new GregorianCalendar(
+                c.get(Calendar.YEAR), c.get(Calendar.MONTH+1), c.get(Calendar.DAY_OF_MONTH),
+                c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE), c.get(Calendar.SECOND)
+        ) ;
+        return now ;
     }
 }
