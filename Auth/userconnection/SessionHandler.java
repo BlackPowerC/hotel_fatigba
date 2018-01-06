@@ -20,10 +20,11 @@ import utils.Util;
  */
 public class SessionHandler 
 {
+    private boolean start ;
     private Session session ;
     private static SessionHandler p_singleton = null ;
     
-    private static SessionHandler getInstance()
+    public static SessionHandler getInstance()
     {
         if(p_singleton == null)
         {
@@ -31,15 +32,23 @@ public class SessionHandler
         }
         return p_singleton ;
     }
-
+    
+    private SessionHandler()
+    {
+        start = false ;
+    }
+    
     public boolean start()
     {
         if(this.session == null || !this.session.isValid())
         {
             return false ;
         }
-        
-        String sql = "INSERT INTO Session VALUES (NULL, ?, ?, ? ?)" ;
+        if(start)
+        {
+            return false ;
+        }
+        String sql = "INSERT INTO Session VALUES (NULL, ?, ?, ?, ?)" ;
         try
         {
             PreparedStatement ps = Database.getHinstance().prepare(sql) ;
@@ -48,9 +57,15 @@ public class SessionHandler
             ps.setString(3, " ") ;
             ps.setLong(4, 0) ;
             
-            return ps.execute() ;
+            if(ps.execute())
+            {
+                start = true ;
+                Message.information("Démarrage de la session !");
+                return start ; 
+            }
         }catch(SQLException sqlex)
         {
+            Message.warning("Impossible de démarrer une session !");
             Message.error(sqlex.getMessage()+" !") ;
             sqlex.printStackTrace(); 
         }
@@ -63,6 +78,11 @@ public class SessionHandler
         {
             return -1 ;
         }
+        if(!start)
+        {
+            return - 1;
+        }
+        start = false ;
         Calendar c = Calendar.getInstance();
         this.session.setFin(new GregorianCalendar(
                 c.get(Calendar.YEAR), c.get(Calendar.MONTH+1), c.get(Calendar.DAY_OF_MONTH),
@@ -74,10 +94,13 @@ public class SessionHandler
             PreparedStatement ps = Database.getHinstance().prepare(sql) ;
             ps.setLong(1, session.getTime()) ;
             ps.setString(2, Util.calendarToString(session.getFin())) ;
+            ps.setInt(3, this.session.getId()) ;
+            Message.information("Fermeture de la session !");
             return ps.executeUpdate() ;
         }catch(SQLException sqlex)
         {
             Message.error(sqlex.getMessage()+" !") ;
+            Message.warning("Votre session s'est mal terminée !");
             sqlex.printStackTrace(); 
         }
         return -1;
@@ -91,5 +114,15 @@ public class SessionHandler
     public void setSession(Session session)
     {
         this.session = session;
+    }
+
+    public boolean isStart()
+    {
+        return start;
+    }
+
+    public void setStart(boolean start)
+    {
+        this.start = start;
     }
 }
