@@ -52,15 +52,14 @@ public class SessionHandler
         try
         {
             PreparedStatement ps = Database.getHinstance().prepare(sql) ;
-            ps.setInt(1, session.getUser().getId()) ;
-            ps.setString(2, Util.calendarToString(session.getDebut())) ;
-            ps.setString(3, " ") ;
-            ps.setLong(4, 0) ;
+            ps.setInt(4, session.getUser().getId()) ;
+            ps.setString(1, Util.calendarToString(session.getDebut())) ;
+            ps.setString(2, " ") ;
+            ps.setLong(3, 0) ;
             
             if(ps.execute())
             {
                 start = true ;
-                Message.information("Démarrage de la session !");
                 return start ; 
             }
         }catch(SQLException sqlex)
@@ -95,7 +94,6 @@ public class SessionHandler
             ps.setLong(1, session.getTime()) ;
             ps.setString(2, Util.calendarToString(session.getFin())) ;
             ps.setInt(3, this.session.getId()) ;
-            Message.information("Fermeture de la session !");
             return ps.executeUpdate() ;
         }catch(SQLException sqlex)
         {

@@ -22,6 +22,7 @@ import javax.swing.JTextField;
 import app.Background;
 import core.Database;
 import app.MainView;
+import bo.Session;
 import bo.Sexe;
 import bo.TypeUtilisateur;
 import bo.Utilisateur;
@@ -30,6 +31,8 @@ import core.Encryption.Encryption;
 import core.Message;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import manager.FactoryManager;
+import manager.UserManager;
 
 @SuppressWarnings("serial")
 public class AuthView extends JFrame implements ActionListener, KeyListener
@@ -161,6 +164,21 @@ public class AuthView extends JFrame implements ActionListener, KeyListener
                 && tmp.getPassword().compareTo(user.getPassword()) == 0)
         {
             this.dispose();
+            try
+            {
+                Utilisateur currentUser = (Utilisateur) FactoryManager.getInstance()
+                    .getManager(UserManager.class.getName())
+                    .findById(user.getId()) ;
+                System.out.println(currentUser);
+                SessionHandler.getInstance().setSession(new Session(currentUser)) ;
+                SessionHandler.getInstance().start() ;
+            }catch(NullPointerException npe)
+            {
+                Message.warning("Impossible de démarrer une session !");
+                npe.printStackTrace();
+            }
+            
+            Message.information("Démarrage de la session !");
             MainView main = new MainView("HOTEL");
         }
         else
@@ -178,7 +196,7 @@ public class AuthView extends JFrame implements ActionListener, KeyListener
         {
             try
             {
-                String sql = "SELECT nom, prenom, password FROM Utilisateur WHERE nom=? AND prenom=? AND password=?" ;
+                String sql = "SELECT id, nom, prenom, password FROM Utilisateur WHERE nom=? AND prenom=? AND password=?" ;
                 PreparedStatement ps = Database.getHinstance().prepare(sql) ;
                 ps.setString(1, nom.getText());
                 ps.setString(3, pass.getText());
@@ -187,6 +205,7 @@ public class AuthView extends JFrame implements ActionListener, KeyListener
                 ResultSet rs = ps.executeQuery() ;
                 if(rs.next())
                 {
+                    user.setId(rs.getInt("id")) ;
                     user.setNom(rs.getString("nom"));
                     user.setPassword(rs.getString("password"));
                     user.setPrenom(rs.getString("prenom"));

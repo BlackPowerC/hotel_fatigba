@@ -5,6 +5,7 @@ import bo.TypeUtilisateur;
 import bo.Utilisateur;
 import com.mysql.jdbc.PreparedStatement;
 import core.Database;
+import core.Message;
 import java.io.PrintStream;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -43,7 +44,7 @@ public class UserManager extends Manager<Utilisateur>
         String sql = "INSERT INTO Utilisateur VALUES(?, ?, ?, ?, ?, ?)" ;
         try
         {
-            PreparedStatement st = (PreparedStatement) Database.getHinstance().getConnection().prepareStatement(sql) ;
+            PreparedStatement st = (PreparedStatement) Database.getHinstance().prepare(sql) ;
             st.setInt(1, entity.getId()) ;
             st.setInt(2, entity.getType().getId()) ;
             st.setInt(3, entity.getSexe().getId()) ;
@@ -68,14 +69,14 @@ public class UserManager extends Manager<Utilisateur>
         String sql = "DELETE FROM Utilisateur WHERE id=?";
         try
         {
-            PreparedStatement ps = (PreparedStatement) Database.getHinstance().getConnection().prepareStatement(sql);
+            PreparedStatement ps = (PreparedStatement) Database.getHinstance().prepare(sql);
             ps.setInt(1, id);
             ps.execute();
         }
         catch (SQLException ex)
         {
             /* Affichafe d'un message d'erreur */
-            Logger.getLogger(ClientManager.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UserManager.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -85,20 +86,20 @@ public class UserManager extends Manager<Utilisateur>
         Utilisateur u ;
         Sexe s ;
         TypeUtilisateur tu  ;
-        String sql ="SELECT u.id, u.nom, u.prenom, u.email, u.password, u.id_type, u.id_sexe, s.descripion as sDescription, tu.descripion as tuDescription "
-                        + "FROM Utilisateur u, Sexe s, TypeUtilisateur tu "
-                        + "WHERE u.id_type = tu.id "
-                        + "AND u.id_sexe = s.id "
-                        + "AND u.id = ?" ;
+        String sql ="SELECT u.id, u.nom, u.prenom, u.email, u.password, u.id_type, u.id_sexe, s.description as sDescription, tu.description as tuDescription "
+                        + "FROM Utilisateur u "
+                        + "LEFT JOIN TypeUtilisateur tu ON u.id_type = tu.id "
+                        + "RIGHT JOIN Sexe s ON u.id_sexe = s.id "
+                        + "WHERE u.id = ?" ;
         try
         {
-            PreparedStatement ps = (PreparedStatement) Database.getHinstance().getConnection().prepareStatement(sql) ;
+            PreparedStatement ps = (PreparedStatement) Database.getHinstance().prepare(sql) ;
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery() ;
             if(rs.next())
             {
-                s = new Sexe() ; s.setId(rs.getInt("id_sexe")); s.setDescription("sDescription") ;
-                tu = new TypeUtilisateur(); s.setId(rs.getInt("id_type")); s.setDescription("tuDescription");
+                s = new Sexe() ; s.setId(rs.getInt("id_sexe")); s.setDescription(rs.getString("sDescription")) ;
+                tu = new TypeUtilisateur(); s.setId(rs.getInt("id_type")); s.setDescription(rs.getString("tuDescription"));
                 u = new Utilisateur(rs, s, tu);
                 return u ;
             }
@@ -106,7 +107,8 @@ public class UserManager extends Manager<Utilisateur>
         catch (SQLException ex)
         {
             /* Affichafe d'un message d'erreur */
-            Logger.getLogger(ClientManager.class.getName()).log(Level.SEVERE, null, ex);
+            Message.error(ex.getMessage()+ " !");
+            Logger.getLogger(UserManager.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null ;
     }
@@ -118,21 +120,21 @@ public class UserManager extends Manager<Utilisateur>
         Sexe s ;
         TypeUtilisateur tu  ;
         String st = (strict) ? "AND": "OR" ;
-        String sql ="SELECT u.id, u.nom, u.prenom, u.email, u.password, u.id_type, u.id_sexe, s.descripion as sDescription, tu.descripion as tuDescription "
+        String sql ="SELECT u.id, u.nom, u.prenom, u.email, u.password, u.id_type, u.id_sexe, s.description as sDescription, tu.description as tuDescription "
                         + "FROM Utilisateur u "
                         + "LEFT JOIN TypeUtilisateur tu ON u.id_type = tu.id "
                         + "RIGHT JOIN Sexe s ON u.id_sexe = s.id "
                         + "WHERE u.nom=? "+st+" u.prenom=?" ;
         try
         {
-            PreparedStatement ps = (PreparedStatement) Database.getHinstance().getConnection().prepareStatement(sql) ;
+            PreparedStatement ps = (PreparedStatement) Database.getHinstance().prepare(sql) ;
             ps.setString(1, criteria);
             ps.setString(2, criteria);
             ResultSet rs =ps.executeQuery() ;
             while(rs.next())
             {
-                s = new Sexe() ; s.setId(rs.getInt("id_sexe")); s.setDescription("sDescription") ;
-                tu = new TypeUtilisateur(); s.setId(rs.getInt("id_type")); s.setDescription("tuDescription");
+                s = new Sexe() ; s.setId(rs.getInt("id_sexe")); s.setDescription(rs.getString("sDescription")) ;
+                tu = new TypeUtilisateur(); s.setId(rs.getInt("id_type")); s.setDescription(rs.getString("tuDescription"));
                 lu.add(new Utilisateur(rs, s, tu));
             }
             return lu ;
@@ -140,7 +142,8 @@ public class UserManager extends Manager<Utilisateur>
         catch (SQLException ex)
         {
             /* Affichafe d'un message d'erreur */
-            Logger.getLogger(ClientManager.class.getName()).log(Level.SEVERE, null, ex);
+            Message.error(ex.getMessage()+ " !");
+            Logger.getLogger(UserManager.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null ;
     }
@@ -151,7 +154,7 @@ public class UserManager extends Manager<Utilisateur>
         List<Utilisateur> lu = new ArrayList<Utilisateur>() ;
         Sexe s ;
         TypeUtilisateur tu  ;
-        String sql ="SELECT u.id, u.nom, u.prenom, u.email, u.password, u.id_type, u.id_sexe, s.descripion as sDescription, tu.descripion as tuDescription "
+        String sql ="SELECT u.id, u.nom, u.prenom, u.email, u.password, u.id_type, u.id_sexe, s.description as sDescription, tu.description as tuDescription "
                         + "FROM Utilisateur u "
                         + "LEFT JOIN TypeUtilisateur tu ON u.id_type = tu.id "
                         + "RIGHT JOIN Sexe s ON u.id_sexe = s.id" ;
@@ -160,8 +163,8 @@ public class UserManager extends Manager<Utilisateur>
             ResultSet rs =Database.getHinstance().executeQuery(sql) ;
             while(rs.next())
             {
-                s = new Sexe() ; s.setId(rs.getInt("id_sexe")); s.setDescription("sDescription") ;
-                tu = new TypeUtilisateur(); s.setId(rs.getInt("id_type")); s.setDescription("tuDescription");
+                s = new Sexe() ; s.setId(rs.getInt("id_sexe")); s.setDescription(rs.getString("sDescription")) ;
+                tu = new TypeUtilisateur(); s.setId(rs.getInt("id_type")); s.setDescription(rs.getString("tuDescription"));
                 lu.add(new Utilisateur(rs, s, tu));
             }
             return lu ;
@@ -169,7 +172,8 @@ public class UserManager extends Manager<Utilisateur>
         catch (SQLException ex)
         {
             /* Affichafe d'un message d'erreur */
-            Logger.getLogger(ClientManager.class.getName()).log(Level.SEVERE, null, ex);
+            Message.error(ex.getMessage()+ " !");
+            Logger.getLogger(UserManager.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null ;
     }
@@ -185,7 +189,7 @@ public class UserManager extends Manager<Utilisateur>
         String sql="UPDATE Utilisateur set id_type=?, id_sexe=?, nom=?, prenom=?, email=?, password=? WHERE id=?" ;
         try
         {
-            PreparedStatement st = (PreparedStatement) Database.getHinstance().getConnection().prepareStatement(sql) ;
+            PreparedStatement st = (PreparedStatement) Database.getHinstance().prepare(sql) ;
             st.setInt(1, entity.getType().getId());
             st.setInt(2, entity.getSexe().getId());
             st.setString(3, entity.getNom());
@@ -198,7 +202,8 @@ public class UserManager extends Manager<Utilisateur>
         catch(SQLException sqlex)
         {
             /* Affichafe d'un message d'erreur */
-            Logger.getLogger(ClientManager.class.getName()).log(Level.SEVERE, null, sqlex);
+            Message.error(sqlex.getMessage()+ " !");
+            Logger.getLogger(UserManager.class.getName()).log(Level.SEVERE, null, sqlex);
         }
         return -1 ;
     }
