@@ -12,6 +12,7 @@ import java.io.FileReader;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.SwingUtilities;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
@@ -61,8 +62,14 @@ public class Main
                 System.out.println(cf.toString());
                 System.out.println(cf.getURL());
                 Database.getHinstance().Connect(cf.getDatabaseUser(),cf.getDatabasePasswd());
-                AuthView av = new AuthView();
-
+                SwingUtilities.invokeLater(new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        new AuthView();
+                    }
+                });
             }
         } catch (SQLException ex)
         {
