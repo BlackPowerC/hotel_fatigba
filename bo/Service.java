@@ -67,6 +67,6 @@ public class Service extends Entity
     @Override
     public boolean isValid()
     {
-        return !this.description.isEmpty() && (prix != 0.0f) ;
+        return super.isValid() && !this.description.isEmpty() && (prix > 0.0f) ;
     }
 }

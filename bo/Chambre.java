@@ -109,9 +109,9 @@ public class Chambre extends Entity
     @Override
     public boolean isValid()
     {
-        return situation.isValid() &&
+        return super.isValid() && situation.isValid() &&
                type.isValid() &&
                caracteristique.isValid() &&
-               (prix != 0.0f) ;
+               (prix > 0.0f) ;
     }
 }

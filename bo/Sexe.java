@@ -17,10 +17,4 @@ public class Sexe extends Typologie
     {
         super() ;
     }
-    
-    @Override
-    public boolean isValid()
-    {
-        return Pattern.compile("^Homme|Femme$", Pattern.CASE_INSENSITIVE).matcher(description).matches() ;
-    }
 }

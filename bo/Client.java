@@ -88,7 +88,8 @@ public class Client extends Personne
     {
         return super.isValid() &&
                nation.isValid() &&
-               type.isValid() ;
+               type.isValid() &&
+               sexe.isValid() ;
     }
     
     public int getAge()

@@ -100,12 +100,12 @@ public class Personne extends Entity
     @Override
     public boolean isValid()
     {
-        String namePattern = "^[a-zA-Z]$";
-        String emailPattern = "^[a-zA-Z0-9]@[a-zA-Z0-9].{fr,com}$";
+        String namePattern = "^[a-zA-Z]+$";
+        String emailPattern = "^[\\w]+@[a-z]+\\.[a-z]{2,6}$";
         boolean localValid ;
-        localValid = Pattern.compile(namePattern).matcher(this.nom).matches()
-                && Pattern.compile(namePattern).matcher(this.prenom).matches()
-                && Pattern.compile(emailPattern).matcher(this.email).matches();
+        localValid = Pattern.compile(namePattern, Pattern.CASE_INSENSITIVE).matcher(this.nom).matches()
+                && Pattern.compile(namePattern, Pattern.CASE_INSENSITIVE).matcher(this.prenom).matches()
+                && Pattern.compile(emailPattern, Pattern.CASE_INSENSITIVE).matcher(this.email).matches();
         return super.isValid() && localValid ;
     }
 }

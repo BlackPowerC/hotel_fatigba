@@ -37,6 +37,6 @@ public abstract class Typologie extends Entity
     @Override
     public boolean isValid()
     {
-        return this.description.isEmpty() ;
+        return super.isValid() && !this.description.isEmpty() ;
     }
 }

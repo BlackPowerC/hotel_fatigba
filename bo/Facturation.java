@@ -121,6 +121,12 @@ public class Facturation extends Entity
     @Override
     public boolean isValid()
     {
-        return client.isValid() && paiement.isValid() ;
+        return super.isValid() &&
+                client.isValid() && 
+                paiement.isValid() &&
+                reservation.isValid() &&
+                consommation.isValid() &&
+                paiement.isValid() 
+                && total > 0.0f ;
     }
 }
