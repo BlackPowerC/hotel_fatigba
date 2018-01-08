@@ -13,7 +13,6 @@ public class Personne extends Entity
     protected String nom;
     protected String prenom;
     protected String email ;
-    protected String tel ;
     protected Sexe sexe ;
     
     public Personne(ResultSet rs, Sexe sexe) throws SQLException
@@ -26,13 +25,12 @@ public class Personne extends Entity
         this.id = rs.getInt("id") ;
     }
 
-    public Personne(int id, String nom, String prenom, String email, String tel, Sexe sexe)
+    public Personne(int id, String nom, String prenom, String email, Sexe sexe)
     {
         this.id = id ;
         this.nom = nom;
         this.prenom = prenom;
         this.email = email;
-        this.tel = tel;
         this.sexe = sexe;
     }
     
@@ -42,7 +40,6 @@ public class Personne extends Entity
         this.nom = another.nom;
         this.prenom = another.prenom;
         this.email = another.email;
-        this.tel = another.tel;
         this.sexe = another.sexe;
     }
     
@@ -97,21 +94,18 @@ public class Personne extends Entity
         this.nom = another.nom;
         this.prenom = another.prenom;
         this.email = another.email;
-        this.tel = another.tel;
         this.sexe = another.sexe;
     }
     
     @Override
     public boolean isValid()
     {
-        boolean validity ;
-        String nom_prenom_pattern = "^[a-zA-Z]" ;
-        String email_pattern = "^[a-zA-Z0-9]@[a-zA-Z0-9].[a-z]{2,4}" ;
-        
-        validity = Pattern.compile(nom_prenom_pattern).matcher(nom).matches() && 
-                Pattern.compile(nom_prenom_pattern).matcher(prenom).matches() &&
-                Pattern.compile(email_pattern).matcher(email).matches() ;
-        
-        return validity && sexe.isValid() ;
+        String namePattern = "^[a-zA-Z]$";
+        String emailPattern = "^[a-zA-Z0-9]@[a-zA-Z0-9].{fr,com}$";
+        boolean localValid ;
+        localValid = Pattern.compile(namePattern).matcher(this.nom).matches()
+                && Pattern.compile(namePattern).matcher(this.prenom).matches()
+                && Pattern.compile(emailPattern).matcher(this.email).matches();
+        return super.isValid() && localValid ;
     }
 }

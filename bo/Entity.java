@@ -18,7 +18,10 @@ public abstract class Entity
         this.id = id;
     }
     
-    public abstract boolean isValid() ;
+    public boolean isValid()
+    {
+        return this.id > 0 ;
+    }
     
     @Override
     public boolean equals(Object obj)

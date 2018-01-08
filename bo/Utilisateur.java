@@ -29,9 +29,9 @@ public class Utilisateur extends Personne
         this.type = type ;
     }
 
-    public Utilisateur(int id, String nom, String prenom, String email, String tel, Sexe sexe, String password, TypeUtilisateur type)
+    public Utilisateur(int id, String nom, String prenom, String email, Sexe sexe, String password, TypeUtilisateur type)
     {
-        super(id, nom, prenom, email, tel, sexe);
+        super(id, nom, prenom, email, sexe);
         this.password = password;
         this.type = type;
     }

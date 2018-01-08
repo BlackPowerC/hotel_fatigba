@@ -18,9 +18,9 @@ public class Client extends Personne
     protected boolean fidelite ;
     protected GregorianCalendar dateNaissance ;
 
-    public Client(int id, String nom, String prenom, String email, String tel, Sexe sexe, TypeClient type, Nationalite nation, boolean etranger, boolean fidelite, GregorianCalendar dateNaissance)
+    public Client(int id, String nom, String prenom, String email, Sexe sexe, TypeClient type, Nationalite nation, boolean etranger, boolean fidelite, GregorianCalendar dateNaissance)
     {
-        super(id, nom, prenom, email, tel, sexe);
+        super(id, nom, prenom, email, sexe);
         this.type = type;
         this.nation = nation;
         this.etranger = etranger;
@@ -94,7 +94,7 @@ public class Client extends Personne
     public int getAge()
     {
         Calendar c = Calendar.getInstance() ;
-        int age = ((c.get(Calendar.YEAR)+1900)-(dateNaissance.get(GregorianCalendar.YEAR)+1900)) ;
+        int age = ((c.get(Calendar.YEAR))-(dateNaissance.get(GregorianCalendar.YEAR))) ;
         return (c.get(Calendar.DAY_OF_YEAR) < dateNaissance.get(GregorianCalendar.DAY_OF_YEAR)) ? age-1: age;
     }
 

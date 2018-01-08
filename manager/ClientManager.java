@@ -106,7 +106,7 @@ public class ClientManager extends Manager<Client>
                 n = new Nationalite(); n.setId(rs.getInt("id_nation")); n.setDescription(rs.getString("nom_fr_fr")) ;
                 tc = new TypeClient(); tc.setId(rs.getInt("id_type")); tc.setDescription(rs.getString("tcDescription"));
                 cl = new Client(rs.getInt("id"), rs.getString("nom"), rs.getString("prenom"), rs.getString("email"), 
-                        "" , s, tc, n, rs.getBoolean("fidele"), rs.getBoolean("etranger"), new GregorianCalendar(0, 0, 0)) ;
+                        s, tc, n, rs.getBoolean("fidele"), rs.getBoolean("etranger"), new GregorianCalendar(0, 0, 0)) ;
                 return cl ;
             }
         } catch (SQLException ex)
@@ -140,7 +140,7 @@ public class ClientManager extends Manager<Client>
                 tc = new TypeClient(); tc.setId(rs.getInt("id_type")); tc.setDescription(rs.getString("tcDescription"));
                     all.add(
                             new Client(rs.getInt("id"), rs.getString("nom"), rs.getString("prenom"), rs.getString("email"), 
-                            "" , s, tc, n, rs.getBoolean("fidele"), rs.getBoolean("etranger"), new GregorianCalendar(0, 0, 0))
+                            s, tc, n, rs.getBoolean("fidele"), rs.getBoolean("etranger"), new GregorianCalendar(0, 0, 0))
                            ) ;
             }
             return all;
@@ -216,7 +216,7 @@ public class ClientManager extends Manager<Client>
                 tc = new TypeClient(); tc.setId(rs.getInt("id_type")); tc.setDescription("tcDescription");
                 all.add(
                             new Client(rs.getInt("id"), rs.getString("nom"), rs.getString("prenom"), rs.getString("email"), 
-                            "" , s, tc, n, rs.getBoolean("fidele"), rs.getBoolean("etranger"), new GregorianCalendar(0, 0, 0))
+                            s, tc, n, rs.getBoolean("fidele"), rs.getBoolean("etranger"), new GregorianCalendar(0, 0, 0))
                            ) ;
             }
             return all;
