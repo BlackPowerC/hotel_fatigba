@@ -95,23 +95,17 @@ public class PanelClient implements Observateur
             if (ob.equals(typeClient_list))
             {
                 client.getType().setDescription(typeClient_list.getSelectedItem().toString());
-                client.getType().setId(typeClient_list.getSelectedIndex());
-                System.out.println("PanelClient: Combo_Action: " + client.getType().toString());
+                client.getType().setId(typeClient_list.getSelectedIndex()+1);
             }
-
-            //if (ob.equals(age_list))
-            //{
-            //    client.setM_age((Integer) age_list.getSelectedItem());
-            //}
             if (ob.equals(sex_list))
             {
                 client.getSexe().setDescription(sex_list.getSelectedItem().toString());
-                client.getSexe().setId(sex_list.getSelectedIndex());
+                client.getSexe().setId(sex_list.getSelectedIndex()+1);
             }
             if (ob.equals(nation_list))
             {
                 client.getNation().setDescription(nation_list.getSelectedItem().toString());
-                client.getNation().setId(nation_list.getSelectedIndex());
+                client.getNation().setId(nation_list.getSelectedIndex()+1);
             }
         }
     }
@@ -155,7 +149,7 @@ public class PanelClient implements Observateur
             
             if (!client.isValid())
             {
-                Message.warning("Tout les champs sont requis");
+                Message.warning("Certaines informations ne sont pas valides !");
                 return;
             }
             else
@@ -175,42 +169,34 @@ public class PanelClient implements Observateur
                 {
                     client.setId(ListClient.getHinstance().getLastClient().getId() + 1);
                 }
-                /*
-                 * Le dernier client doit devenir le nouveau et on l'envoie dans
-		 	     * la classe Reservation view
-                 */
-                /* On a le dernier client */
-                ListClient.getHinstance().getLastClient().setClient(client);
-                /* On récupère la liste des id de clients */
+                
+                /* Ajout du nouveau client */
                 ListClient.getHinstance().getListClient().add(new Client(client));
-                //PanelReservation.getHinstance().getID_ClientList().addItem(client.getId());
                 update() ;
 
-                /* On ajoute l'id du dernier client ajouter dans la liste */
-                //PanelReservation.getHinstance().getID_ClientList().addItem(client.getId());
                 /* Connection à la base de données pour y mettre des données */
                 ((ClientManager) FactoryManager.getInstance().getManager(FactoryManager.CLIENT_MANAGER)).insert(client) ;
-                System.out.println("PanelClient: client.toString()" + client.toString());
 
                 /* Mise à jour de l'affichage */
                 update();
-                /*Flushing des JtextField et JComboBox*/
-                Flush();
                 updating = false;
-                Message.information("Tous les Champs sont bien remplis");
+                Message.information("Tous les Champs sont bien remplis");    
             }
+            /* Effacement des champs du formulaire */
+            Flush();
+            System.out.println(PanelClient.class.getName()+"@"+Ok_Action.class.getName()+" : actionPerformed");
         }
     }
 
     /* OK */
     public class Reset_Action implements ActionListener
     {
-
         public void actionPerformed(ActionEvent action)
         {
             Flush();
             Message.warning("Champ réinitialisés !");
             updating = false;
+            System.out.println(Reset_Action.class.getName()+" : actionPerformed");
         }
     }
 
@@ -222,36 +208,36 @@ public class PanelClient implements Observateur
         {
             if (updating)
             {
-                controls.getButtons(0).disable();
-                /* Mise à jour de la base de données*/
-                ((ClientManager) FactoryManager.getInstance().getManager(FactoryManager.CLIENT_MANAGER)).delete(client.getId());
-                /* Mise à jour de la table */
-                JTableClientModel mdl = (JTableClientModel) ClientTable.getModel();
-                mdl.remove(selectedRow);
-                /* Mise à jour de la Liste des clients */
-                ListClient.getHinstance().getListClient().remove(selectedRow);
-                /* Le dernier client */
-                if (ListClient.getHinstance().getListClient().size() > 1)
+                if(client.getId() > 0)
                 {
-                    ListClient.getHinstance().getLastClient().setClient(ListClient.getHinstance().getListClient().get(mdl.getRowCount() - 1));
+                    controls.getButtons(0).disable();
+                    /* Suppression du client de la base de données */
+                    ((ClientManager) FactoryManager.getInstance().getManager(FactoryManager.CLIENT_MANAGER)).delete(client.getId());
+                    /* Mise à jour de la table */
+                    JTableClientModel mdl = (JTableClientModel) ClientTable.getModel();
+                    mdl.remove(selectedRow);
+                    /* Mise à jour de la Liste des clients */
+                    ListClient.getHinstance().getListClient().remove(selectedRow);
+                    Message.information("Client supprimé !");
                 }
-
-                /* le client supprimé est retirer de la liste de reservation */
-                //PanelReservation.getHinstance().getID_ClientList().removeItem(client.getId());
-
-                Flush();
-
-                updating = false;
-                controls.getButtons(0).enable();
-                Message.information("Données supprimées !");
+                else
+                {
+                    System.out.println("Client non supprimé !") ;
+                }
             }
+            Flush();
+            /* MAJ de l'affichage */
+            update() ;
+            updating = false;
+            controls.getButtons(0).enable();
+            /* Debug */
+            System.out.println(Delete_Action.class.getName()+" : actionPerformed");
         }
     }
 
     /* OK */
     public class Update_Action implements ActionListener
     {
-
         public void actionPerformed(ActionEvent ev)
         {
             if (updating)
@@ -259,26 +245,28 @@ public class PanelClient implements Observateur
                 /* bouton ok desactivé */
                 controls.getButtons(0).disable();
                 /* Mise à jour dans la base */
-                if(client.isFidelite())
+                if(client.isValid())
                 {
                     ((ClientManager) FactoryManager.getInstance().getManager(FactoryManager.CLIENT_MANAGER)).update(client) ;
+                    /* Mise à jour dans la Table */
+                    int x = selectedRow;
+                    /* Mise à jour de La liste */
+                    ListClient.getHinstance().getListClient().get(x).setClient(client);
+                    /* mise à jour de l'affichage */
+                    update() ;
+                    Message.information("Mise à jour du client effectué !");
                 }
-                /* Mise à jour dans la Table */
-                int x = selectedRow;
-                /* Mise à jour de La liste */
-                ListClient.getHinstance().getListClient().get(x).setClient(client);
-
-                Flush();
-
-                /* mise à jour de l'affichage */
-                update() ;
-
-                updating = false;
-
-                /* réactiver */
-                controls.getButtons(0).enable();
-                Message.information("MAJ des données effectué !");
+                else
+                {
+                    System.out.println("Client non mis à jour !");
+                }
             }
+            Flush();
+            updating = false;
+            /* réactiver */
+            controls.getButtons(0).enable();
+            /* Debug */
+            System.out.println(Update_Action.class.getName()+" : actionPerformed");
         }
     }
 
@@ -288,13 +276,11 @@ public class PanelClient implements Observateur
         @Override
         public void mouseClicked(MouseEvent ev)
         {
-            /* Récupération du model de donnée */
-            JTableClientModel mdl = (JTableClientModel) ClientTable.getModel();
             int x = ClientTable.getSelectedRow();
             selectedRow = x;
 
             /* Récupération des données */
-            client = (Client) mdl.getValueAt(x);
+            client.setClient(ListClient.getHinstance().getListClient().get(x));
 
             /* affichage des données dans le formulaire */
             sex_list.setSelectedItem(client.getSexe().getDescription());
@@ -306,6 +292,8 @@ public class PanelClient implements Observateur
             fidYes.setSelected(client.isFidelite());
             fidNo.setSelected(!client.isFidelite());
             updating = true;
+            /* Debug */
+            System.out.println(Table_Action.class.getName()+" : actionPerformed");
         }
     }
 
