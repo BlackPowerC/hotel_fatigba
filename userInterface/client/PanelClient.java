@@ -124,6 +124,10 @@ public class PanelClient implements Observateur
             {
                 client.setPrenom(prenom_field.getText());
             }
+            if (ob.equals(email_field))
+            {
+                client.setEmail(email_field.getText());
+            }
         }
 
         public void keyPressed(KeyEvent arg0)
@@ -172,16 +176,14 @@ public class PanelClient implements Observateur
                 
                 /* Ajout du nouveau client */
                 ListClient.getHinstance().getListClient().add(new Client(client));
-                update() ;
 
                 /* Connection à la base de données pour y mettre des données */
                 ((ClientManager) FactoryManager.getInstance().getManager(FactoryManager.CLIENT_MANAGER)).insert(client) ;
-
-                /* Mise à jour de l'affichage */
-                update();
-                updating = false;
                 Message.information("Tous les Champs sont bien remplis");    
             }
+            /* Mise à jour de l'affichage */
+            update();
+            updating = false;
             /* Effacement des champs du formulaire */
             Flush();
             System.out.println(PanelClient.class.getName()+"@"+Ok_Action.class.getName()+" : actionPerformed");
@@ -252,8 +254,6 @@ public class PanelClient implements Observateur
                     int x = selectedRow;
                     /* Mise à jour de La liste */
                     ListClient.getHinstance().getListClient().get(x).setClient(client);
-                    /* mise à jour de l'affichage */
-                    update() ;
                     Message.information("Mise à jour du client effectué !");
                 }
                 else
@@ -262,6 +262,8 @@ public class PanelClient implements Observateur
                 }
             }
             Flush();
+            /* mise à jour de l'affichage */
+            update() ;
             updating = false;
             /* réactiver */
             controls.getButtons(0).enable();
@@ -287,6 +289,7 @@ public class PanelClient implements Observateur
             age_list.setSelectedItem(client.getAge());
             nation_list.setSelectedItem(client.getNation().getDescription());
             nom_field.setText(client.getNom());
+            email_field.setText(client.getEmail());
             prenom_field.setText(client.getPrenom());
             typeClient_list.setSelectedItem(client.getType().getDescription());
             fidYes.setSelected(client.isFidelite());
@@ -310,6 +313,7 @@ public class PanelClient implements Observateur
 
     private JTextField nom_field;
     private JTextField prenom_field;
+    private JTextField email_field ;
 
     private JComboBox<String> sex_list;
     private JComboBox<Integer> age_list;
@@ -333,6 +337,7 @@ public class PanelClient implements Observateur
     private JLabel txtNationalite;
     private JLabel txtNombre;
     private JLabel txtFid;
+    private JLabel txtEmail;
 
     private ButtonGroup fidGrp;
     private JRadioButton fidYes;
@@ -359,6 +364,7 @@ public class PanelClient implements Observateur
     {
         nom_field.setText("");
         prenom_field.setText("");
+        email_field.setText("");
         age_list.setSelectedIndex(0);
         nation_list.setSelectedIndex(0);
         typeClient_list.setSelectedIndex(0);
@@ -372,6 +378,8 @@ public class PanelClient implements Observateur
         String tmp1 = "<html><font color=#FEFDF0>";
         String tmp2 = "<font/></html>";
         Font font = new Font("Purisa", Font.BOLD, 16);
+        txtEmail = new JLabel(tmp1 + "E-Mail: " + tmp2);
+        txtEmail.setFont(font);
         txtFid = new JLabel(tmp1 + "Carte de fidélité: " + tmp2);
         txtFid.setFont(font);
         txtListClient = new JLabel(tmp1 + "Liste des clients" + tmp2);
@@ -464,6 +472,10 @@ public class PanelClient implements Observateur
         nom_field = new JTextField();
         nom_field.addKeyListener(new TextFieldAction());
         nom_field.setColumns(20);
+        
+        email_field = new JTextField();
+        email_field.addKeyListener(new TextFieldAction());
+        email_field.setColumns(20);
 
         prenom_field = new JTextField();
         prenom_field.addKeyListener(new TextFieldAction());
@@ -493,6 +505,8 @@ public class PanelClient implements Observateur
         panel.add(fidNo);
         panel.add(fidYes);
         panel.add(txtFid);
+        panel.add(email_field);
+        panel.add(txtEmail);
         //panel.add(print_list) ;
         panel.add(print_button);
         panel.add(txtListClient);
@@ -532,27 +546,30 @@ public class PanelClient implements Observateur
         /* Positionnnement du label prénom et de son champ */
         txtPrenom.setBounds(x1, 65 + 15, w1, h);
         prenom_field.setBounds(x2, 65 + 15, w2, h);
+        /* Positionnnement du label Email et de son champ */
+        txtEmail.setBounds(x1, 100 + 15, w1, h);
+        email_field.setBounds(x2, 100 + 15, w2, h);
         /* Positionnnement du label age et de son champ */
-        txtAge.setBounds(x1, 100 + 15, w1, h);
-        age_list.setBounds(x2, 100 + 15, w2, h);
+        txtAge.setBounds(x1, 135 + 15, w1, h);
+        age_list.setBounds(x2, 135 + 15, w2, h);
         /* Positionnnement du label nationalité et de son champ */
-        txtNationalite.setBounds(x1, 15 + 135, w1, h);
-        nation_list.setBounds(x2, 135 + 15, w2, h);
+        txtNationalite.setBounds(x1, 15 + 170, w1, h);
+        nation_list.setBounds(x2, 170 + 15, w2, h);
         /* Positionnnement du label sexe et de son champ */
-        txtSexe.setBounds(x1, 15 + 170, w1, h);
-        sex_list.setBounds(x2, 15 + 170, w2, h);
+        txtSexe.setBounds(x1, 15 + 205, w1, h);
+        sex_list.setBounds(x2, 15 + 205, w2, h);
         /* Positionnnement du label sexe et de son champ */
-        txtType.setBounds(x1, 15 + 200, w1, h);
-        typeClient_list.setBounds(x2, 15 + 200, w2, h);
+        txtType.setBounds(x1, 15 + 240, w1, h);
+        typeClient_list.setBounds(x2, 15 + 240, w2, h);
         /* Positionnnement du label nombre de client et de son champ */
-        txtNombre.setBounds(x1, 235 + 15, w1 + 40, h);
-        nombre_list.setBounds(x2, 235 + 15, w2, h);
+        txtNombre.setBounds(x1, 275 + 15, w1 + 40, h);
+        nombre_list.setBounds(x2, 275 + 15, w2, h);
 
-        txtFid.setBounds(x1, 270 + 15, w1, h);
-        fidYes.setBounds(x2, 270 + 15, w2 / 2 - 5, h);
-        fidNo.setBounds(x2 + (w2 / 2 - 5) + 10, 270 + 15, w2 / 2 - 5, h);
+        txtFid.setBounds(x1, 310 + 15, w1, h);
+        fidYes.setBounds(x2, 310 + 15, w2 / 2 - 5, h);
+        fidNo.setBounds(x2 + (w2 / 2 - 5) + 10, 310 + 15, w2 / 2 - 5, h);
 
-        controls.setPosition(300, 260, 20);
+        controls.setPosition(300, 300, 20);
     }
 
     /* Constructeur de la l'onglet */
