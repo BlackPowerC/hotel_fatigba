@@ -3,6 +3,8 @@ package bo;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -16,9 +18,9 @@ public class Client extends Personne
     protected Nationalite nation ;
     protected boolean etranger ;
     protected boolean fidelite ;
-    protected GregorianCalendar dateNaissance ;
+    protected Date dateNaissance ;
 
-    public Client(int id, String nom, String prenom, String email, Sexe sexe, TypeClient type, Nationalite nation, boolean etranger, boolean fidelite, GregorianCalendar dateNaissance)
+    public Client(int id, String nom, String prenom, String email, Sexe sexe, TypeClient type, Nationalite nation, boolean etranger, boolean fidelite, Date dateNaissance)
     {
         super(id, nom, prenom, email, sexe);
         this.type = type;
@@ -43,7 +45,7 @@ public class Client extends Personne
         super() ;
         type = new TypeClient();
         nation = new Nationalite();
-        dateNaissance = new GregorianCalendar();
+        dateNaissance = new Date(0, 0, 0);
     }
 
     public TypeClient getType()
@@ -98,16 +100,16 @@ public class Client extends Personne
     public int getAge()
     {
         Calendar c = Calendar.getInstance() ;
-        int age = ((c.get(Calendar.YEAR))-(dateNaissance.get(GregorianCalendar.YEAR))) ;
-        return (c.get(Calendar.DAY_OF_YEAR) < dateNaissance.get(GregorianCalendar.DAY_OF_YEAR)) ? age-1: age;
+        Date current = new Date(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH)) ;
+        return Period.between(dateNaissance.toLocalDate(), current.toLocalDate()).getYears()-1900;
     }
 
-    public GregorianCalendar getDateNaissance()
+    public Date getDateNaissance()
     {
         return dateNaissance;
     }
 
-    public void setDateNaissance(GregorianCalendar dateNaissance)
+    public void setDateNaissance(Date dateNaissance)
     {
         this.dateNaissance = dateNaissance;
     }

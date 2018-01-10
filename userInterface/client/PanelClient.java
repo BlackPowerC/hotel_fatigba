@@ -90,6 +90,7 @@ public class PanelClient implements Observateur
             /* fidélité et étranger */
             client.setEtranger(true) ;
             client.setFidelite(fidYes.isSelected()) ;
+            client.setDateNaissance(new java.sql.Date(dateChooser.getDate().getTime())) ;
             /*
             * Récupération de l'id du dernier client de la liste pour créer
             * l'id du nouveau client dans la liste
@@ -125,12 +126,12 @@ public class PanelClient implements Observateur
                 mdl.addRow();
 
                 /* Connection à la base de données pour y mettre des données */
-                if(((ClientManager) FactoryManager.getInstance().getManager(FactoryManager.CLIENT_MANAGER)).insert(client))
-                {
+                ((ClientManager) FactoryManager.getInstance().getManager(FactoryManager.CLIENT_MANAGER)).insert(client) ;
+                
                     /* Ajout du nouveau client */
                     ListClient.getHinstance().getListClient().add(new Client(client));
                     Message.information("Tous les Champs sont bien remplis");
-                }
+                
             }
             /* Mise à jour de l'affichage */
             update();
@@ -197,17 +198,18 @@ public class PanelClient implements Observateur
             client.setPrenom(prenom_field.getText());
             client.setEmail(email_field.getText());
             /* Sexe */
-            client.getSexe().setId(sex_list.getSelectedIndex()+1);
+            client.getSexe().setId(sex_list.getSelectedIndex());
             client.getSexe().setDescription(sex_list.getSelectedItem().toString());
             /* Nationalite */
-            client.getNation().setId(nation_list.getSelectedIndex()+1);
+            client.getNation().setId(nation_list.getSelectedIndex());
             client.getNation().setDescription(nation_list.getSelectedItem().toString());
             /* Typeclient */
-            client.getType().setId(sex_list.getSelectedIndex()+1);
+            client.getType().setId(sex_list.getSelectedIndex());
             client.getType().setDescription(sex_list.getSelectedItem().toString());
             /* fidélité et étranger */
             client.setEtranger(true) ;
             client.setFidelite(fidYes.isSelected()) ;
+            client.setDateNaissance(new java.sql.Date(dateChooser.getDate().getTime())) ;
         }
         
         public void actionPerformed(ActionEvent ev)
