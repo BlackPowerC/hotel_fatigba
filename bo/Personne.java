@@ -46,6 +46,7 @@ public class Personne extends Entity
     public Personne()
     {
         super() ;
+        sexe = new Sexe();
     }
 
     public String getNom()

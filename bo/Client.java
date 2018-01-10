@@ -41,6 +41,9 @@ public class Client extends Personne
     public Client()
     {
         super() ;
+        type = new TypeClient();
+        nation = new Nationalite();
+        dateNaissance = new GregorianCalendar();
     }
 
     public TypeClient getType()
