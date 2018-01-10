@@ -23,6 +23,7 @@ import app.Buttons;
 import app.JSearch;
 import app.Report;
 import bo.Client;
+import com.toedter.calendar.JDateChooser;
 import core.Message;
 import manager.ClientManager;
 import manager.FactoryManager;
@@ -39,22 +40,6 @@ public class PanelClient implements Observateur
         panel.remove(scroll);
         panel.add(scroll);
         panel.revalidate();
-    }
-
-    public class Radio_Action implements ActionListener
-    {
-        public void actionPerformed(ActionEvent ev)
-        {
-            Object ob = ev.getSource();
-            if (ob.equals(fidNo))
-            {
-                client.setFidelite(false);
-            }
-            if (ob.equals(fidYes))
-            {
-                client.setFidelite(true);
-            }
-        }
     }
 
     /* OK */
@@ -86,61 +71,37 @@ public class PanelClient implements Observateur
         }
     }
 
-    /* OK */
-    public class Combo_Action implements ActionListener
+    public class BtnOkAction implements ActionListener
     {
-        public void actionPerformed(ActionEvent ev)
+        public void setClientInformation()
         {
-            Object ob = ev.getSource();
-            if (ob.equals(typeClient_list))
+            client.setNom(nom_field.getText()) ;
+            client.setPrenom(prenom_field.getText());
+            client.setEmail(email_field.getText());
+            /* Sexe */
+            client.getSexe().setId(sex_list.getSelectedIndex());
+            client.getSexe().setDescription(sex_list.getSelectedItem().toString());
+            /* Nationalite */
+            client.getNation().setId(nation_list.getSelectedIndex());
+            client.getNation().setDescription(nation_list.getSelectedItem().toString());
+            /* Typeclient */
+            client.getType().setId(sex_list.getSelectedIndex());
+            client.getType().setDescription(sex_list.getSelectedItem().toString());
+            /* fidélité et étranger */
+            client.setEtranger(true) ;
+            client.setFidelite(fidYes.isSelected()) ;
+            /*
+            * Récupération de l'id du dernier client de la liste pour créer
+            * l'id du nouveau client dans la liste
+            */
+            if (ListClient.getHinstance().getListClient().size() == 0)
             {
-                client.getType().setDescription(typeClient_list.getSelectedItem().toString());
-                client.getType().setId(typeClient_list.getSelectedIndex()+1);
-            }
-            if (ob.equals(sex_list))
+                client.setId(1);
+            } else
             {
-                client.getSexe().setDescription(sex_list.getSelectedItem().toString());
-                client.getSexe().setId(sex_list.getSelectedIndex()+1);
-            }
-            if (ob.equals(nation_list))
-            {
-                client.getNation().setDescription(nation_list.getSelectedItem().toString());
-                client.getNation().setId(nation_list.getSelectedIndex()+1);
+                client.setId(ListClient.getHinstance().getLastClient().getId() + 1);
             }
         }
-    }
-
-    /* OK */
-    public class TextFieldAction implements KeyListener
-    {
-        public void keyReleased(KeyEvent ev)
-        {
-            Object ob = ev.getSource();
-            if (ob.equals(nom_field))
-            {
-                client.setNom(nom_field.getText());
-            }
-            if (ob.equals(prenom_field))
-            {
-                client.setPrenom(prenom_field.getText());
-            }
-            if (ob.equals(email_field))
-            {
-                client.setEmail(email_field.getText());
-            }
-        }
-
-        public void keyPressed(KeyEvent arg0)
-        {
-        }
-
-        public void keyTyped(KeyEvent arg0)
-        {
-        }
-    }
-
-    public class Ok_Action implements ActionListener
-    {
         public void actionPerformed(ActionEvent action)
         {
             /* On vérifie la validité de tout les champs */
@@ -150,7 +111,8 @@ public class PanelClient implements Observateur
                 //JOptionPane.showMessageDialog(null, "Ces données sont pour une mise à jour !", "Erreur", JOptionPane.WARNING_MESSAGE) ;
                 return;
             }
-            
+            /* Récupération des informations */
+            setClientInformation();
             if (!client.isValid())
             {
                 Message.warning("Certaines informations ne sont pas valides !");
@@ -162,48 +124,37 @@ public class PanelClient implements Observateur
                 JTableClientModel mdl = JTableClient.getHinstance().getModel();
                 mdl.addRow();
 
-                /*
-                 * Récupération de l'id du dernier client de la liste pour créer
-                 * l'id du nouveau client dans la liste
-                 */
-                if (ListClient.getHinstance().getListClient().size() == 0)
-                {
-                    client.setId(1);
-                } else
-                {
-                    client.setId(ListClient.getHinstance().getLastClient().getId() + 1);
-                }
-                
-                /* Ajout du nouveau client */
-                ListClient.getHinstance().getListClient().add(new Client(client));
-
                 /* Connection à la base de données pour y mettre des données */
-                ((ClientManager) FactoryManager.getInstance().getManager(FactoryManager.CLIENT_MANAGER)).insert(client) ;
-                Message.information("Tous les Champs sont bien remplis");    
+                if(((ClientManager) FactoryManager.getInstance().getManager(FactoryManager.CLIENT_MANAGER)).insert(client))
+                {
+                    /* Ajout du nouveau client */
+                    ListClient.getHinstance().getListClient().add(new Client(client));
+                    Message.information("Tous les Champs sont bien remplis");
+                }
             }
             /* Mise à jour de l'affichage */
             update();
             updating = false;
             /* Effacement des champs du formulaire */
             Flush();
-            System.out.println(PanelClient.class.getName()+"@"+Ok_Action.class.getName()+" : actionPerformed");
+            System.out.println(BtnOkAction.class.getName()+" : actionPerformed");
         }
     }
 
     /* OK */
-    public class Reset_Action implements ActionListener
+    public class BtnResestAction implements ActionListener
     {
         public void actionPerformed(ActionEvent action)
         {
             Flush();
             Message.warning("Champ réinitialisés !");
             updating = false;
-            System.out.println(Reset_Action.class.getName()+" : actionPerformed");
+            System.out.println(BtnResestAction.class.getName()+" : actionPerformed");
         }
     }
 
     /* OK */
-    public class Delete_Action implements ActionListener
+    public class BtnDeleteAction implements ActionListener
     {
         @Override
         public void actionPerformed(ActionEvent ev)
@@ -233,28 +184,50 @@ public class PanelClient implements Observateur
             updating = false;
             controls.getButtons(0).enable();
             /* Debug */
-            System.out.println(Delete_Action.class.getName()+" : actionPerformed");
+            System.out.println(BtnDeleteAction.class.getName()+" : actionPerformed");
         }
     }
 
     /* OK */
-    public class Update_Action implements ActionListener
+    public class BtnUpdateAction implements ActionListener
     {
+        public void setClientInformation()
+        {
+            client.setNom(nom_field.getText()) ;
+            client.setPrenom(prenom_field.getText());
+            client.setEmail(email_field.getText());
+            /* Sexe */
+            client.getSexe().setId(sex_list.getSelectedIndex()+1);
+            client.getSexe().setDescription(sex_list.getSelectedItem().toString());
+            /* Nationalite */
+            client.getNation().setId(nation_list.getSelectedIndex()+1);
+            client.getNation().setDescription(nation_list.getSelectedItem().toString());
+            /* Typeclient */
+            client.getType().setId(sex_list.getSelectedIndex()+1);
+            client.getType().setDescription(sex_list.getSelectedItem().toString());
+            /* fidélité et étranger */
+            client.setEtranger(true) ;
+            client.setFidelite(fidYes.isSelected()) ;
+        }
+        
         public void actionPerformed(ActionEvent ev)
         {
             if (updating)
             {
                 /* bouton ok desactivé */
                 controls.getButtons(0).disable();
-                /* Mise à jour dans la base */
+                setClientInformation() ;
                 if(client.isValid())
                 {
-                    ((ClientManager) FactoryManager.getInstance().getManager(FactoryManager.CLIENT_MANAGER)).update(client) ;
-                    /* Mise à jour dans la Table */
-                    int x = selectedRow;
-                    /* Mise à jour de La liste */
-                    ListClient.getHinstance().getListClient().get(x).setClient(client);
-                    Message.information("Mise à jour du client effectué !");
+                    /* Mise à jour dans la base */
+                    if(((ClientManager) FactoryManager.getInstance().getManager(FactoryManager.CLIENT_MANAGER)).update(client) != -1)
+                    {
+                       /* Mise à jour dans la Table */
+                        int x = selectedRow;
+                        /* Mise à jour de La liste */
+                        ListClient.getHinstance().getListClient().get(x).setClient(client);
+                        Message.information("Mise à jour du client effectué !");                     
+                    }
                 }
                 else
                 {
@@ -268,12 +241,12 @@ public class PanelClient implements Observateur
             /* réactiver */
             controls.getButtons(0).enable();
             /* Debug */
-            System.out.println(Update_Action.class.getName()+" : actionPerformed");
+            System.out.println(BtnUpdateAction.class.getName()+" : actionPerformed");
         }
     }
 
     /* OK */
-    public class Table_Action extends MouseAdapter
+    public class TableAction extends MouseAdapter
     {
         @Override
         public void mouseClicked(MouseEvent ev)
@@ -282,11 +255,13 @@ public class PanelClient implements Observateur
             selectedRow = x;
 
             /* Récupération des données */
-            client.setClient(ListClient.getHinstance().getListClient().get(x));
-
+            JTableClientModel mdl = (JTableClientModel) ClientTable.getModel() ;
+            client = mdl.getValueAt(x) ;
+//          client.setClient(ListClient.getHinstance().getListClient().get(x));
+            
             /* affichage des données dans le formulaire */
             sex_list.setSelectedItem(client.getSexe().getDescription());
-            age_list.setSelectedItem(client.getAge());
+            dateChooser.setDate(client.getDateNaissance());
             nation_list.setSelectedItem(client.getNation().getDescription());
             nom_field.setText(client.getNom());
             email_field.setText(client.getEmail());
@@ -296,7 +271,7 @@ public class PanelClient implements Observateur
             fidNo.setSelected(!client.isFidelite());
             updating = true;
             /* Debug */
-            System.out.println(Table_Action.class.getName()+" : actionPerformed");
+            System.out.println(TableAction.class.getName()+" : actionPerformed");
         }
     }
 
@@ -309,14 +284,13 @@ public class PanelClient implements Observateur
 
     private Background panel;
     private Client client = new Client();
-    private Boolean all_fields_is_ok;
 
     private JTextField nom_field;
     private JTextField prenom_field;
     private JTextField email_field ;
 
     private JComboBox<String> sex_list;
-    private JComboBox<Integer> age_list;
+    private JDateChooser dateChooser;
     private JComboBox<String> nation_list;
     private JComboBox<Integer> nombre_list;
     private JComboBox<String> typeClient_list;
@@ -365,7 +339,7 @@ public class PanelClient implements Observateur
         nom_field.setText("");
         prenom_field.setText("");
         email_field.setText("");
-        age_list.setSelectedIndex(0);
+//        age_list.setSelectedIndex(0);
         nation_list.setSelectedIndex(0);
         typeClient_list.setSelectedIndex(0);
         sex_list.setSelectedIndex(0);
@@ -404,7 +378,7 @@ public class PanelClient implements Observateur
     {
         scroll = JTableClient.getHinstance().getScroll();
         ClientTable = JTableClient.getHinstance().getTable();
-        ClientTable.addMouseListener(new Table_Action());
+        ClientTable.addMouseListener(new TableAction());
     }
 
     /* Créer les listes pour les nationalité et le sexe */
@@ -412,36 +386,21 @@ public class PanelClient implements Observateur
     {
         /* Nombre de client dans un groupe */
         nombre_list = new JComboBox<>(new Integer[] {1, 2, 3});
-        nombre_list.addActionListener(new Combo_Action());
         nombre_list.enable(false);
         /* Type de client */
         typeClient_list = new JComboBox<>(new String[]{"", "lambda", "v.i.p", "premium", "master"});
-        typeClient_list.addActionListener(new Combo_Action());
-        /* Age */
-        age_list = new JComboBox<>();
-        age_list.addActionListener(new Combo_Action());
-        for (int i = 0; i < 82; i++)
-        {
-            age_list.addItem(i + 18);
-        }
-        
         /* Sexe des client */
         sex_list = new JComboBox<>(new String[]{ "", "homme", "femme"});
-        sex_list.addActionListener(new Combo_Action());
-        
         /* Nationalité des clients */      
-        nation_list = new JComboBox<>() ;
+        nation_list = new JComboBox<>(new String[]{""}) ;
         ListNation.getHinstance().getList().forEach((n) -> {
             nation_list.addItem(n.getDescription());
         });
-                
-        nation_list.addActionListener(new Combo_Action());
 
         print_list = new JComboBox<>(new String[]
         {
             "", "Clients fidèles", "Clients étrangers", "Clients arrivées par période", "Clients partis par période"
         });
-        print_list.addActionListener(new Combo_Action());
     }
 
     /* Paramettrage des buttons et champs de texte */
@@ -449,41 +408,38 @@ public class PanelClient implements Observateur
     {
         controls = new Buttons();
 
-        controls.getButtons(2).addActionListener(new Update_Action());
+        controls.getButtons(2).addActionListener(new BtnUpdateAction());
 
-        controls.getButtons(0).addActionListener(new Ok_Action());
+        controls.getButtons(0).addActionListener(new BtnOkAction());
 
-        controls.getButtons(1).addActionListener(new Reset_Action());
+        controls.getButtons(1).addActionListener(new BtnResestAction());
 
-        controls.getButtons(3).addActionListener(new Delete_Action());
+        controls.getButtons(3).addActionListener(new BtnDeleteAction());
 
         print_button = new JButton("Imprimer");
         print_button.addActionListener(new Print_Action());
 
         fidGrp = new ButtonGroup();
         fidYes = new JRadioButton("Oui", false);
-        fidYes.addActionListener(new Radio_Action());
         fidNo = new JRadioButton("Non", true);
-        fidNo.addActionListener(new Radio_Action());
 
         search = new JSearch();
         search.getComponent(0).addKeyListener(new Search_Action());
 
         nom_field = new JTextField();
-        nom_field.addKeyListener(new TextFieldAction());
         nom_field.setColumns(20);
         
         email_field = new JTextField();
-        email_field.addKeyListener(new TextFieldAction());
         email_field.setColumns(20);
 
         prenom_field = new JTextField();
-        prenom_field.addKeyListener(new TextFieldAction());
         prenom_field.setColumns(20);
     }
 
     private void Build_Panel()
     {
+        dateChooser = new JDateChooser();
+        dateChooser.setDateFormatString("yyyy-MM-dd");
         panel = new Background();
         panel.setLayout(null);
         Build_Label();
@@ -515,7 +471,7 @@ public class PanelClient implements Observateur
         panel.add(txtType);
         panel.add(txtSexe);
         panel.add(sex_list);
-        panel.add(age_list);
+        panel.add(dateChooser);
         panel.add(nom_field);
         panel.add(txtPrenom);
         panel.add(txtNombre);
@@ -549,9 +505,9 @@ public class PanelClient implements Observateur
         /* Positionnnement du label Email et de son champ */
         txtEmail.setBounds(x1, 100 + 15, w1, h);
         email_field.setBounds(x2, 100 + 15, w2, h);
-        /* Positionnnement du label age et de son champ */
+        /* Positionnnement du label dateChooser et de son champ */
         txtAge.setBounds(x1, 135 + 15, w1, h);
-        age_list.setBounds(x2, 135 + 15, w2, h);
+        dateChooser.setBounds(x2, 135 + 15, w2, h);
         /* Positionnnement du label nationalité et de son champ */
         txtNationalite.setBounds(x1, 15 + 170, w1, h);
         nation_list.setBounds(x2, 170 + 15, w2, h);
