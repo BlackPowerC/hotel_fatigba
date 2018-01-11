@@ -5,8 +5,8 @@
  */
 package app;
 
-import Auth.userconnection.SessionException;
-import Auth.userconnection.SessionHandler;
+import Auth.userconnection.session.SessionException;
+import Auth.userconnection.session.SessionHandler;
 import core.Message;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,7 +18,7 @@ import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 
 /**
- *
+ * @since 0.1.0
  * @author jordy
  */
 public class Menu

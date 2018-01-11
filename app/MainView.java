@@ -38,7 +38,8 @@ public class MainView extends JFrame
 
         buildPanel();
         addContent();
-
+        
+        this.setJMenuBar(Menu.getInstance().getMenu());
         setContentPane(mainPanel);
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
