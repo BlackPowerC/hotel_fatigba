@@ -76,6 +76,6 @@ public class Session extends Entity
     @Override
     public boolean isValid()
     {
-        return true ;
+        return this.user.isValid() ;
     }
 }
