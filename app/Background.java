@@ -7,6 +7,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
+import ressource.Rc;
 
 public class Background extends JPanel
 {
@@ -22,7 +23,7 @@ public class Background extends JPanel
     public Background()
     {
         super(null);
-        url = "/home/jordy/workspace/hotel_fatigba/src/ressource/backgrounds/Aqua Blue.jpg";
+        url = Rc.class.getResource("").getFile()+"backgrounds/Aqua Blue.jpg";
     }
 
     public void paintComponent(Graphics g)

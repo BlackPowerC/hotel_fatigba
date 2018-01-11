@@ -15,6 +15,7 @@ import java.util.logging.Logger;
 import javax.swing.SwingUtilities;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import ressource.Rc;
 
 public class Main
 {
@@ -45,7 +46,7 @@ public class Main
             /* Something */
             Database.getHinstance();
             /* Vérification de la présence du fichier de configuration de la base de données */
-            File database_configuration = new File("config.json");
+            File database_configuration = new File(Rc.class.getResource("").getFile()+"config/db_config.json");
 
             // On affiche la fenetre de configuration
             if (!database_configuration.exists())
@@ -75,7 +76,7 @@ public class Main
         {
             Message.error("Impossible de se connecter à la base de données !");
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-            File to_delete = new File("config.json");
+            File to_delete = new File(Rc.class.getResource("").getFile()+"config/db_config.json");
             to_delete.delete();
             Main.main(args);
         } catch (FileNotFoundException ex)
@@ -87,6 +88,5 @@ public class Main
             Message.error("Erreur inconnue !");
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
-
     }
 }

@@ -12,7 +12,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.sql.SQLException;
-
+import ressource.Rc;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -226,7 +226,7 @@ public class ConnectionView extends JFrame implements ActionListener, KeyListene
         json.put("User", user.getText());
         json.put("Port", databasePort.getValue().toString());
         json.put("SGBD", databaseSGBD.getSelectedItem().toString());
-        File configuration = new File("config.json");
+        File configuration = new File(Rc.class.getResource("").getFile()+"config/db_config.json");
 
         try
         {
