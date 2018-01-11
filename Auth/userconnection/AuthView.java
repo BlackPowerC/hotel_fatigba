@@ -1,5 +1,7 @@
 package Auth.userconnection;
 
+import Auth.userconnection.session.SessionException;
+import Auth.userconnection.session.SessionHandler;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -15,19 +17,15 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import app.Background;
 import core.Database;
 import app.MainView;
-import bo.Session;
-import bo.Sexe;
-import bo.TypeUtilisateur;
+import Auth.userconnection.session.Session;
 import bo.Utilisateur;
 import com.mysql.jdbc.PreparedStatement;
-import core.Encryption.Encryption;
 import core.Message;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -169,16 +167,14 @@ public class AuthView extends JFrame implements ActionListener, KeyListener
                 Utilisateur currentUser = (Utilisateur) FactoryManager.getInstance()
                     .getManager(UserManager.class.getName())
                     .findById(user.getId()) ;
-                System.out.println(currentUser);
                 SessionHandler.getInstance().setSession(new Session(currentUser)) ;
+                Message.information("Démarrage de la session !");
                 SessionHandler.getInstance().start() ;
-            }catch(NullPointerException npe)
+            }catch(NullPointerException | SessionException npe)
             {
                 Message.warning("Impossible de démarrer une session !");
                 npe.printStackTrace();
             }
-            
-            Message.information("Démarrage de la session !");
             MainView main = new MainView("HOTEL");
         }
         else
