@@ -3,14 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package manager;
+package main.java.manager;
 
-import bo.Client;
-import bo.Consommation;
-import bo.Service;
+import main.java.bo.Client;
+import main.java.bo.Consommation;
+import main.java.bo.Service;
 import com.mysql.jdbc.PreparedStatement;
-import core.Database;
-import core.Message;
+import main.java.core.Database;
+import main.java.core.Message;
 import java.io.PrintStream;
 import java.sql.ResultSet;
 import java.sql.SQLException;

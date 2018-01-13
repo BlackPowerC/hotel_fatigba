@@ -1,6 +1,6 @@
-package app;
+package main.java.app;
 
-import ressource.Rc;
+import main.resources.Rc;
 
 public class Buttons
 {

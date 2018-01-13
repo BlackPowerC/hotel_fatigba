@@ -1,10 +1,10 @@
-package bo;
+package main.java.bo;
 
 import java.awt.CardLayout;
 import java.awt.Dimension;
 
 import javax.swing.JPanel;
-import app.Background;
+import main.java.app.Background;
 
 public class Image
 {

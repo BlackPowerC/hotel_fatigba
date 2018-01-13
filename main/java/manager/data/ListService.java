@@ -1,10 +1,10 @@
-package manager.data;
+package main.java.manager.data;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import bo.Service;
-import manager.FactoryManager;
+import main.java.bo.Service;
+import main.java.manager.FactoryManager;
 
 public class ListService
 {

@@ -1,7 +1,7 @@
-package userInterface.chambre;
+package main.java.userInterface.chambre;
 
-import bo.Chambre;
-import manager.data.ListChambre;
+import main.java.bo.Chambre;
+import main.java.manager.data.ListChambre;
 
 public class JTableChambreTotalModel extends JTableChambreModel
 {

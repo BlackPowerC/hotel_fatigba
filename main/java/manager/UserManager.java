@@ -1,11 +1,11 @@
-package manager;
+package main.java.manager;
 
-import bo.Sexe;
-import bo.TypeUtilisateur;
-import bo.Utilisateur;
+import main.java.bo.Sexe;
+import main.java.bo.TypeUtilisateur;
+import main.java.bo.Utilisateur;
 import com.mysql.jdbc.PreparedStatement;
-import core.Database;
-import core.Message;
+import main.java.core.Database;
+import main.java.core.Message;
 import java.io.PrintStream;
 import java.sql.ResultSet;
 import java.sql.SQLException;

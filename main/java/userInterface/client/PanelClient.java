@@ -1,4 +1,4 @@
-package userInterface.client;
+package main.java.userInterface.client;
 
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -18,19 +18,19 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
-import app.Background;
-import app.Buttons;
-import app.JSearch;
-import app.Report;
-import bo.Client;
+import main.java.app.Background;
+import main.java.app.Buttons;
+import main.java.app.JSearch;
+import main.java.app.Report;
+import main.java.bo.Client;
 import com.toedter.calendar.JDateChooser;
-import core.Message;
-import manager.ClientManager;
-import manager.FactoryManager;
+import main.java.core.Message;
+import main.java.manager.ClientManager;
+import main.java.manager.FactoryManager;
 //import app.Report;
-import manager.data.ListClient;
-import manager.data.ListNation;
-import userInterface.Observateur;
+import main.java.manager.data.ListClient;
+import main.java.manager.data.ListNation;
+import main.java.userInterface.Observateur;
 
 public class PanelClient implements Observateur
 {

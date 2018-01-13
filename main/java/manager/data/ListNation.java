@@ -1,7 +1,7 @@
-package manager.data;
+package main.java.manager.data;
 
-import bo.Nationalite;
-import core.Database;
+import main.java.bo.Nationalite;
+import main.java.core.Database;
 import java.io.PrintStream;
 import java.sql.ResultSet;
 import java.sql.SQLException;

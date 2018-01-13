@@ -1,10 +1,10 @@
-package manager.data;
+package main.java.manager.data;
 
-import bo.Client;
+import main.java.bo.Client;
 import java.util.ArrayList;
 import java.util.List;
-import manager.ClientManager;
-import manager.FactoryManager;
+import main.java.manager.ClientManager;
+import main.java.manager.FactoryManager;
 
 public class ListClient
 {

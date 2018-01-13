@@ -1,7 +1,5 @@
-package Auth.userconnection;
+package main.java.Auth.userconnection;
 
-import Auth.userconnection.session.SessionException;
-import Auth.userconnection.session.SessionHandler;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -20,17 +18,20 @@ import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-import app.Background;
-import core.Database;
-import app.MainView;
-import Auth.userconnection.session.Session;
-import bo.Utilisateur;
+import main.java.app.Background;
+import main.java.core.Database;
+import main.java.app.MainView;
+import main.java.Auth.userconnection.session.Session;
+import main.java.bo.Utilisateur;
 import com.mysql.jdbc.PreparedStatement;
-import core.Message;
+import main.java.core.Message;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import manager.FactoryManager;
-import manager.UserManager;
+import main.java.Auth.userconnection.session.SessionException;
+import main.java.Auth.userconnection.session.SessionHandler;
+import main.java.manager.FactoryManager;
+import main.java.manager.UserManager;
+import main.resources.Rc;
 
 @SuppressWarnings("serial")
 public class AuthView extends JFrame implements ActionListener, KeyListener
@@ -132,7 +133,7 @@ public class AuthView extends JFrame implements ActionListener, KeyListener
 
     private void Build_Panel()
     {
-        fond = new Background("/home/jordy/workspace/hotel_fatigba/src/ressource/backgrounds/1165013_fusions-acquisitions-la-securite-informatique-au-coeur-des-preoccupations-141438-1.jpg");
+        fond = new Background(Rc.class.getResource("").getFile()+"backgrounds/1165013_fusions-acquisitions-la-securite-informatique-au-coeur-des-preoccupations-141438-1.jpg");
         setPosition();
         addContent();
     }

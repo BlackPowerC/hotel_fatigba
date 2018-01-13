@@ -1,4 +1,4 @@
-package app;
+package main.java.app;
 
 import javax.imageio.ImageIO;
 import javax.swing.JButton;

@@ -3,21 +3,21 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package manager;
+package main.java.manager;
 
-import bo.Client;
-import bo.Consommation;
-import bo.Facturation;
-import bo.ModePaiement;
-import bo.Reservation;
-import core.Database;
-import core.Message;
+import main.java.bo.Client;
+import main.java.bo.Consommation;
+import main.java.bo.Facturation;
+import main.java.bo.ModePaiement;
+import main.java.bo.Reservation;
+import main.java.core.Database;
+import main.java.core.Message;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import utils.Util;
+import main.java.utils.Util;
 
 /**
  *

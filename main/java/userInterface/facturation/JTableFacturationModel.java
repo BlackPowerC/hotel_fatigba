@@ -1,12 +1,12 @@
-package userInterface.facturation;
+package main.java.userInterface.facturation;
 
-import bo.Facturation;
+import main.java.bo.Facturation;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
-import manager.data.ListFacturation;
+import main.java.manager.data.ListFacturation;
 
 public class JTableFacturationModel extends AbstractTableModel
 {

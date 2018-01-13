@@ -1,10 +1,10 @@
-package manager.data ;
+package main.java.manager.data ;
 
-import bo.Consommation;
+import main.java.bo.Consommation;
 import java.util.ArrayList ;
 import java.util.List ;
-import manager.ConsommationManager;
-import manager.FactoryManager;
+import main.java.manager.ConsommationManager;
+import main.java.manager.FactoryManager;
 
 public class ListUseService
 {

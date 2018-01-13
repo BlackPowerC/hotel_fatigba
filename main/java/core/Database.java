@@ -1,6 +1,6 @@
-package core;
+package main.java.core;
 
-import Auth.Configure.Configuration;
+import main.java.Auth.Configure.Configuration;
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.PreparedStatement;
 import com.mysql.jdbc.Statement;

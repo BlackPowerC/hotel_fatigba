@@ -1,4 +1,4 @@
-package userInterface.consommation;
+package main.java.userInterface.consommation;
 
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -11,18 +11,18 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
-import app.Background;
-import app.Buttons;
-import bo.Consommation;
-import bo.Service;
-import core.Message;
-import manager.data.ListClient;
-import manager.data.ListUseService;
-import bo.Client;
-import manager.ConsommationManager;
-import manager.FactoryManager;
-import userInterface.Observateur;
-import userInterface.client.JTableClient;
+import main.java.app.Background;
+import main.java.app.Buttons;
+import main.java.bo.Consommation;
+import main.java.bo.Service;
+import main.java.core.Message;
+import main.java.manager.data.ListClient;
+import main.java.manager.data.ListUseService;
+import main.java.bo.Client;
+import main.java.manager.ConsommationManager;
+import main.java.manager.FactoryManager;
+import main.java.userInterface.Observateur;
+import main.java.userInterface.client.JTableClient;
 
 public class PanelConsommation implements Observateur
 {

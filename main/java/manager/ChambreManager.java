@@ -1,10 +1,10 @@
-package manager;
+package main.java.manager;
 
-import bo.CaracteristiqueChambre;
-import core.Database;
-import bo.Chambre;
-import bo.SituationChambre;
-import bo.TypeChambre;
+import main.java.bo.CaracteristiqueChambre;
+import main.java.core.Database;
+import main.java.bo.Chambre;
+import main.java.bo.SituationChambre;
+import main.java.bo.TypeChambre;
 import com.mysql.jdbc.PreparedStatement;
 import java.io.PrintStream;
 import java.sql.ResultSet;

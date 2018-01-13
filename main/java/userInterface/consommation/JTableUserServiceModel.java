@@ -1,9 +1,9 @@
-package userInterface.consommation;
+package main.java.userInterface.consommation;
 
-import bo.Consommation;
+import main.java.bo.Consommation;
 import javax.swing.table.AbstractTableModel;
 
-import manager.data.ListUseService;
+import main.java.manager.data.ListUseService;
 
 import java.util.List;
 

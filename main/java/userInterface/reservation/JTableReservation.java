@@ -1,6 +1,6 @@
-package userInterface.reservation;
+package main.java.userInterface.reservation;
 
-import app.ComboEditor;
+import main.java.app.ComboEditor;
 import javax.swing.*;
 
 public class JTableReservation

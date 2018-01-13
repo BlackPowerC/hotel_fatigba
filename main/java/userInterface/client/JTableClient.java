@@ -1,11 +1,11 @@
-package userInterface.client;
+package main.java.userInterface.client;
 
 
 import javax.swing.JCheckBox;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import app.CheckEditor;
-import app.TableComponent;
+import main.java.app.CheckEditor;
+import main.java.app.TableComponent;
 
 public class JTableClient
 {

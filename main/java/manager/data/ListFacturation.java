@@ -1,9 +1,9 @@
-package manager.data;
+package main.java.manager.data;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import bo.Facturation;
+import main.java.bo.Facturation;
 
 public class ListFacturation
 {

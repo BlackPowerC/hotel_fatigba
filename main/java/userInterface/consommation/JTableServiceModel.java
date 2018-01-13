@@ -1,10 +1,10 @@
-package userInterface.consommation;
+package main.java.userInterface.consommation;
 
-import bo.Service;
+import main.java.bo.Service;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;
 
-import manager.data.ListService;
+import main.java.manager.data.ListService;
 
 public class JTableServiceModel extends AbstractTableModel
 {

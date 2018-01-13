@@ -1,4 +1,4 @@
-package userInterface.consommation;
+package main.java.userInterface.consommation;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTable;

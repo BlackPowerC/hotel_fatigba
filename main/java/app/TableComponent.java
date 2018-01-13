@@ -1,4 +1,4 @@
-package app;
+package main.java.app;
 
 import java.awt.Component;
 import javax.swing.JButton;

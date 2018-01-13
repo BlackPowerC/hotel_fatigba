@@ -3,16 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Auth.userconnection.session;
+package main.java.Auth.userconnection.session;
 
 import com.mysql.jdbc.PreparedStatement;
-import core.Database;
-import core.Message;
+import main.java.core.Database;
+import main.java.core.Message;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import utils.Util;
+import main.java.utils.Util;
 
 /**
  * @since  0.0.0

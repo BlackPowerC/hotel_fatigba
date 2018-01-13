@@ -1,33 +1,22 @@
-package userInterface.facturation;
+package main.java.userInterface.facturation;
 
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.sql.SQLException;
-import java.util.Iterator;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
-import app.Background;
-import app.Buttons;
-import app.Report;
-import manager.data.ListChambre;
-import manager.data.ListClient;
-import manager.data.ListFacturation;
-import manager.data.ListReservation;
-import manager.data.ListService;
-import manager.data.ListUseService;
-import bo.Client;
-import bo.Facturation;
-import userInterface.client.JTableClient;
-import bo.Reservation;
-import userInterface.Observateur;
+import main.java.app.Background;
+import main.java.app.Buttons;
+import main.java.app.Report;
+import main.java.bo.Facturation;
+import main.java.userInterface.client.JTableClient;
+import main.java.userInterface.Observateur;
 
 public class PanelFacturation implements Observateur
 {

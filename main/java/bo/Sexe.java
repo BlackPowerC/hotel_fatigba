@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package bo;
+package main.java.bo;
 
 import java.util.regex.Pattern;
 

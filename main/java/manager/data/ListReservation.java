@@ -1,12 +1,9 @@
-package manager.data;
+package main.java.manager.data;
 
-import bo.Reservation;
-
+import main.java.bo.Reservation;
 import java.util.List;
-
-import java.util.ArrayList;
-import manager.FactoryManager;
-import manager.ReservationManager;
+import main.java.manager.FactoryManager;
+import main.java.manager.ReservationManager;
 
 public class ListReservation
 {

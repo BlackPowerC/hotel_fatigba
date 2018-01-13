@@ -1,10 +1,10 @@
-package userInterface.chambre;
+package main.java.userInterface.chambre;
 
 import javax.swing.JCheckBox;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
-import app.CheckEditor;
+import main.java.app.CheckEditor;
 
 public class JTableChambreTotal
 {

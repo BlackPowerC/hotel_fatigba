@@ -1,11 +1,11 @@
-package app;
+package main.java.app;
 
-import Auth.Configure.ConnectionView;
-import Auth.userconnection.AuthView;
-import Auth.Configure.Configuration;
-import core.Database;
-import core.Encryption.AdvancedEncryption;
-import core.Message;
+import main.java.Auth.Configure.ConnectionView;
+import main.java.Auth.userconnection.AuthView;
+import main.java.Auth.Configure.Configuration;
+import main.java.core.Database;
+import main.java.core.Encryption.AdvancedEncryption;
+import main.java.core.Message;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -15,7 +15,7 @@ import java.util.logging.Logger;
 import javax.swing.SwingUtilities;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import ressource.Rc;
+import main.resources.Rc;
 
 public class Main
 {

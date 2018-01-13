@@ -1,18 +1,18 @@
-package manager ;
+package main.java.manager ;
 
-import bo.Chambre;
-import bo.Client;
-import bo.Reservation;
+import main.java.bo.Chambre;
+import main.java.bo.Client;
+import main.java.bo.Reservation;
 import com.mysql.jdbc.PreparedStatement;
-import core.Database;
-import core.Message;
+import main.java.core.Database;
+import main.java.core.Message;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
-import utils.Util;
+import main.java.utils.Util;
 
 public class ReservationManager extends Manager<Reservation>
 {

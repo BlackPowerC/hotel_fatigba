@@ -1,6 +1,6 @@
-package app;
+package main.java.app;
 
-import core.Database;
+import main.java.core.Database;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;

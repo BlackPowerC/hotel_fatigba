@@ -1,4 +1,4 @@
-package bo;
+package main.java.bo;
 
 import java.util.GregorianCalendar;
 

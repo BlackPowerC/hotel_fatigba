@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Auth.userconnection.session;
+package main.java.Auth.userconnection.session;
 
-import bo.Entity;
-import bo.Utilisateur;
+import main.java.bo.Entity;
+import main.java.bo.Utilisateur;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 

@@ -1,4 +1,4 @@
-package userInterface.reservation;
+package main.java.userInterface.reservation;
 
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -18,18 +18,18 @@ import javax.swing.JTextField;
 
 import com.toedter.calendar.JDateChooser;
 
-import app.Background;
-import app.Buttons;
-import manager.data.ListChambre;
-import manager.data.ListClient;
-import manager.data.ListReservation;
-import bo.Chambre;
-import userInterface.chambre.JTableChambreDispo;
-//import manageChambre.JTableChambreDispoModel;
-import userInterface.chambre.JTableChambreTotal;
-import bo.Client;
-import bo.Reservation;
-import userInterface.client.JTableClient;
+import main.java.app.Background;
+import main.java.app.Buttons;
+import main.java.manager.data.ListChambre;
+import main.java.manager.data.ListClient;
+import main.java.manager.data.ListReservation;
+import main.java.bo.Chambre;
+import main.java.userInterface.chambre.JTableChambreDispo;
+//impormain.java.t manageChambre.JTableChambreDispoModel;
+import main.java.userInterface.chambre.JTableChambreTotal;
+import main.java.bo.Client;
+import main.java.bo.Reservation;
+import main.java.userInterface.client.JTableClient;
 
 public class PanelReservation
 {

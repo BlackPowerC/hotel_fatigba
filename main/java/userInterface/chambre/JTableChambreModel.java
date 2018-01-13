@@ -1,6 +1,6 @@
-package userInterface.chambre;
+package main.java.userInterface.chambre;
 
-import bo.Chambre;
+import main.java.bo.Chambre;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;
 

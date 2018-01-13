@@ -1,7 +1,7 @@
-package userInterface.client;
+package main.java.userInterface.client;
 
-import bo.Client;
-import manager.data.ListClient;
+import main.java.bo.Client;
+import main.java.manager.data.ListClient;
 import javax.swing.table.AbstractTableModel;
 
 import java.util.ArrayList;

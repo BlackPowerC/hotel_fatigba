@@ -1,8 +1,8 @@
-package Auth.Configure;
+package main.java.Auth.Configure;
 
 import org.json.simple.JSONObject;
 
-import Auth.userconnection.AuthView;
+import main.java.Auth.userconnection.AuthView;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -12,17 +12,16 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.sql.SQLException;
-import ressource.Rc;
+import main.resources.Rc;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-import app.Background;
-import core.Database;
-import core.Encryption.AdvancedEncryption;
-import core.Message;
+import main.java.app.Background;
+import main.java.core.Database;
+import main.java.core.Message;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -179,7 +178,7 @@ public class ConnectionView extends JFrame implements ActionListener, KeyListene
 
     private void Build_Panel()
     {
-        fond = new Background("/home/jordy/workspace/hotel_fatigba/src/ressource/backgrounds/1165013_fusions-acquisitions-la-securite-informatique-au-coeur-des-preoccupations-141438-1.jpg");
+        fond = new Background(Rc.class.getResource("").getFile()+"backgrounds/1165013_fusions-acquisitions-la-securite-informatique-au-coeur-des-preoccupations-141438-1.jpg");
         setPosition();
         addContent();
     }

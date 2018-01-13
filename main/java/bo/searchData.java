@@ -1,8 +1,8 @@
-package manageReservation;
+package main.java.manageReservation;
 
 import javax.swing.*;
 
-import app.Button;
+import main.java.app.Button;
 
 public class searchData
 {

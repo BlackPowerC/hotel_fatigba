@@ -1,4 +1,4 @@
-package userInterface.chambre;
+package main.java.userInterface.chambre;
 
 import java.awt.Font;
 import java.awt.Toolkit;
@@ -21,24 +21,24 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 
-import core.Database;
+import main.java.core.Database;
 
-import app.Background;
-import app.Buttons;
-import app.JSearch;
-import app.Report;
+import main.java.app.Background;
+import main.java.app.Buttons;
+import main.java.app.JSearch;
+import main.java.app.Report;
 
-import bo.CaracteristiqueChambre;
-import bo.Chambre;
-import bo.Image;
-import bo.SituationChambre;
-import bo.TypeChambre;
+import main.java.bo.CaracteristiqueChambre;
+import main.java.bo.Chambre;
+import main.java.bo.Image;
+import main.java.bo.SituationChambre;
+import main.java.bo.TypeChambre;
 
 import com.mysql.jdbc.PreparedStatement;
 import java.io.PrintStream;
 import java.util.regex.Pattern;
 import java.text.NumberFormat;
-import userInterface.Observateur;
+import main.java.userInterface.Observateur;
 
 public class PanelChambre implements Observateur
 {

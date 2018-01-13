@@ -3,11 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package app;
+package main.java.app;
 
-import Auth.userconnection.session.SessionException;
-import Auth.userconnection.session.SessionHandler;
-import core.Message;
+import main.java.Auth.userconnection.session.SessionException;
+import main.java.Auth.userconnection.session.SessionHandler;
+import main.java.core.Message;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;

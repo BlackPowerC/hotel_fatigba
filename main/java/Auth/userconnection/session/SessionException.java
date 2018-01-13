@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Auth.userconnection.session;
+package main.java.Auth.userconnection.session;
 
 /**
  * Classe Exception pour les session.

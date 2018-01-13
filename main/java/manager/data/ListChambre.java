@@ -1,10 +1,10 @@
-package manager.data;
+package main.java.manager.data;
 
-import bo.Chambre;
+import main.java.bo.Chambre;
 import java.util.ArrayList;
 import java.util.List;
-import manager.ChambreManager;
-import manager.FactoryManager;
+import main.java.manager.ChambreManager;
+import main.java.manager.FactoryManager;
 
 public class ListChambre
 {

@@ -1,7 +1,7 @@
-package userInterface.reservation;
+package main.java.userInterface.reservation;
 
-import bo.Reservation;
-import manager.data.ListReservation;
+import main.java.bo.Reservation;
+import main.java.manager.data.ListReservation;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.List;

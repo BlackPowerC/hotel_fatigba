@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package core.Encryption;
+package main.java.core.Encryption;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
