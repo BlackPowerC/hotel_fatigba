@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import main.java.core.Message;
 
 /* Classe Valide */
 
@@ -154,18 +155,20 @@ public class ChambreManager extends Manager<Chambre>
         if(chambre == null) {return -1 ;}
         try
         {
-            String sql = "UPDATE chambre SET id_type=?, id_caracteristique=?, prix=?, etat=? WHERE id=?" ;
-            PreparedStatement ps = (PreparedStatement) Database.getHinstance().getConnection().prepareStatement(sql) ;
+            String sql = "UPDATE Chambre SET id_type=?, id_caracteristique=?, id_situation=?, prix=?, etat=? WHERE id=?" ;
+            PreparedStatement ps = Database.getHinstance().prepare(sql) ;
             ps.setInt(1, chambre.getType().getId()) ;
             ps.setInt(2, chambre.getCaracteristique().getId()) ;
-            ps.setFloat(3, chambre.getPrix()) ;
-            ps.setBoolean(4, chambre.isEtat()) ;
-            ps.setInt(5, chambre.getId()) ;
+            ps.setInt(3, chambre.getSituation().getId()) ;
+            ps.setFloat(4, chambre.getPrix()) ;
+            ps.setBoolean(5, chambre.isEtat()) ;
+            ps.setInt(6, chambre.getId()) ;
             return ps.executeUpdate() ; 
         }
         catch(SQLException sqlex)
         {
             /* Affichafe d'un message d'erreur */
+            Message.error(sqlex.getMessage()+" !");
             Logger.getLogger(ClientManager.class.getName()).log(Level.SEVERE, null, sqlex);
         }
         return -1 ;

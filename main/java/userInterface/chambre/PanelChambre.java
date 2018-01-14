@@ -26,7 +26,6 @@ import main.java.core.Database;
 import main.java.app.Background;
 import main.java.app.Buttons;
 import main.java.app.JSearch;
-import main.java.app.Report;
 
 import main.java.bo.CaracteristiqueChambre;
 import main.java.bo.Chambre;
@@ -38,6 +37,10 @@ import com.mysql.jdbc.PreparedStatement;
 import java.io.PrintStream;
 import java.util.regex.Pattern;
 import java.text.NumberFormat;
+import main.java.core.Message;
+import main.java.manager.ChambreManager;
+import main.java.manager.FactoryManager;
+import main.java.manager.data.ListChambre;
 import main.java.userInterface.Observateur;
 
 public class PanelChambre implements Observateur
@@ -65,6 +68,45 @@ public class PanelChambre implements Observateur
         @Override
         public void actionPerformed(ActionEvent eve)
         {
+            if(updating)
+            {
+                setChambreData() ;
+                
+                if(!chambre.isValid())
+                {
+                    Message.warning("Certaines informations ne sont pas valides !");
+                }
+                else
+                {
+                    if(((ChambreManager)FactoryManager.getInstance().getManager(FactoryManager.CHAMBRE_MANAGER)).update(chambre) != -1)
+                    {
+                        ListChambre.getHinstance()
+                            .getListChambreTotal()
+                            .get(selectedRow).setChambre(chambre);
+                        Message.information("Mise à jour de la chambre effectuée !");
+                    }
+                    update() ;
+                }
+            }
+            else
+            {
+                Message.warning("Aucunes données à mettre à jour !");
+            }
+        }
+
+        private void setChambreData()
+        {
+            /* Caractériqtique */
+            chambre.getCaracteristique().setId(caracteristique_chambre_combo.getSelectedIndex()+1);
+            chambre.getCaracteristique().setDescription(caracteristique_chambre_combo.getSelectedItem().toString());
+            /* Type */
+            chambre.getType().setDescription(type_chambre_combo.getSelectedItem().toString());
+            chambre.getType().setId(type_chambre_combo.getSelectedIndex()+1);
+            /* situation */
+            chambre.getSituation().setDescription(situation_combo.getSelectedItem().toString());
+            chambre.getSituation().setId(situation_combo.getSelectedIndex()+1);
+            /* prix */
+            chambre.setPrix(Float.parseFloat(prix_field.getText()));
         }
     }
 
@@ -73,8 +115,9 @@ public class PanelChambre implements Observateur
         @Override
         public void mouseClicked(MouseEvent ev)
         {
-            int x = JTableChambreTotal.getHinstance().getTable().getSelectedRow() ;
-            chambre= JTableChambreTotal.getHinstance().getModel().getValueAt(x);
+            updating = true ;
+            selectedRow = JTableChambreTotal.getHinstance().getTable().getSelectedRow() ;
+            chambre = JTableChambreTotal.getHinstance().getModel().getValueAt(selectedRow);
             /* Remplissage du formulaire */
             type_chambre_combo.setSelectedItem(chambre.getType().getDescription()) ;
             situation_combo.setSelectedItem(chambre.getSituation().getDescription()) ;
@@ -96,6 +139,7 @@ public class PanelChambre implements Observateur
     }
 
     private int selectedRow;
+    private boolean updating ;
 
     private Background panel;
     private Image chambreImage;
@@ -177,9 +221,7 @@ public class PanelChambre implements Observateur
             @Override
             public void actionPerformed(ActionEvent ev)
             {
-                prix_field.setText(null);
-                situation_combo.setSelectedItem("");
-                type_chambre_combo.setSelectedItem("");
+                flush();
             }
         });
         bt.getButtons(2).addActionListener(new BtnUpdateAction());
@@ -191,6 +233,7 @@ public class PanelChambre implements Observateur
         search = new JSearch();
         chambre = new Chambre();
         chambreImage = new Image();
+        updating = false;
         Build_Panel();
     }
 
@@ -212,7 +255,7 @@ public class PanelChambre implements Observateur
     private void Build_TextField()
     {
         caracteristique_chambre_combo = new JComboBox<String>(new String[]{"", "ventilée", "climatisée"}) ;
-        situation_combo = new JComboBox<String>(new String[]{"", "intérieur", "balcon", "jardin"});
+        situation_combo = new JComboBox<String>(new String[]{"", "intérieur", "jardin", "balcon"});
         type_chambre_combo = new JComboBox<String>(new String[]{"", "single", "double", "triple"});
 
         prix_field = new JFormattedTextField(NumberFormat.getNumberInstance());
@@ -304,7 +347,20 @@ public class PanelChambre implements Observateur
         return panel;
     }
     
+    private void flush()
+    {
+        prix_field.setText("");
+        situation_combo.setSelectedItem("");
+        type_chambre_combo.setSelectedItem("");
+        caracteristique_chambre_combo.setSelectedItem("") ;
+    }
+    
     @Override
     public void update()
-    {}
+    {
+        flush() ;
+        panel.remove(scroll);
+        panel.add(scroll) ;
+        panel.revalidate();
+    }
 }

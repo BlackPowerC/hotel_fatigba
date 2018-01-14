@@ -39,7 +39,8 @@ public abstract class JTableChambreModel extends AbstractTableModel
 
     public Chambre getValueAt(int x)
     {
-        return data.get(x) ;
+        Chambre tmp = new Chambre(data.get(x));
+        return tmp ;
     }
 
     public void setValueAt(Chambre chambre, int x)
