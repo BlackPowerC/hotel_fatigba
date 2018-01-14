@@ -60,50 +60,39 @@ public class PanelChambre implements Observateur
         public void keyTyped(KeyEvent arg0){}
     }
 
-    public class Update_Action implements ActionListener
+    public class BtnUpdateAction implements ActionListener
     {
-
         @Override
         public void actionPerformed(ActionEvent eve)
         {
         }
     }
 
-    public class Table_Action implements MouseListener
+    public class TableAction implements MouseListener
     {
-
         @Override
         public void mouseClicked(MouseEvent ev)
         {
+            int x = JTableChambreTotal.getHinstance().getTable().getSelectedRow() ;
+            chambre= JTableChambreTotal.getHinstance().getModel().getValueAt(x);
+            /* Remplissage du formulaire */
+            type_chambre_combo.setSelectedItem(chambre.getType().getDescription()) ;
+            situation_combo.setSelectedItem(chambre.getSituation().getDescription()) ;
+            prix_field.setText(Float.toString(chambre.getPrix())) ;
+            caracteristique_chambre_combo.setSelectedItem(chambre.getCaracteristique().getDescription());
         }
 
         @Override
-        public void mouseEntered(MouseEvent arg0)
-        {
-            // TODO Auto-generated method stub
-
-        }
+        public void mouseEntered(MouseEvent arg0){}
 
         @Override
-        public void mouseExited(MouseEvent arg0)
-        {
-            // TODO Auto-generated method stub
-
-        }
+        public void mouseExited(MouseEvent arg0){}
 
         @Override
-        public void mousePressed(MouseEvent arg0)
-        {
-            // TODO Auto-generated method stub
-
-        }
+        public void mousePressed(MouseEvent arg0){}
 
         @Override
-        public void mouseReleased(MouseEvent arg0)
-        {
-            // TODO Auto-generated method stub
-
-        }
+        public void mouseReleased(MouseEvent arg0){}
     }
 
     private int selectedRow;
@@ -117,6 +106,9 @@ public class PanelChambre implements Observateur
     private JButton print;
 
     /* Label et champ associé */
+    private JLabel caracteristique_chambre ;
+    private JComboBox<String> caracteristique_chambre_combo ;
+    
     private JLabel type_chambre;
     private JComboBox<String> type_chambre_combo;
 
@@ -178,17 +170,7 @@ public class PanelChambre implements Observateur
 
     private void Build_Button()
     {
-        print = new JButton("imprimer");
-        print.addActionListener(new ActionListener()
-        {
-            @Override
-            public void actionPerformed(ActionEvent arg0)
-            {
-                Report.Generer("/home/jordy/workspace/Hotel/src/manageChambre/Chambres.jrxml");
-
-            }
-        });
-
+        print = new JButton("imprimer");;
         bt = new Buttons();
         bt.getButtons(1).addActionListener(new ActionListener()
         {
@@ -200,7 +182,7 @@ public class PanelChambre implements Observateur
                 type_chambre_combo.setSelectedItem("");
             }
         });
-        bt.getButtons(2).addActionListener(new Update_Action());
+        bt.getButtons(2).addActionListener(new BtnUpdateAction());
         System.out.println("Panel Chambre: Build_Button");
     }
 
@@ -223,18 +205,16 @@ public class PanelChambre implements Observateur
         prix.setFont(font);
         situation = new JLabel(tmp1 + "Situation: " + tmp2);
         situation.setFont(font);
+        caracteristique_chambre = new JLabel(tmp1+"Caractéristique: "+tmp2) ;
+        caracteristique_chambre.setFont(font) ;
     }
 
     private void Build_TextField()
     {
-        type_chambre_combo = new JComboBox<String>(new String[]
-        {
-            "", "Buisiness Class", "Single", "Double", "Triple", "Junior", "Executive", "Présidentielle", "Standard"
-        });
-        situation_combo = new JComboBox<String>(new String[]
-        {
-            "", "Autoroute", "Interieur", "Piscine", "Mer", "Terasse"
-        });
+        caracteristique_chambre_combo = new JComboBox<String>(new String[]{"", "ventilée", "climatisée"}) ;
+        situation_combo = new JComboBox<String>(new String[]{"", "intérieur", "balcon", "jardin"});
+        type_chambre_combo = new JComboBox<String>(new String[]{"", "single", "double", "triple"});
+
         prix_field = new JFormattedTextField(NumberFormat.getNumberInstance());
         search.getComponent(0).addKeyListener(new Search_Action());
     }
@@ -252,7 +232,7 @@ public class PanelChambre implements Observateur
 
     private void addContent()
     {
-        JTableChambreTotal.getHinstance().getTable().addMouseListener(new Table_Action());
+        JTableChambreTotal.getHinstance().getTable().addMouseListener(new TableAction());
         scroll = JTableChambreTotal.getHinstance().getScroll();
         panel.add(print);
         panel.add(chambreImage.getPanel());
@@ -263,6 +243,8 @@ public class PanelChambre implements Observateur
         panel.add(scroll);
         panel.add(type_chambre);
         panel.add(prix);
+        panel.add(caracteristique_chambre) ;
+        panel.add(caracteristique_chambre_combo) ;
         panel.add(prix_field);
         panel.add(situation);
         panel.add(situation_combo);
@@ -281,12 +263,15 @@ public class PanelChambre implements Observateur
         situation_combo.setBounds(x1 + 3 * (w1 + 20), y, w1, h);
 
         /* Le Label de prix et son champ */
-        prix.setBounds(x1 + 4 * (w1 + 20), y, w1, h);
-        prix_field.setBounds(x1 + 5 * (w1 + 20), y, w1, h);
+        prix.setBounds(x1 + 4 * (w1 + 20), y+h+10, w1, h);
+        prix_field.setBounds(x1 + 5 * (w1 + 20), y+h+10, w1, h);
+        
+        caracteristique_chambre.setBounds(x1 + 4 * (w1 + 20), y, w1, h);
+        caracteristique_chambre_combo.setBounds(x1 + 5 * (w1 + 20), y, w1, h);
 
         /* Le JTable */
 //		scroll.setBounds(w1+(5*(w1+20) - x2*2)/2, y+h+20, x2*2, 235-30+h);
-        scroll.setBounds((w2 - x2 * 2) / 2 - 50, y + h + 20, x2 * 2, 235 - 30 + h);
+        scroll.setBounds(x1, y + h + 20, x2 * 2, 235 - 30 + h);
 
         /* Les boutons de controls */
 //		bt.setPosition(w1+(5*(w1+20) - x2*2)/2, 235-30+h+10, h);
