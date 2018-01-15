@@ -10,11 +10,10 @@ public class MainView extends JFrame
 {
     private JPanel container;
     private JPanel mainPanel;
-    private CardLayout card;
 
     private void buildPanel()
     {
-        card = new CardLayout();
+        CardLayout card = new CardLayout();
         mainPanel = new JPanel(new BorderLayout());
         container = new JPanel();
         container.setLayout(card);

@@ -1,6 +1,6 @@
 package main.java.core;
 
-import main.java.Auth.Configure.Configuration;
+import main.java.auth.configure.Configuration;
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.PreparedStatement;
 import com.mysql.jdbc.Statement;
@@ -37,7 +37,7 @@ public class Database
         
     }
     
-    public void Connect() throws SQLException
+    public void connect() throws SQLException
     {
         String url = "jdbc:sqlite:" + Database.class.getResource("").toString();
 

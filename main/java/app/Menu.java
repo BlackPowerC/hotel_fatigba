@@ -5,8 +5,8 @@
  */
 package main.java.app;
 
-import main.java.Auth.userconnection.session.SessionException;
-import main.java.Auth.userconnection.session.SessionHandler;
+import main.java.auth.userconnection.session.SessionException;
+import main.java.auth.userconnection.session.SessionHandler;
 import main.java.core.Message;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

@@ -1,12 +1,8 @@
 package main.java.bo;
 
 import java.sql.Date;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.time.LocalDate;
 import java.time.Period;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 
 /**
  *

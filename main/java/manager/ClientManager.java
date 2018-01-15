@@ -107,6 +107,7 @@ public class ClientManager extends Manager<Client>
                 tc = new TypeClient(); tc.setId(rs.getInt("id_type")); tc.setDescription(rs.getString("tcDescription"));
                 cl = new Client(rs.getInt("id"), rs.getString("nom"), rs.getString("prenom"), rs.getString("email"), 
                         s, tc, n, rs.getBoolean("fidele"), rs.getBoolean("etranger"), rs.getDate("age")) ;
+                rs.close();
                 return cl ;
             }
         } catch (SQLException ex)
@@ -143,6 +144,7 @@ public class ClientManager extends Manager<Client>
                             s, tc, n, rs.getBoolean("fidele"), rs.getBoolean("etranger"), rs.getDate("age"))
                            ) ;
             }
+            rs.close();
             return all;
         }
         catch(SQLException ex)
@@ -151,7 +153,7 @@ public class ClientManager extends Manager<Client>
             Message.error("ERREUR DE REQUÊTES SQL !");
             Logger.getLogger(ClientManager.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return null ;
+        return all ;
     }
 
     @Override
@@ -222,6 +224,7 @@ public class ClientManager extends Manager<Client>
                             s, tc, n, rs.getBoolean("fidele"), rs.getBoolean("etranger"), rs.getDate("age"))
                            ) ;
             }
+            rs.close();
             return all;
         } catch (SQLException ex)
         {
@@ -229,6 +232,6 @@ public class ClientManager extends Manager<Client>
             Message.error(ex.getMessage()+" !");
             Logger.getLogger(ClientManager.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return null ;
+        return all ;
     }
 }

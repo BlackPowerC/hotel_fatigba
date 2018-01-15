@@ -7,7 +7,7 @@ package main.java.manager;
 
 import java.util.ArrayList;
 import java.util.List;
-import main.java.userInterface.Observateur;
+import main.java.gui.Observateur;
 
 /**
  *

@@ -95,6 +95,7 @@ public class ChambreManager extends Manager<Chambre>
                 sc.setDescription(rs.getString("scDescription"));
                 c = new Chambre(rs,tc, cc, sc) ;
             }
+            rs.close();
             return c ;
         }
         catch(SQLException sqlex)
@@ -139,6 +140,7 @@ public class ChambreManager extends Manager<Chambre>
                 sc.setDescription(rs.getString("scDescription"));
                 lc.add(new Chambre(rs,tc, cc, sc)) ;
             }
+            rs.close();
             return lc ;
         }
         catch(SQLException sqlex)
@@ -146,7 +148,7 @@ public class ChambreManager extends Manager<Chambre>
             /* Affichafe d'un message d'erreur */
             Logger.getLogger(ClientManager.class.getName()).log(Level.SEVERE, null, sqlex);
         }
-        return null ;
+        return lc ;
     }
 
     @Override
@@ -216,6 +218,7 @@ public class ChambreManager extends Manager<Chambre>
                 sc.setDescription(rs.getString("scDescription"));
                 lc.add(new Chambre(rs,tc, cc, sc)) ;
             }
+            rs.close();
             return lc ;
         }
         catch(SQLException sqlex)
@@ -223,7 +226,7 @@ public class ChambreManager extends Manager<Chambre>
             /* Affichage d'un message d'erreur */
             sqlex.printStackTrace(new PrintStream(System.err)) ;
         }
-        return null ;
+        return lc ;
     }
 
     public ArrayList<Chambre> findInRange(Vector<Integer> range) 

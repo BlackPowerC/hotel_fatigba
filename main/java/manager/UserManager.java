@@ -101,6 +101,7 @@ public class UserManager extends Manager<Utilisateur>
                 s = new Sexe() ; s.setId(rs.getInt("id_sexe")); s.setDescription(rs.getString("sDescription")) ;
                 tu = new TypeUtilisateur(); s.setId(rs.getInt("id_type")); s.setDescription(rs.getString("tuDescription"));
                 u = new Utilisateur(rs, s, tu);
+                rs.close();
                 return u ;
             }
         }
@@ -137,6 +138,7 @@ public class UserManager extends Manager<Utilisateur>
                 tu = new TypeUtilisateur(); s.setId(rs.getInt("id_type")); s.setDescription(rs.getString("tuDescription"));
                 lu.add(new Utilisateur(rs, s, tu));
             }
+            rs.close();
             return lu ;
         }
         catch (SQLException ex)
@@ -145,7 +147,7 @@ public class UserManager extends Manager<Utilisateur>
             Message.error(ex.getMessage()+ " !");
             Logger.getLogger(UserManager.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return null ;
+        return lu ;
     }
 
     @Override
@@ -158,15 +160,15 @@ public class UserManager extends Manager<Utilisateur>
                         + "FROM Utilisateur u "
                         + "LEFT JOIN TypeUtilisateur tu ON u.id_type = tu.id "
                         + "RIGHT JOIN Sexe s ON u.id_sexe = s.id" ;
-        try
+        try(ResultSet rs =Database.getHinstance().executeQuery(sql))
         {
-            ResultSet rs =Database.getHinstance().executeQuery(sql) ;
             while(rs.next())
             {
                 s = new Sexe() ; s.setId(rs.getInt("id_sexe")); s.setDescription(rs.getString("sDescription")) ;
                 tu = new TypeUtilisateur(); s.setId(rs.getInt("id_type")); s.setDescription(rs.getString("tuDescription"));
                 lu.add(new Utilisateur(rs, s, tu));
             }
+            rs.close();
             return lu ;
         }
         catch (SQLException ex)
@@ -175,7 +177,7 @@ public class UserManager extends Manager<Utilisateur>
             Message.error(ex.getMessage()+ " !");
             Logger.getLogger(UserManager.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return null ;
+        return lu ;
     }
 
     @Override

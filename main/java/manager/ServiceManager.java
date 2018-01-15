@@ -61,7 +61,7 @@ public class ServiceManager extends Manager<Service>
     @Override
     public void delete(int id)
     {
-        
+        throw new UnsupportedOperationException("Méthode indisponible !") ;
     }
 
     @Override
@@ -76,6 +76,7 @@ public class ServiceManager extends Manager<Service>
             if(rs.next())
             {
                 Service s = new Service(rs);
+                rs.close();
                 return s;
             }
             return null ;
@@ -102,13 +103,14 @@ public class ServiceManager extends Manager<Service>
             {
                 list_service.add(new Service(rs));
             }
+            rs.close();
             return list_service ;
         }catch(SQLException sqlex)
         {
             Message.error(sqlex.getMessage()+" !");
             sqlex.printStackTrace();
         }
-        return null ;
+        return list_service ;
     }
 
     @Override
@@ -123,13 +125,14 @@ public class ServiceManager extends Manager<Service>
             {
                 list_service.add(new Service(rs));
             }
+            rs.close();
             return list_service ;
         }catch(SQLException sqlex)
         {
             Message.error(sqlex.getMessage()+" !");
             sqlex.printStackTrace();
         }
-        return null ;
+        return list_service ;
     }
 
     @Override

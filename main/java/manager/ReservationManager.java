@@ -108,6 +108,7 @@ public class ReservationManager extends Manager<Reservation>
                         Util.stringToCalendar(date_arrive), 
                         Util.stringToCalendar(date_fin), 
                         rs.getBoolean("etat"));
+                rs.close();
                 return reservation ;
             }
             return null ;
@@ -122,18 +123,18 @@ public class ReservationManager extends Manager<Reservation>
     @Override
     public List<Reservation> findByCriteria(String criteria, boolean strict)
     {
-        return new ArrayList<Reservation>() ;
+        throw new UnsupportedOperationException("Méthode indisponible !") ;
     }
 
     @Override
     public List<Reservation> findAll()
     {
-        return new ArrayList<Reservation>();
+        throw new UnsupportedOperationException("Méthode indisponible !") ;
     }
     
     @Override
     public int update(Reservation entity)
     {
-        return -1;
+        throw new UnsupportedOperationException("Méthode indisponible !") ;
     }
 }

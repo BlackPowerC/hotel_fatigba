@@ -101,6 +101,7 @@ public class ConsommationManager extends Manager<Consommation>
                         .getManager(FactoryManager.SERVICE_MANAGER)
                         .findById(rs.getInt("id_service"));
                 c = new Consommation(id, s, cl) ;
+                rs.close();
                 return c ;
             }
             
@@ -117,7 +118,7 @@ public class ConsommationManager extends Manager<Consommation>
     @Override
     public List<Consommation> findByCriteria(String criteria, boolean strict)
     {
-        return new ArrayList<Consommation>();
+        throw new UnsupportedOperationException("Méthode indisponible !") ;
     }
 
     @Override
@@ -138,6 +139,7 @@ public class ConsommationManager extends Manager<Consommation>
                     (Client) FactoryManager.getInstance().getManager(FactoryManager.CLIENT_MANAGER).findById(rs.getInt("id_client"))
                 ));
             }
+            rs.close();
             return list ;
         }
         catch(SQLException sqlex)
@@ -145,7 +147,7 @@ public class ConsommationManager extends Manager<Consommation>
             Message.error(sqlex.getMessage()+ " !");
             sqlex.printStackTrace(new PrintStream(System.err));
         }
-        return null;
+        return list;
     }
 
     @Override

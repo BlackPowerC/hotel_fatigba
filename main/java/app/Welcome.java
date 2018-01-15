@@ -26,10 +26,8 @@ public class Welcome
 		fond.add(txtApp) ;
 	}
 	
-	private void Build()
+	private void build()
 	{
-		String tmp1 = "<html><font color=#FEFDF0>";
-		String tmp2 = "<font/></html>";
 		Font font = new Font("Purisa", Font.BOLD, 25);
 		txtApp = new JLabel("HOTEL WEST OCEAN") ;
 		txtApp.setFont(font) ;
@@ -39,8 +37,6 @@ public class Welcome
 		calendar = new JCalendar() ;
 		calendar.setBounds(0, 0,400, 300);
 		Toolkit tk = Toolkit.getDefaultToolkit() ;
-	//	setSize((int)tk.getScreenSize().getWidth()-20, (int) tk.getScreenSize().getHeight()-40);
-		
 		
 		txtApp.setBounds(((int)tk.getScreenSize().getWidth()-200)/2 - 400, 50 ,800, 100) ;
 		addContent() ;
@@ -48,7 +44,7 @@ public class Welcome
 	
 	public Welcome()
 	{
-		Build() ;
+		build() ;
 	}
 	
 	public Background getPanel()

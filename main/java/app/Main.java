@@ -1,8 +1,8 @@
 package main.java.app;
 
-import main.java.Auth.Configure.ConnectionView;
-import main.java.Auth.userconnection.AuthView;
-import main.java.Auth.Configure.Configuration;
+import main.java.auth.configure.ConnectionView;
+import main.java.auth.userconnection.AuthView;
+import main.java.auth.configure.Configuration;
 import main.java.core.Database;
 import main.java.core.Encryption.AdvancedEncryption;
 import main.java.core.Message;

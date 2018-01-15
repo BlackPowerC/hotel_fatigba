@@ -119,6 +119,7 @@ public class FacturationManager extends Manager<Facturation>
                 /* misc */
                 f.setTotal(rs.getFloat("total"));
                 f.setId(id);
+                rs.close();
                 return f ;
             }
             return null ;
@@ -131,9 +132,9 @@ public class FacturationManager extends Manager<Facturation>
     }
 
     @Override
-    public List<Facturation> findByCriteria(String criteria, boolean strict) throws NullPointerException
+    public List<Facturation> findByCriteria(String criteria, boolean strict)
     {
-        return null ;
+        return new ArrayList<Facturation>();
     }
 
     @Override
@@ -168,15 +169,15 @@ public class FacturationManager extends Manager<Facturation>
                 f.setTotal(rs.getFloat("total"));
                 f.setId(rs.getInt("id"));
                 list.add(f);
-                return list ;
             }
-            return null ;
+            rs.close();
+            return list;
         }catch(SQLException sqlex)
         {
             Message.error(sqlex.getMessage()+" !") ;
             sqlex.printStackTrace();
         }
-        return null ;
+        return list ;
     }
 
     @Override
