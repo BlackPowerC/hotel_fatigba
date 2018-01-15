@@ -100,14 +100,14 @@ public class PanelChambre implements Observateur
         private void setChambreData()
         {
             /* Caractériqtique */
-            chambre.getCaracteristique().setId(caracteristique_chambre_combo.getSelectedIndex()+1);
+            chambre.getCaracteristique().setId(caracteristique_chambre_combo.getSelectedIndex());
             chambre.getCaracteristique().setDescription(caracteristique_chambre_combo.getSelectedItem().toString());
             /* Type */
             chambre.getType().setDescription(type_chambre_combo.getSelectedItem().toString());
-            chambre.getType().setId(type_chambre_combo.getSelectedIndex()+1);
+            chambre.getType().setId(type_chambre_combo.getSelectedIndex());
             /* situation */
             chambre.getSituation().setDescription(situation_combo.getSelectedItem().toString());
-            chambre.getSituation().setId(situation_combo.getSelectedIndex()+1);
+            chambre.getSituation().setId(situation_combo.getSelectedIndex());
             /* prix */
             chambre.setPrix(Float.parseFloat(prix_field.getText()));
         }
