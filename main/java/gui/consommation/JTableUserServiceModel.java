@@ -37,7 +37,8 @@ public class JTableUserServiceModel extends AbstractTableModel
 
     public Consommation getValueAt(int row)
     {
-        return data.get(row) ;
+        Consommation c = new Consommation(data.get(row));
+        return c ;
     }
 
     public Object getValueAt(int row, int col)
@@ -59,7 +60,7 @@ public class JTableUserServiceModel extends AbstractTableModel
     {
         try
         {
-            ListUseService.getHinstance().getList().get(index) ;
+            ListUseService.getHinstance().getList().get(index).setConsommation(ser); ;
         } catch (ArrayIndexOutOfBoundsException ex)
         {
             ex.printStackTrace();

@@ -56,6 +56,7 @@ public class PanelConsommation implements Observateur
                 id_ser_field.setText("" + ser.getId());
                 desc_field.setText(ser.getDescription());
                 prix_field.setText("" + ser.getPrix());
+                us.setService(ser);
             }
 
             /* Le JTables des services consommées */
@@ -86,70 +87,46 @@ public class PanelConsommation implements Observateur
 
     public class BtnOKAction implements ActionListener
     {
-
-        public void fatalError()
-        {
-            Message.warning("Tout les champs sont requis !");
-        }
-
-        public void noError()
-        {
-            Message.information("Tous les Champs sont bien remplis !");
-        }
-
         public void actionPerformed(ActionEvent ev)
         {
             if (updating)
             {
                 return;
             }
-            if (id_cl_field.getText().equals(null) || id_cl_field.getText().compareTo("") == 0)
+            
+            if(!us.isValid())
             {
-                fatalError();
-                return;
+                Message.warning("Certaines données sont incorrectes !") ;
+                return ;
             }
-            if (id_ser_field.getText().equals(null) || id_ser_field.getText().compareTo("") == 0)
-            {
-                fatalError();
-                return;
-            }
-
-            /* id du service */
-            us.getService().setId(Integer.parseInt(id_ser_field.getText()));
-            /* id du client */
-            us.getClient().setId(Integer.parseInt(id_cl_field.getText()));
-            /* description */
-            us.getService().setDescription(desc_field.getText());
-            /* prix */
-            us.getService().setPrix(Float.parseFloat(prix_field.getText()));
-            /* nom et prénom */
-
+            
             if (ListUseService.getHinstance().getList().size() == 0)
             {
-                us.getClient().setId(1);
-            } else
-            {
-
-                us.getClient().setId(ListUseService.getHinstance()
-                        .getLast().getClient().getId() + 1);
-                System.out
-                        .println("Last UseService id: " + ListUseService.getHinstance()
-                                .getLast().getClient().getId());
-                System.out.println("Current UseService id: " + us.getClient().getId());
+                us.setId(1) ;
             }
-            ListUseService.getHinstance().setLast(us);
+            else
+            {
+                us.setId(ListUseService.getHinstance().getLast().getId()+1);
+            }
             ListUseService.getHinstance().getList().add(new Consommation(us));
 
-            ((ConsommationManager) FactoryManager.getInstance()
+            if(((ConsommationManager) FactoryManager.getInstance()
                     .getManager(FactoryManager.CONSOMMATION_MANAGER))
-                        .insert(us) ;
-
-            JTableUserServiceModel mdl = JTableUseService.getHinstance().getModel();
-            mdl.addRow();
+                        .insert(us))
+            {
+                JTableUserServiceModel mdl = JTableUseService.getHinstance().getModel();
+                mdl.addRow();
+            }
+            else
+            {
+                Message.warning("Impossible de faire une insertion !") ;
+                return ;
+            }
 
             Flush();
+            update();
+            Message.information("Consommation enregistrée !");
             updating = false;
-            noError();
         }
     }
 
@@ -194,30 +171,26 @@ public class PanelConsommation implements Observateur
         public void actionPerformed(ActionEvent ev)
         {
             if (updating)
-            {
-                int row = JTableUseService.getHinstance().getTable().getSelectedRow();
-                us.getClient().setId(Integer.parseInt(id_cl_field.getText()));
-                us.getService().setDescription(desc_field.getText());
-                us.getService().setPrix(Float.parseFloat(prix_field.getText()));
-
-                Client tmp = new Client();
-                Iterator<Client> it = ListClient.getHinstance().getListClient().iterator();
-                while (it.hasNext() && tmp.getId() != us.getClient().getId())
+            {   
+                if(!us.isValid())
                 {
-                    tmp = it.next();
+                    Message.warning("Certaines données sont incorrectes !") ;
                 }
-                us.setClient(tmp);
-
-                ListUseService.getHinstance().getList().get(row).setConsommation(us);
-
-                ((ConsommationManager) FactoryManager.getInstance()
+                if(((ConsommationManager) FactoryManager.getInstance()
                         .getManager(FactoryManager.CONSOMMATION_MANAGER))
-                            .update(us) ;
-
-                update() ;
-
+                            .update(us) != -1)
+                {
+                    int row = JTableUseService.getHinstance().getTable().getSelectedRow();
+                    ListUseService.getHinstance().getList().get(row).setConsommation(us);
+                }
+                else
+                {
+                    Message.warning("Impossible de faire une mise à jour !") ;
+                    return  ;
+                }
+                
                 Flush();
-
+                update() ;
                 Message.information("MAJ des données effectué !");
 
                 updating = false;

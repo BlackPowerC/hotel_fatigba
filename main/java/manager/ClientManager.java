@@ -90,7 +90,7 @@ public class ClientManager extends Manager<Client>
         Sexe s ;
         Nationalite n ;
         TypeClient tc  ;
-        String sql ="SELECT c.id, c.nom, c.prenom, c.age, c.fidele, c.etranger, c.id_nation, c.id_type, c.id_sexe, n.nom_fr_fr, s.descripion as sDescription, tc.descripion as tcDescription "
+        String sql ="SELECT c.id, c.nom, c.prenom, c.email, c.age, c.fidele, c.etranger, c.id_nation, c.id_type, c.id_sexe, n.nom_fr_fr, s.description as sDescription, tc.description as tcDescription "
                         + "FROM Client c, Nation n, Sexe s, TypeClient tc "
                         + "WHERE c.id_nation = n.id "
                         + "AND c.id_type = tc.id "

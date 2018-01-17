@@ -11,6 +11,8 @@ public class Consommation extends Entity
     public Consommation()
     {
         super();
+        service = new Service();
+        client = new Client();
     }
 
     public Consommation(int id, Service service, Client client)
@@ -48,7 +50,7 @@ public class Consommation extends Entity
 
     public void setService(Service service)
     {
-        this.service = service;
+        this.service.setService(service);
     }
 
     public Client getClient()
@@ -58,7 +60,7 @@ public class Consommation extends Entity
 
     public void setClient(Client client)
     {
-        this.client = client;
+        this.client.setClient(client);
     }
     
     public void setConsommation(Consommation c)

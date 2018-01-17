@@ -47,17 +47,18 @@ public class ConsommationManager extends Manager<Consommation>
             return false ;
         }
         
-        String sql = "INSERT INTO Consommation VALUES(NULL, ? , ?)" ;
+        String sql = "INSERT INTO Consommation VALUES(?, ? , ?)" ;
         try
         {
             PreparedStatement ps = (PreparedStatement) Database.getHinstance().prepare(sql) ;
-            ps.setInt(1, entity.getClient().getId()) ;
-            ps.setInt(2, entity.getService().getId());
+            ps.setInt(1, entity.getId());
+            ps.setInt(2, entity.getClient().getId()) ;
+            ps.setInt(3, entity.getService().getId());
             return ps.execute() ;
         }
         catch(SQLException sqlex)
         {
-            Message.error("") ;
+            Message.error(sqlex.getMessage()+" !") ;
             sqlex.printStackTrace();
         }
         return false ;
@@ -162,8 +163,8 @@ public class ConsommationManager extends Manager<Consommation>
         {
             PreparedStatement ps = Database.getHinstance().prepare(sql) ;
             ps.setInt(1, entity.getClient().getId()) ;
-            ps.setInt(1, entity.getService().getId()) ;
-            ps.setInt(1, entity.getId()) ;
+            ps.setInt(2, entity.getService().getId()) ;
+            ps.setInt(3, entity.getId()) ;
             return ps.executeUpdate();
         }
         catch(SQLException sqlex)
