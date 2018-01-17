@@ -67,7 +67,7 @@ public class ChambreManager extends Manager<Chambre>
         SituationChambre sc ;
         Chambre c = null;
         String query = "SELECT c.id, c.id_type, c.id_situation, c.id_caracteristique, c.prix, c.etat, "
-                + "SC.description AS scDescritpon, "
+                + "SC.description AS scDescritpion, "
                 + "CC.description AS ccDescription, "
                 + "TC.description AS tcDescription "
                 + "FROM Chambre c, CaracteristiqueChambre CC, SituationChambre SC, TypeChambre TC "
@@ -165,6 +165,7 @@ public class ChambreManager extends Manager<Chambre>
             ps.setFloat(4, chambre.getPrix()) ;
             ps.setBoolean(5, chambre.isEtat()) ;
             ps.setInt(6, chambre.getId()) ;
+            System.out.println(ps.asSql());
             return ps.executeUpdate() ; 
         }
         catch(SQLException sqlex)
@@ -194,13 +195,14 @@ public class ChambreManager extends Manager<Chambre>
                 + "WHERE c.id_type = TC.id "
                 + "AND c.id_situation = SC.id "
                 + "AND c.id_caracteristique = CC.id "
-                + "AND (scDescription = ? "+strict+" ccDescription = ? "+strict+" tcDescription=?)" ;
+                + "AND (SC.description = '?%' "+strict+" CC.description = '?%' "+strict+" TC.description= '?%')" ;
         try
         {
             PreparedStatement stmt = Database.getHinstance().prepare(sql) ;
             stmt.setString(1, criteria);
             stmt.setString(2, criteria);
             stmt.setString(3, criteria);
+            System.out.println(stmt.getPreparedSql());
             ResultSet rs = stmt.executeQuery() ;
             while(rs.next())
             {
@@ -224,6 +226,7 @@ public class ChambreManager extends Manager<Chambre>
         catch(SQLException sqlex)
         {
             /* Affichage d'un message d'erreur */
+            Message.error(sqlex.getMessage()+" !") ;
             sqlex.printStackTrace(new PrintStream(System.err)) ;
         }
         return lc ;

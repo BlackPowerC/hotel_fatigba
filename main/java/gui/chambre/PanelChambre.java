@@ -9,11 +9,6 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -21,20 +16,12 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 
-import main.java.core.Database;
-
 import main.java.app.Background;
 import main.java.app.Buttons;
 import main.java.app.JSearch;
 
-import main.java.bo.CaracteristiqueChambre;
 import main.java.bo.Chambre;
 import main.java.bo.Image;
-import main.java.bo.SituationChambre;
-import main.java.bo.TypeChambre;
-
-import com.mysql.jdbc.PreparedStatement;
-import java.io.PrintStream;
 import java.util.regex.Pattern;
 import java.text.NumberFormat;
 import main.java.core.Message;
@@ -45,11 +32,11 @@ import main.java.gui.Observateur;
 
 public class PanelChambre implements Observateur
 {
-    public class BtnSearchAction implements KeyListener
+    public class SearchAction implements KeyListener
     {
         @Override
         public void keyPressed(KeyEvent arg0){
-            throw new UnsupportedOperationException("Méthode indisponible") ;
+            return ;
         }
 
         @Override
@@ -57,12 +44,12 @@ public class PanelChambre implements Observateur
         {
             String key = search.getSearch_field().getText();
             System.out.println("PanelChambre: BtnSearchAction: " + key);
-            searchClient(key);
+            searchChambre(key);
         }
 
         @Override
         public void keyTyped(KeyEvent arg0){
-            throw new UnsupportedOperationException("Méthode indisponible") ;
+            return ;
         }
     }
 
@@ -173,46 +160,18 @@ public class PanelChambre implements Observateur
 
     private static PanelChambre singleton = null;
 
-    private void searchClient(String key)
+    private void searchChambre(String key)
     {
-        if (key == null || !Pattern.compile("^[a-zA-Z0-9]+", Pattern.CASE_INSENSITIVE).matcher(key).matches())
+        if(key != null || Pattern.compile("^[\\w]$").matcher(key).matches())
         {
+            ((JTableChambreTotalModel)JTableChambreTotal.getHinstance().getTable().getModel())
+                    .setData(ChambreManager.getInstance().findByCriteria(key, false));
         }
         else
         {
-            String req = 
-                    "SELECT c.id, c.id_type, c.id_situation, c.id_caracteristique, c.prix, c.etat, "
-                   +"tc.description AS tcDescription, cc.description AS ccDescription, sc.description AS scDescription "
-                   +"FROM Chambre c, SituationChambre sc, TypeChambre tc, CaracteristiqueChambre cc "
-                   +"WHERE tcDescription LIKE '?%' or scDescription LIKE '?%' or prix LIKE '?%'";
-            System.out.println(req) ;
-
-            TypeChambre tc ;
-            SituationChambre sc ;
-            CaracteristiqueChambre cc ;
-            List<Chambre> newListChambre = new ArrayList<Chambre>();
-            try
-            {
-                PreparedStatement ps = (PreparedStatement) Database.getHinstance().getConnection().prepareStatement(req) ;
-                ResultSet rs = ps.executeQuery() ;
-                for(int i=1; i<=3; i++) {ps.setString(i, req);}
-                System.out.println("PanelChambre: newListChambre");
-                while (rs.next())
-                {
-                    tc = new TypeChambre() ; tc.setId(rs.getInt("id_type")); tc.setDescription(rs.getString("tcDescription"));
-                    cc = new CaracteristiqueChambre() ; cc.setId(rs.getInt("id_caracteristique")); cc.setDescription(rs.getString("tcDescription"));
-                    sc = new SituationChambre() ; sc.setId(rs.getInt("id_situation")); sc.setDescription(rs.getString("scDescription"));
-                    newListChambre.add(new Chambre(rs, tc, cc, sc));
-                }
-                JTableChambreTotal.getHinstance().getModel().setData(newListChambre);
-            } catch (SQLException e)
-            {
-                e.printStackTrace(new PrintStream(System.out));
-            }
+            ((JTableChambreTotalModel)JTableChambreTotal.getHinstance().getTable().getModel())
+                    .setData(ListChambre.getHinstance().getListChambreTotal());
         }
-        panel.remove(scroll);
-        panel.add(scroll);
-        panel.revalidate();
     }
 
     private void buildButton()
@@ -262,7 +221,7 @@ public class PanelChambre implements Observateur
         type_chambre_combo = new JComboBox<String>(new String[]{"", "single", "double", "triple"});
 
         prix_field = new JFormattedTextField(NumberFormat.getNumberInstance());
-        search.getComponent(0).addKeyListener(new BtnSearchAction());
+        search.getComponent(0).addKeyListener(new SearchAction());
     }
 
     private void Build_Panel()
