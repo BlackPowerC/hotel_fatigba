@@ -1,4 +1,4 @@
-package main.java.core.Loader;
+package main.java.core.loader;
 
 /**
  * <p>
