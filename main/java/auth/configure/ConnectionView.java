@@ -330,11 +330,10 @@ public class ConnectionView extends JFrame implements ActionListener, KeyListene
 
     @Override
     public void keyReleased(KeyEvent ev){
-        throw new UnsupportedOperationException("Methode indisponible !") ;
     }
 
     @Override
     public void keyTyped(KeyEvent ev){
-        throw new UnsupportedOperationException("Methode indisponible !") ;
+        
     }
 }

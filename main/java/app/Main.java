@@ -4,7 +4,6 @@ import main.java.auth.configure.ConnectionView;
 import main.java.auth.userconnection.AuthView;
 import main.java.auth.configure.Configuration;
 import main.java.core.Database;
-import main.java.core.Encryption.AdvancedEncryption;
 import main.java.core.Message;
 import java.io.File;
 import java.io.FileNotFoundException;

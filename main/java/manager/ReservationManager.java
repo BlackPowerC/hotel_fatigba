@@ -123,18 +123,18 @@ public class ReservationManager extends Manager<Reservation>
     @Override
     public List<Reservation> findByCriteria(String criteria, boolean strict)
     {
-        throw new UnsupportedOperationException("Méthode indisponible !") ;
+        return new ArrayList<>();
     }
 
     @Override
     public List<Reservation> findAll()
     {
-        throw new UnsupportedOperationException("Méthode indisponible !") ;
+        return new ArrayList<>();
     }
     
     @Override
     public int update(Reservation entity)
     {
-        throw new UnsupportedOperationException("Méthode indisponible !") ;
+        return -1;
     }
 }
