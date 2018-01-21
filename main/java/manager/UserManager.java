@@ -3,7 +3,7 @@ package main.java.manager;
 import main.java.bo.Sexe;
 import main.java.bo.TypeUtilisateur;
 import main.java.bo.Utilisateur;
-import com.mysql.jdbc.PreparedStatement;
+import java.sql.PreparedStatement;
 import main.java.core.Database;
 import main.java.core.Message;
 import java.io.PrintStream;
@@ -69,7 +69,7 @@ public class UserManager extends Manager<Utilisateur>
         String sql = "DELETE FROM Utilisateur WHERE id=?";
         try
         {
-            PreparedStatement ps = (PreparedStatement) Database.getHinstance().prepare(sql);
+            PreparedStatement ps = Database.getHinstance().prepare(sql);
             ps.setInt(1, id);
             ps.execute();
         }
@@ -128,7 +128,7 @@ public class UserManager extends Manager<Utilisateur>
                         + "WHERE u.nom=? "+st+" u.prenom=?" ;
         try
         {
-            PreparedStatement ps = (PreparedStatement) Database.getHinstance().prepare(sql) ;
+            PreparedStatement ps = Database.getHinstance().prepare(sql) ;
             ps.setString(1, criteria);
             ps.setString(2, criteria);
             ResultSet rs =ps.executeQuery() ;
@@ -191,7 +191,7 @@ public class UserManager extends Manager<Utilisateur>
         String sql="UPDATE Utilisateur set id_type=?, id_sexe=?, nom=?, prenom=?, email=?, password=? WHERE id=?" ;
         try
         {
-            PreparedStatement st = (PreparedStatement) Database.getHinstance().prepare(sql) ;
+            PreparedStatement st = Database.getHinstance().prepare(sql) ;
             st.setInt(1, entity.getType().getId());
             st.setInt(2, entity.getSexe().getId());
             st.setString(3, entity.getNom());

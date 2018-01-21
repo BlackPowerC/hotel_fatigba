@@ -1,13 +1,12 @@
 package main.java.core;
 
+import java.sql.Connection;
 import main.java.auth.configure.Configuration;
-import com.mysql.jdbc.Connection;
-import com.mysql.jdbc.PreparedStatement;
-import com.mysql.jdbc.Statement;
-
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public class Database
 {
@@ -37,7 +36,7 @@ public class Database
         
     }
     
-    public void connect() throws SQLException
+    public void Connect() throws SQLException
     {
         String url = "jdbc:sqlite:" + Database.class.getResource("").toString();
 

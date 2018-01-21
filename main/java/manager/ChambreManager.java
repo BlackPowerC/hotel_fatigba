@@ -5,7 +5,7 @@ import main.java.core.Database;
 import main.java.bo.Chambre;
 import main.java.bo.SituationChambre;
 import main.java.bo.TypeChambre;
-import com.mysql.jdbc.PreparedStatement;
+import java.sql.PreparedStatement;
 import java.io.PrintStream;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -165,7 +165,7 @@ public class ChambreManager extends Manager<Chambre>
             ps.setFloat(4, chambre.getPrix()) ;
             ps.setBoolean(5, chambre.isEtat()) ;
             ps.setInt(6, chambre.getId()) ;
-            System.out.println(ps.asSql());
+//            System.out.println(ps.asSql());
             return ps.executeUpdate() ; 
         }
         catch(SQLException sqlex)
@@ -202,7 +202,7 @@ public class ChambreManager extends Manager<Chambre>
             stmt.setString(1, criteria);
             stmt.setString(2, criteria);
             stmt.setString(3, criteria);
-            System.out.println(stmt.getPreparedSql());
+//            System.out.println(stmt.getPreparedSql());
             ResultSet rs = stmt.executeQuery() ;
             while(rs.next())
             {
