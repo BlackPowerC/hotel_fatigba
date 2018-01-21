@@ -273,14 +273,21 @@ public class ConnectionView extends JFrame implements ActionListener, KeyListene
                 }
                 Configuration cf = Configuration.getInstance();
                 createConfiguration();
-                Database.getHinstance().Connect(cf.getDatabaseUser(),cf.getDatabasePasswd());
+                if(cf.getSgbd().compareToIgnoreCase("sqlite") == 0)
+                {
+                    Database.getHinstance().Connect();
+                }
+                else
+                {
+                    Database.getHinstance().Connect(cf.getDatabaseUser(),cf.getDatabasePasswd());   
+                }
                 SwingUtilities.invokeLater(new Runnable()
-		        { 
-		            public void run()
-		            {
-			           new AuthView();
-		            }
-		        }) ;
+		{ 
+                    public void run()
+		    {
+                        new AuthView();
+		    }
+		}) ;
                 this.dispose();
             } catch (SQLException ex)
             {
@@ -305,7 +312,14 @@ public class ConnectionView extends JFrame implements ActionListener, KeyListene
                 }
                 Configuration cf = Configuration.getInstance();
                 createConfiguration();
-                Database.getHinstance().Connect(cf.getDatabaseUser(), cf.getDatabasePasswd());
+                if(cf.getSgbd().compareToIgnoreCase("sqlite") == 0)
+                {
+                    Database.getHinstance().Connect();
+                }
+                else
+                {
+                    Database.getHinstance().Connect(cf.getDatabaseUser(),cf.getDatabasePasswd());   
+                }
                 SwingUtilities.invokeLater(new Runnable()
                 {
                     @Override

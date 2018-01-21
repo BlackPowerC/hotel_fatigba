@@ -61,7 +61,14 @@ public class Main
                 cf.setConfiguration(json);
                 System.out.println(cf.toString());
                 System.out.println(cf.getURL());
-                Database.getHinstance().Connect(cf.getDatabaseUser(),cf.getDatabasePasswd());
+                if(cf.getSgbd().compareToIgnoreCase("sqlite") == 0)
+                {
+                    Database.getHinstance().Connect();
+                }
+                else
+                {
+                    Database.getHinstance().Connect(cf.getDatabaseUser(),cf.getDatabasePasswd());   
+                }
                 SwingUtilities.invokeLater(new Runnable()
                 {
                     @Override

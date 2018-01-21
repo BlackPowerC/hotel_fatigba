@@ -38,11 +38,8 @@ public class Database
     
     public void Connect() throws SQLException
     {
-        String url = "jdbc:sqlite:" + Database.class.getResource("").toString();
-
-        connection = (Connection) DriverManager.getConnection(url);
+        connection = (Connection) DriverManager.getConnection(config.getURL());
         statement = (Statement) connection.createStatement();
-
     }
 
     public void Connect(String user, String passwd) throws SQLException
