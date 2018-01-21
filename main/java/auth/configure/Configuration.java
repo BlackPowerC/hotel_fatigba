@@ -5,6 +5,7 @@
  */
 package main.java.auth.configure;
 
+import main.resources.Rc;
 import org.json.simple.JSONObject;
 
 /**
@@ -120,6 +121,10 @@ public class Configuration
 
     public String getURL()
     {
+        if(this.sgbd.compareToIgnoreCase("sqlite") == 0)
+        {
+            return "jdbc:"+this.sgbd+"://" + Rc.class.getResource("").getFile()+"database/hotel_new.sqlite";
+        }
         return "jdbc:"+this.sgbd+"://"+this.databaseHost+":"+this.sgbdPort+"/"+this.databaseName ;
     }
 

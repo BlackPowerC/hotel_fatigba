@@ -23,7 +23,7 @@ import main.java.core.Database;
 import main.java.app.MainView;
 import main.java.auth.userconnection.session.Session;
 import main.java.bo.Utilisateur;
-import com.mysql.jdbc.PreparedStatement;
+import java.sql.PreparedStatement;
 import main.java.core.Message;
 import java.util.logging.Level;
 import java.util.logging.Logger;

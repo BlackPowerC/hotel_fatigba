@@ -5,7 +5,7 @@
  */
 package main.java.auth.userconnection.session;
 
-import com.mysql.jdbc.PreparedStatement;
+import java.sql.PreparedStatement;
 import main.java.core.Database;
 import main.java.core.Message;
 import java.sql.ResultSet;

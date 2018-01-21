@@ -4,7 +4,7 @@ import main.java.bo.Client;
 import main.java.bo.Nationalite;
 import main.java.bo.Sexe;
 import main.java.bo.TypeClient;
-import com.mysql.jdbc.PreparedStatement;
+import java.sql.PreparedStatement;
 import main.java.core.Database;
 import main.java.core.Message;
 import java.io.PrintStream;
