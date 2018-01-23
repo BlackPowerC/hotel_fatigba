@@ -13,6 +13,7 @@ import main.java.bo.Service;
  */
 public class ServiceValidator implements ValidatorInterface<Service>
 {
+
     public ServiceValidator()
     {
     }
@@ -20,7 +21,15 @@ public class ServiceValidator implements ValidatorInterface<Service>
     @Override
     public boolean isValid(Service enity)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (enity == null)
+        {
+            return false;
+        }
+        EntityValidator ev = (EntityValidator) ValidatorFactory.getInstance()
+                .getValidator(EntityValidator.class.getName());
+        return ev.isValid(enity)
+                && !enity.getDescription().isEmpty() 
+                && (enity.getPrix() > 0.0f);
     }
-    
+
 }

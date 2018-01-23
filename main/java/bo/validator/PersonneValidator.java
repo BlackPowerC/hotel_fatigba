@@ -23,7 +23,8 @@ public class PersonneValidator implements ValidatorInterface<Personne>
         {
             return false;
         }
-        EntityValidator ev = new EntityValidator() ;
+        EntityValidator ev = (EntityValidator) ValidatorFactory.getInstance()
+                .getValidator(EntityValidator.class.getName());
         String namePattern = "^[\\w]+$";
         String emailPattern = "^[\\w]+@[\\w]+\\.[a-z]{2,6}$";
         boolean localValid ;

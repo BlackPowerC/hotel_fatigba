@@ -10,15 +10,26 @@ import main.java.bo.Client;
 /**
  *
  * @author jordy
- * @since 0.2.1
- * Cette classe sert de validateur pour l'objet Client.
+ * @since 0.2.1 Cette classe sert de validateur pour l'objet Client.
  */
 public class ClientValidator implements ValidatorInterface<Client>
 {
+
     @Override
     public boolean isValid(Client enity)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (enity == null)
+        {
+            return false;
+        }
+        PersonneValidator pv = (PersonneValidator) ValidatorFactory.getInstance()
+                .getValidator(PersonneValidator.class.getName());
+        TypologieValidator tv = (TypologieValidator) ValidatorFactory.getInstance()
+                .getValidator(TypologieValidator.class.getName());
+        return pv.isValid(enity)
+                && tv.isValid(enity.getNation())
+                && tv.isValid(enity.getSexe())
+                && tv.isValid(enity.getType());
     }
-    
+
 }

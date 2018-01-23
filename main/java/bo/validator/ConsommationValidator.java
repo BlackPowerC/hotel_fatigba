@@ -21,7 +21,19 @@ public class ConsommationValidator implements ValidatorInterface<Consommation>
     @Override
     public boolean isValid(Consommation enity)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (enity == null)
+        {
+            return false;
+        }
+        EntityValidator ev = (EntityValidator) ValidatorFactory.getInstance()
+                .getValidator(EntityValidator.class.getName());
+        ServiceValidator sv = (ServiceValidator) ValidatorFactory.getInstance()
+                .getValidator(ServiceValidator.class.getName());
+        ClientValidator cv = (ClientValidator) ValidatorFactory.getInstance()
+                .getValidator(ClientValidator.class.getName());
+        return cv.isValid(enity.getClient()) 
+                && sv.isValid(enity.getService())
+                && ev.isValid(enity) ;
     }
-    
+
 }

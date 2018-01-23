@@ -21,7 +21,18 @@ public class ChambreValidator implements ValidatorInterface<Chambre>
     @Override
     public boolean isValid(Chambre enity)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if(enity == null)
+        {
+            return false;
+        }
+        EntityValidator ev = (EntityValidator) ValidatorFactory.getInstance().getValidator(EntityValidator.class.getName());
+        TypologieValidator tv = (TypologieValidator) ValidatorFactory.getInstance().getValidator(TypologieValidator.class.getName());
+        
+        return ev.isValid(enity) 
+                && tv.isValid(enity.getSituation())
+                && tv.isValid(enity.getType())
+                && tv.isValid(enity.getCaracteristique())
+                && (enity.getPrix() > 0.0f);
     }
-    
+
 }

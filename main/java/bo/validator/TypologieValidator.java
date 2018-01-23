@@ -21,7 +21,13 @@ public class TypologieValidator implements ValidatorInterface<Typologie>
     @Override
     public boolean isValid(Typologie enity)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (enity == null)
+        {
+            return false;
+        }
+        EntityValidator ev = (EntityValidator) ValidatorFactory.getInstance()
+                .getValidator(EntityValidator.class.getName());
+        return ev.isValid(enity);
     }
-    
+
 }
