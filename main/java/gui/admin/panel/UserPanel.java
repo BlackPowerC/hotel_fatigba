@@ -9,6 +9,10 @@ import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -16,14 +20,91 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import main.java.app.Background;
 import main.java.app.Buttons;
+import main.java.gui.Observateur;
 
 /**
  *
  * @author jordy
  * @since 0.2.1
  */
-public class UserPanel
+public class UserPanel implements Observateur
 {
+    /**
+     * Cette classe exécute l'action du bouton OK.
+     */
+    public class OkBtnAction implements ActionListener
+    {
+        public void actionPerformed(ActionEvent ev)
+        {
+            
+        }
+    }
+    
+    /**
+     * Cette classe exécute l'action du bouton supprimer.
+     */
+    public class DeleteBtnAction implements ActionListener
+    {
+        public void actionPerformed(ActionEvent ev)
+        {
+            
+        }
+    }
+    
+    /**
+     * Cette classe exécute l'action du bouton update.
+     */
+    public class UpdateBtnAction implements ActionListener
+    {
+        public void actionPerformed(ActionEvent ev)
+        {
+            
+        }
+    }
+    
+    /**
+     * Cette classe exécute l'action du bouton reset.
+     */
+    public class ResetBtnAction implements ActionListener
+    {
+        public void actionPerformed(ActionEvent ev)
+        {
+            
+        }
+    }
+    
+    /**
+     * Cette classe exécute l'action du clic sur une ligne de la JTable.
+     */
+    public class TableAction implements MouseListener
+    {
+
+        @Override
+        public void mouseClicked(MouseEvent e)
+        {
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e)
+        {
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e)
+        {
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e)
+        {
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e)
+        {
+        }
+
+    }
 
     /**
      * Cette classe représente un formulaire permettant de manipuler les
@@ -75,7 +156,7 @@ public class UserPanel
         {
             this.panel = new JPanel(new FlowLayout(FlowLayout.CENTER));
             this.panel.setBackground(new Color(0, 0, 0, 0));
-            this.panelButtons = new JPanel(new GridLayout(1, 4));
+            this.panelButtons = new JPanel();
             this.panelButtons.setBackground(new Color(0, 0, 0, 0));
             this.panelFrom = new JPanel(new GridLayout(6 ,2, 50, 50));
             this.panelFrom.setBackground(new Color(0, 0, 0, 0));
@@ -91,6 +172,7 @@ public class UserPanel
             {
                 this.panelButtons.add(buttons.getButtons(i));
             }
+            
             /* Le panel du formulaire */
             this.panelFrom.add(labelNom);
             this.panelFrom.add(txtNom);
@@ -207,5 +289,13 @@ public class UserPanel
     public Background getPanel()
     {
         return this.panel;
+    }
+    
+    @Override
+    public void update()
+    {
+        panel.remove(tableUser.getScroll());
+        panel.add(tableUser.getScroll());
+        panel.revalidate();
     }
 }
