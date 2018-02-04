@@ -5,8 +5,9 @@
  */
 package main.java.gui.admin.panel;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.FlowLayout;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -154,10 +155,13 @@ public class UserPanel implements Observateur
          */
         public void buildPanel()
         {
-            this.panel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+            this.panel = new JPanel(new BorderLayout(0, 50));
             this.panel.setBackground(new Color(0, 0, 0, 0));
+            
             this.panelButtons = new JPanel();
             this.panelButtons.setBackground(new Color(0, 0, 0, 0));
+            this.panelButtons.setPreferredSize(new Dimension(55, 3*45+40));
+            
             this.panelFrom = new JPanel(new GridLayout(6 ,2, 50, 50));
             this.panelFrom.setBackground(new Color(0, 0, 0, 0));
         }
@@ -171,6 +175,7 @@ public class UserPanel implements Observateur
             for (int i = 0; i <= 3; i++)
             {
                 this.panelButtons.add(buttons.getButtons(i));
+                buttons.getButtons(i).setPreferredSize(new Dimension(45, 45));
             }
             
             /* Le panel du formulaire */
@@ -192,8 +197,8 @@ public class UserPanel implements Observateur
             this.panelFrom.add(labelPasswd);
             this.panelFrom.add(txtPasswd);
             /* Le panel principal */
-            this.panel.add(this.panelFrom) ;
-            this.panel.add(this.panelButtons) ;
+            this.panel.add(this.panelFrom, BorderLayout.CENTER) ;
+            this.panel.add(this.panelButtons, BorderLayout.SOUTH) ;
         }
 
         /**
