@@ -5,7 +5,9 @@
  */
 package main.java.gui.admin.panel;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -17,6 +19,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.Box;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -24,6 +27,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import main.java.app.Background;
+import main.java.app.Button;
 import main.java.auth.configure.Configuration;
 import main.java.auth.configure.ConnectionView;
 import main.java.core.Message;
@@ -38,31 +42,6 @@ import org.json.simple.JSONObject;
  */
 public class DatabasePanel implements Observateur
 {
-
-    /**
-     * Cette classe exécute l'action du bouton OK.
-     */
-    public class OkBtnAction implements ActionListener
-    {
-
-        public void actionPerformed(ActionEvent ev)
-        {
-
-        }
-    }
-
-    /**
-     * Cette classe exécute l'action du bouton supprimer.
-     */
-    public class DeleteBtnAction implements ActionListener
-    {
-
-        public void actionPerformed(ActionEvent ev)
-        {
-
-        }
-    }
-
     /**
      * Cette classe exécute l'action du bouton update.
      */
@@ -124,6 +103,11 @@ public class DatabasePanel implements Observateur
     private JLabel txtDatabaseUser;
     private JTextField user;
     
+    /* Boutons de contrôle */
+    private Button btnOk ;
+    private Button btnCancel ;
+    private Button btnUpload ;
+    
     private static DatabasePanel singleton;
     
     public static DatabasePanel getHinstance()
@@ -145,7 +129,17 @@ public class DatabasePanel implements Observateur
 
     private void buildButton()
     {
-
+        this.btnOk = new Button(Rc.class.getResource("").getFile()+"icons/PNG-48/Save.png") ;
+        this.btnOk.setPreferredSize(new Dimension(45, 45));
+        this.btnOk.setToolTipText("Valider !");
+        
+        this.btnCancel = new Button(Rc.class.getResource("").getFile()+"icons/PNG-48/Delete.png") ;
+        this.btnCancel.setPreferredSize(new Dimension(45, 45));
+        this.btnCancel.setToolTipText("Annuler !");
+        
+        this.btnUpload = new Button(Rc.class.getResource("").getFile()+"icons/PNG-48/Search.png") ;
+        this.btnUpload.setPreferredSize(new Dimension(45, 45));
+        this.btnUpload.setToolTipText("Charger !");
     }
 
     private void buildInput()
@@ -213,10 +207,13 @@ public class DatabasePanel implements Observateur
     {
         formPanel = new JPanel(new GridLayout(6, 2, 50, 50));
         formPanel.setBackground(new Color(0, 0, 0, 0));
-        btnsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        mainPanel = new Background();
-        mainPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
         
+        btnsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        btnsPanel.setBackground(new Color(0, 0, 0, 0));
+        btnsPanel.setPreferredSize(new Dimension(55, 3*45+40));
+        
+        mainPanel = new Background();
+        mainPanel.setLayout(new BorderLayout(0, 50));
         addContent();
     }
 
@@ -239,9 +236,13 @@ public class DatabasePanel implements Observateur
 
         formPanel.add(txtDatabasePort);
         formPanel.add(databasePort);
-
-        mainPanel.add(formPanel) ;
-        mainPanel.add(btnsPanel) ;
+        
+        btnsPanel.add(btnOk) ;
+        btnsPanel.add(btnUpload) ;
+        btnsPanel.add(btnCancel) ;
+        
+        mainPanel.add(formPanel, BorderLayout.CENTER) ;
+        mainPanel.add(btnsPanel, BorderLayout.SOUTH) ;
     }
 
     /**
