@@ -36,7 +36,8 @@ import main.resources.Rc;
 import org.json.simple.JSONObject;
 
 /**
- *
+ * Cette classe affiche le formulaire de modification de la configuration
+ * du SGBD de l'application.
  * @author jordy
  * @since 0.2.1
  */
@@ -81,7 +82,12 @@ public class DatabasePanel implements Observateur
 
         public void actionPerformed(ActionEvent ev)
         {
-
+            databaseHost.setText("");
+            databaseName.setText("");
+            databasePort.setValue(0);
+            user.setText("");
+            pass.setText("");
+            databaseSGBD.setSelectedIndex(0);
         }
     }
     
@@ -93,7 +99,7 @@ public class DatabasePanel implements Observateur
 
         public void actionPerformed(ActionEvent ev)
         {
-
+            loadConfiguration();
         }
     }
     
@@ -159,6 +165,7 @@ public class DatabasePanel implements Observateur
         this.btnCancel = new Button(Rc.class.getResource("").getFile()+"icons/PNG-48/Delete.png") ;
         this.btnCancel.setPreferredSize(new Dimension(45, 45));
         this.btnCancel.setToolTipText("Annuler !");
+        this.btnCancel.addActionListener(new ResetBtnAction());
         
         this.btnUpload = new Button(Rc.class.getResource("").getFile()+"icons/PNG-48/Search.png") ;
         this.btnUpload.setPreferredSize(new Dimension(45, 45));
@@ -272,7 +279,7 @@ public class DatabasePanel implements Observateur
         Configuration cf = Configuration.getInstance();
         databaseHost.setText(cf.getDatabaseHost());
         databaseName.setText(cf.getDatabaseName());
-        //databasePort.setValue(cf.getSgbdPort().toString());
+        databasePort.setValue(Integer.parseInt(cf.getSgbdPort()));
         databaseSGBD.setSelectedItem(cf.getSgbd());
         user.setText(cf.getDatabaseUser());
     }
