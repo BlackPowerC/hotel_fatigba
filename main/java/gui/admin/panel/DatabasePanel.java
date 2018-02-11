@@ -19,7 +19,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.Box;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -29,6 +28,7 @@ import javax.swing.JTextField;
 import main.java.app.Background;
 import main.java.app.Button;
 import main.java.auth.configure.Configuration;
+import main.java.auth.configure.ConfigurationValidator;
 import main.java.auth.configure.ConnectionView;
 import main.java.core.Message;
 import main.java.gui.Observateur;
@@ -50,6 +50,25 @@ public class DatabasePanel implements Observateur
 
         public void actionPerformed(ActionEvent ev)
         {
+            Configuration cf = Configuration.getInstance() ;
+            cf.setDatabaseHost(databaseHost.getText());
+            cf.setDatabaseName(databaseName.getText());
+            cf.setDatabaseUser(user.getText());
+            cf.setDatabasePasswd(pass.getText());
+            cf.setSgbd(databaseSGBD.getSelectedItem().toString());
+            cf.setSgbdHost(databaseHost.getText());
+            cf.setSgbdPort(databasePort.getValue().toString());
+            System.out.println(Integer.parseInt(cf.getSgbdPort()));
+            ConfigurationValidator cv = new ConfigurationValidator() ;
+            if(cv.isValid(cf))
+            {
+                createConfiguration();
+                Message.information("La configuration prendra éffet au prochain lancement !");
+            }
+            else
+            {
+                Message.warning("La configuration est invalide !") ;
+            }
 
         }
     }
@@ -78,10 +97,11 @@ public class DatabasePanel implements Observateur
         }
     }
     
+    private final String configFilePath ;
+    
     private Background mainPanel;
     private JPanel formPanel;
     private JPanel btnsPanel;
-
 
     /* Le Formulaire */
     // Nom de la base de données
@@ -121,10 +141,12 @@ public class DatabasePanel implements Observateur
     
     private DatabasePanel()
     {
+        this.configFilePath = Rc.class.getResource("").getFile() + "config/db_config.json";
         buildButton();
         buildLabel();
         buildInput();
         buildPanel();
+        loadConfiguration();
     }
 
     private void buildButton()
@@ -132,6 +154,7 @@ public class DatabasePanel implements Observateur
         this.btnOk = new Button(Rc.class.getResource("").getFile()+"icons/PNG-48/Save.png") ;
         this.btnOk.setPreferredSize(new Dimension(45, 45));
         this.btnOk.setToolTipText("Valider !");
+        this.btnOk.addActionListener(new UpdateBtnAction());
         
         this.btnCancel = new Button(Rc.class.getResource("").getFile()+"icons/PNG-48/Delete.png") ;
         this.btnCancel.setPreferredSize(new Dimension(45, 45));
@@ -140,6 +163,7 @@ public class DatabasePanel implements Observateur
         this.btnUpload = new Button(Rc.class.getResource("").getFile()+"icons/PNG-48/Search.png") ;
         this.btnUpload.setPreferredSize(new Dimension(45, 45));
         this.btnUpload.setToolTipText("Charger !");
+        this.btnUpload.addActionListener(new UploadBtnAction());
     }
 
     private void buildInput()
@@ -198,11 +222,6 @@ public class DatabasePanel implements Observateur
         txtDatabaseSGBD.setFont(police);
     }
 
-    private void setPosition()
-    {
-
-    }
-
     private void buildPanel()
     {
         formPanel = new JPanel(new GridLayout(6, 2, 50, 50));
@@ -248,6 +267,16 @@ public class DatabasePanel implements Observateur
     /**
      * Action
      */
+    private void loadConfiguration()
+    {
+        Configuration cf = Configuration.getInstance();
+        databaseHost.setText(cf.getDatabaseHost());
+        databaseName.setText(cf.getDatabaseName());
+        //databasePort.setValue(cf.getSgbdPort().toString());
+        databaseSGBD.setSelectedItem(cf.getSgbd());
+        user.setText(cf.getDatabaseUser());
+    }
+    
     private void createConfiguration()
     {
         /* Céation du fichier JSon de configuration */
@@ -258,24 +287,25 @@ public class DatabasePanel implements Observateur
         json.put("User", user.getText());
         json.put("Port", databasePort.getValue().toString());
         json.put("SGBD", databaseSGBD.getSelectedItem().toString());
-        File configuration = new File(Rc.class.getResource("").getFile() + "config/db_config.json");
+        File configuration = new File(this.configFilePath);
 
         try
         {
             /* On écrit dans le fichier de configuration */
-            configuration.createNewFile();
+            if(configuration.exists())
+            {
+                configuration.delete();
+                configuration.createNewFile();
+            }
+            else
+            {
+                
+                configuration.createNewFile();
+            }
             FileWriter fos = new FileWriter(configuration);
             fos.write(json.toString());
             fos.close();
 
-            Configuration cf = Configuration.getInstance();
-            cf.setDatabaseName(databaseName.getText());
-            cf.setDatabasePasswd(pass.getText());
-            cf.setDatabaseUser(user.getText());
-            cf.setDatabaseHost(databaseHost.getText());
-            cf.setSgbd((String) databaseSGBD.getSelectedItem());
-            cf.setSgbdPort(databasePort.getValue().toString());
-            cf.setSgbdHost(databaseHost.getText());
         } catch (FileNotFoundException ex)
         {
             Message.error("Fichier de configuration non trouvé !");
