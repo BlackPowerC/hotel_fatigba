@@ -21,99 +21,102 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import main.java.app.Background;
 import main.java.app.Buttons;
+import main.java.bo.Utilisateur;
+import main.java.core.Message;
 import main.java.gui.Observateur;
 
 /**
- *
+ * Cette classe affiche le panneau de gestion des utilisateurs de l'aplication.
  * @author jordy
  * @since 0.2.1
+ * @see Utilisateur
  */
 public class UserPanel implements Observateur
 {
-    /**
-     * Cette classe exécute l'action du bouton OK.
-     */
-    public class OkBtnAction implements ActionListener
-    {
-        public void actionPerformed(ActionEvent ev)
-        {
-            
-        }
-    }
-    
-    /**
-     * Cette classe exécute l'action du bouton supprimer.
-     */
-    public class DeleteBtnAction implements ActionListener
-    {
-        public void actionPerformed(ActionEvent ev)
-        {
-            
-        }
-    }
-    
-    /**
-     * Cette classe exécute l'action du bouton update.
-     */
-    public class UpdateBtnAction implements ActionListener
-    {
-        public void actionPerformed(ActionEvent ev)
-        {
-            
-        }
-    }
-    
-    /**
-     * Cette classe exécute l'action du bouton reset.
-     */
-    public class ResetBtnAction implements ActionListener
-    {
-        public void actionPerformed(ActionEvent ev)
-        {
-            
-        }
-    }
-    
-    /**
-     * Cette classe exécute l'action du clic sur une ligne de la JTable.
-     */
-    public class TableAction implements MouseListener
-    {
-
-        @Override
-        public void mouseClicked(MouseEvent e)
-        {
-        }
-
-        @Override
-        public void mousePressed(MouseEvent e)
-        {
-        }
-
-        @Override
-        public void mouseReleased(MouseEvent e)
-        {
-        }
-
-        @Override
-        public void mouseEntered(MouseEvent e)
-        {
-        }
-
-        @Override
-        public void mouseExited(MouseEvent e)
-        {
-        }
-
-    }
-
     /**
      * Cette classe représente un formulaire permettant de manipuler les
      * utilisateurs.
      */
     public class Form
     {
+        /**
+        * Cette classe exécute l'action du bouton OK.
+        */
+        public class OkBtnAction implements ActionListener
+        {
+            public void actionPerformed(ActionEvent ev)
+            {
+                
+            }
+        }
+    
+        /**
+        * Cette classe exécute l'action du bouton supprimer.
+        */
+        public class DeleteBtnAction implements ActionListener
+        {
+            public void actionPerformed(ActionEvent ev)
+            {
+            
+            }
+        }
+    
+        /**
+        * Cette classe exécute l'action du bouton update.
+        */
+        public class UpdateBtnAction implements ActionListener
+        {
+            public void actionPerformed(ActionEvent ev)
+            {
+            
+            }
+        }
+    
+        /**
+        * Cette classe exécute l'action du bouton reset.
+        */
+        public class ResetBtnAction implements ActionListener
+        {
+            public void actionPerformed(ActionEvent ev)
+            {
+                form.reset();
+                Message.warning("Champ réinitialisés !");
+            }
+        }
+    
+        /**
+        * Cette classe exécute l'action du clic sur une ligne de la JTable.
+        */
+        public class TableAction implements MouseListener
+        {
 
+            @Override
+            public void mouseClicked(MouseEvent e)
+            {
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e)
+            {
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e)
+            {
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e)
+            {
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e)
+            {
+            }
+            
+        }
+        
         /* Les champs du formulaire */
         private JTextField txtNom;
         private JLabel labelNom;
@@ -177,6 +180,8 @@ public class UserPanel implements Observateur
                 this.panelButtons.add(buttons.getButtons(i));
                 buttons.getButtons(i).setPreferredSize(new Dimension(45, 45));
             }
+            
+            buttons.getButtons(1).addActionListener(new ResetBtnAction());
             
             /* Le panel du formulaire */
             this.panelFrom.add(labelNom);
@@ -248,7 +253,17 @@ public class UserPanel implements Observateur
                 "", "clientAdmin", "reservationAdmin", "admin"
             });
         }
-
+        
+        public void reset()
+        {
+            this.comboSexe.setSelectedIndex(0);
+            this.comboType.setSelectedIndex(0);
+            this.txtEmail.setText("");
+            this.txtNom.setText("");
+            this.txtPasswd.setText("");
+            this.txtPrenom.setText("");
+        }
+        
         public JPanel getPanel()
         {
             return this.panel;
@@ -257,6 +272,7 @@ public class UserPanel implements Observateur
 
     private static UserPanel singleton;
     private Form form;
+    private Utilisateur user ;
     private Background panel;
     private GridLayout gridLayout;
     private JTableUser tableUser;
@@ -272,6 +288,7 @@ public class UserPanel implements Observateur
 
     private UserPanel()
     {
+        user = new Utilisateur() ;
         build();
         addContent();
     }

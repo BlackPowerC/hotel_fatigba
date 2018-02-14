@@ -126,9 +126,9 @@ public class PanelClient implements Observateur
                 /* Connection à la base de données pour y mettre des données */
                 ((ClientManager) FactoryManager.getInstance().getManager(FactoryManager.CLIENT_MANAGER)).insert(client) ;
                 
-                    /* Ajout du nouveau client */
-                    ListClient.getHinstance().getListClient().add(new Client(client));
-                    Message.information("Tous les Champs sont bien remplis");
+                /* Ajout du nouveau client */
+                ListClient.getHinstance().getListClient().add(new Client(client));
+                Message.information("Tous les Champs sont bien remplis");
                 
             }
             /* Mise à jour de l'affichage */
