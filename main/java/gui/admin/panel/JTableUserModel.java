@@ -76,4 +76,14 @@ public class JTableUserModel extends AbstractTableModel
         return null;
     }
     
+    public void addRow()
+    {
+        fireTableRowsInserted(data.size()-1, data.size()-1);
+    }
+    
+    public void deleteRow()
+    {
+        fireTableRowsDeleted(data.size()-1, data.size()-1);
+    }
+    
 }
