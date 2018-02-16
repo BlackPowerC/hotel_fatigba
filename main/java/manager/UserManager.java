@@ -99,7 +99,7 @@ public class UserManager extends Manager<Utilisateur>
             if(rs.next())
             {
                 s = new Sexe() ; s.setId(rs.getInt("id_sexe")); s.setDescription(rs.getString("sDescription")) ;
-                tu = new TypeUtilisateur(); s.setId(rs.getInt("id_type")); s.setDescription(rs.getString("tuDescription"));
+                tu = new TypeUtilisateur(); tu.setId(rs.getInt("id_type")); tu.setDescription(rs.getString("tuDescription"));
                 u = new Utilisateur(rs, s, tu);
                 rs.close();
                 return u ;
@@ -135,7 +135,7 @@ public class UserManager extends Manager<Utilisateur>
             while(rs.next())
             {
                 s = new Sexe() ; s.setId(rs.getInt("id_sexe")); s.setDescription(rs.getString("sDescription")) ;
-                tu = new TypeUtilisateur(); s.setId(rs.getInt("id_type")); s.setDescription(rs.getString("tuDescription"));
+                tu = new TypeUtilisateur(); tu.setId(rs.getInt("id_type")); tu.setDescription(rs.getString("tuDescription"));
                 lu.add(new Utilisateur(rs, s, tu));
             }
             rs.close();
@@ -165,7 +165,7 @@ public class UserManager extends Manager<Utilisateur>
             while(rs.next())
             {
                 s = new Sexe() ; s.setId(rs.getInt("id_sexe")); s.setDescription(rs.getString("sDescription")) ;
-                tu = new TypeUtilisateur(); s.setId(rs.getInt("id_type")); s.setDescription(rs.getString("tuDescription"));
+                tu = new TypeUtilisateur(); tu.setId(rs.getInt("id_type")); tu.setDescription(rs.getString("tuDescription"));
                 lu.add(new Utilisateur(rs, s, tu));
             }
             rs.close();
