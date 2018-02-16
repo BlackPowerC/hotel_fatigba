@@ -21,9 +21,13 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import main.java.app.Background;
 import main.java.app.Buttons;
+import main.java.bo.Sexe;
+import main.java.bo.TypeUtilisateur;
 import main.java.bo.Utilisateur;
 import main.java.core.Message;
 import main.java.gui.Observateur;
+import main.java.manager.UserManager;
+import main.java.manager.data.ListUser;
 
 /**
  * Cette classe affiche le panneau de gestion des utilisateurs de l'aplication.
@@ -57,7 +61,13 @@ public class UserPanel implements Observateur
         {
             public void actionPerformed(ActionEvent ev)
             {
-            
+                if(updating)
+                {
+                    UserManager.getInstance().delete(user.getId()) ;
+                    Message.information("Utilisateur supprimé !");
+                    updating = false ;
+                    form.reset();
+                }
             }
         }
     
@@ -68,7 +78,10 @@ public class UserPanel implements Observateur
         {
             public void actionPerformed(ActionEvent ev)
             {
-            
+                if(updating)
+                {
+
+                }
             }
         }
     
@@ -79,6 +92,7 @@ public class UserPanel implements Observateur
         {
             public void actionPerformed(ActionEvent ev)
             {
+                updating = false ;
                 form.reset();
                 Message.warning("Champ réinitialisés !");
             }
@@ -93,6 +107,10 @@ public class UserPanel implements Observateur
             @Override
             public void mouseClicked(MouseEvent e)
             {
+                updating = true;
+                int i = JTableUser.getHinstance().getTable().getSelectedRow() ;
+                user.setUtilisateur(ListUser.getInstance().getList().get(i)) ;
+                hydrateForm(user) ;
             }
 
             @Override
@@ -116,6 +134,11 @@ public class UserPanel implements Observateur
             }
             
         }
+        
+        /* Jeton */
+        private boolean updating ;
+        /* Objet métiers */
+        private Utilisateur user ;
         
         /* Les champs du formulaire */
         private JTextField txtNom;
@@ -147,6 +170,7 @@ public class UserPanel implements Observateur
         public Form()
         {
             this.buttons = new Buttons();
+            this.user = new Utilisateur() ;
             buildPanel() ;
             buildField();
             buildLabel();
@@ -182,6 +206,8 @@ public class UserPanel implements Observateur
             }
             
             buttons.getButtons(1).addActionListener(new ResetBtnAction());
+            buttons.getButtons(3).addActionListener(new DeleteBtnAction());
+            JTableUser.getHinstance().getTable().addMouseListener(new TableAction());
             
             /* Le panel du formulaire */
             this.panelFrom.add(labelNom);
@@ -250,7 +276,8 @@ public class UserPanel implements Observateur
             });
             comboType = new JComboBox<>(new String[]
             {
-                "", "clientAdmin", "reservationAdmin", "admin"
+                "", "admin", "clientAdmin", "chambreAdmin",
+                "reservationAdmin", "serviceAdmin", "facturationAdmin"
             });
         }
         
@@ -264,6 +291,43 @@ public class UserPanel implements Observateur
             this.txtPrenom.setText("");
         }
         
+        /**
+         * Cette fonction sera appelée par la classe gérant l'action du clic
+         * sur une ligne de la table des Utilisateurs.
+         */
+        private void hydrateForm(Utilisateur user)
+        {
+            this.comboSexe.setSelectedIndex(user.getSexe().getId());
+            this.comboType.setSelectedIndex(user.getType().getId());
+            this.txtEmail.setText(user.getEmail());
+            this.txtPrenom.setText(user.getPrenom());
+            this.txtNom.setText(user.getEmail());
+            this.txtPasswd.setText(user.getPassword());
+        }
+        
+        /**
+         * Cette fonction sera appelée lors du clic sur un bouton ajout ou modifier.
+         * Elle remplit un objet de la classe Utilisateur.
+         */
+        private void hydrateUser()
+        {
+            Sexe sexe = new Sexe() ;
+            sexe.setId(comboSexe.getSelectedIndex());
+            sexe.setDescription(comboSexe.getSelectedItem().toString());
+            
+            TypeUtilisateur typeUtilisateur = new TypeUtilisateur() ;
+            typeUtilisateur.setId(comboType.getSelectedIndex());
+            typeUtilisateur.setDescription(comboType.getSelectedItem().toString());
+            
+            this.user.setEmail(txtEmail.getText());
+            this.user.setNom(txtNom.getText());
+            this.user.setPassword(txtPasswd.getText());
+            this.user.setPrenom(txtPrenom.getText());
+            this.user.setType(typeUtilisateur);
+            this.user.setSexe(sexe);
+        }
+        
+        
         public JPanel getPanel()
         {
             return this.panel;
@@ -272,7 +336,6 @@ public class UserPanel implements Observateur
 
     private static UserPanel singleton;
     private Form form;
-    private Utilisateur user ;
     private Background panel;
     private GridLayout gridLayout;
     private JTableUser tableUser;
@@ -288,7 +351,6 @@ public class UserPanel implements Observateur
 
     private UserPanel()
     {
-        user = new Utilisateur() ;
         build();
         addContent();
     }
