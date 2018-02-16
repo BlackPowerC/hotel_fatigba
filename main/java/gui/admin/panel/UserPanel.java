@@ -26,6 +26,8 @@ import main.java.bo.TypeUtilisateur;
 import main.java.bo.Utilisateur;
 import main.java.core.Message;
 import main.java.gui.Observateur;
+import main.java.manager.FactoryManager;
+import main.java.manager.Manager;
 import main.java.manager.UserManager;
 import main.java.manager.data.ListUser;
 
@@ -50,7 +52,42 @@ public class UserPanel implements Observateur
         {
             public void actionPerformed(ActionEvent ev)
             {
-                
+                if(updating)
+                {
+                    Message.warning("Impossible d'insérer une données destiner pour une MAJ !");
+                }
+                else
+                {
+                    hydrateUser() ;
+                    user.setId(1);
+                    if(!user.isValid())
+                    {
+                        Message.warning("Certaines informations ne sont pas valides !");
+                        return;
+                    }
+                    /* Insertion dans la base de données */
+                    Manager m = (UserManager) FactoryManager.getInstance().getManager(FactoryManager.USER_MANAGER) ;
+                    if(!m.insert(user))
+                    {
+                        Message.warning("Impossible d'enregister cet utilisateur !");
+                        return ;
+                    }
+                    /* Insertion d'une ligne dans la JTable */
+                    JTableUserModel mdl = (JTableUserModel) JTableUser.getHinstance().getTable().getModel() ;
+                    mdl.addRow() ;
+                    if(ListUser.getInstance().getList().size() == 0)
+                    {
+                        user.setId(1);
+                    }
+                    else
+                    {
+                        user.setId(ListUser.getInstance().getLast().getId()+1);
+                    }
+                    ListUser.getInstance().getList().add(new Utilisateur(user)) ;
+                    
+                    update();
+                }
+                form.reset();
             }
         }
     
@@ -207,6 +244,7 @@ public class UserPanel implements Observateur
             
             buttons.getButtons(1).addActionListener(new ResetBtnAction());
             buttons.getButtons(3).addActionListener(new DeleteBtnAction());
+            buttons.getButtons(0).addActionListener(new OkBtnAction());
             JTableUser.getHinstance().getTable().addMouseListener(new TableAction());
             
             /* Le panel du formulaire */
